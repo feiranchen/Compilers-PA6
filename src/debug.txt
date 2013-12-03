@@ -1,0 +1,576 @@
+accept
+{  ret :=  [] ;  }
+{  aaaaac := input ; i := aaaaac ; if (i!=NULL) {
+if (i.isNotIter)
+i = strToIter(i);
+}
+ ForToWhile(i!=NULL) {
+aaaaai = (Iterable *)i;
+i = aaaaai->value;
+{   aaaaas := i ; aaaaaq :=  [aaaaas] ; aaaaar := ret ; aaaaaw := i ; aaaaao := aaaaaq ++ aaaaar ; aaaaap :=  [aaaaaw] ; ret := aaaaao ++ aaaaap ; aaaaal := aaaaai ; i := iterGetNext < >  (aaaaal) ;  }}
+  }
+{  return ret ;  }
+PRINT HIR========================================
+{  ret :=  [] ;  }
+{  aaaaac := input ; i := aaaaac ; if (i!=NULL) {
+if (i.isNotIter)
+i = strToIter(i);
+}
+ ForToWhile(i!=NULL) {
+aaaaai = (Iterable *)i;
+i = aaaaai->value;
+{   aaaaas := i ; aaaaaq :=  [aaaaas] ; aaaaar := ret ; aaaaaw := i ; aaaaao := aaaaaq ++ aaaaar ; aaaaap :=  [aaaaaw] ; ret := aaaaao ++ aaaaap ; aaaaal := aaaaai ; i := iterGetNext < >  (aaaaal) ;  }}
+  }
+{  return ret ;  }
+printing the CFG
+0 : ret :=  [] ;
+successors are:
+aaaaac := input ;
+
+
+1 : aaaaac := input ;
+successors are:
+i := aaaaac ;
+
+
+2 : i := aaaaac ;
+successors are:
+if (i!=NULL) {
+if (i.isNotIter)
+i = strToIter(i);
+}
+
+
+
+3 : if (i!=NULL) {
+if (i.isNotIter)
+i = strToIter(i);
+}
+
+successors are:
+ForToWhile(i!=NULL) {
+aaaaai = (Iterable *)i;
+i = aaaaai->value;
+{   aaaaas := i ; aaaaaq :=  [aaaaas] ; aaaaar := ret ; aaaaaw := i ; aaaaao := aaaaaq ++ aaaaar ; aaaaap :=  [aaaaaw] ; ret := aaaaao ++ aaaaap ; aaaaal := aaaaai ; i := iterGetNext < >  (aaaaal) ;  }}
+
+
+
+4 : ForToWhile(i!=NULL) {
+aaaaai = (Iterable *)i;
+i = aaaaai->value;
+{   aaaaas := i ; aaaaaq :=  [aaaaas] ; aaaaar := ret ; aaaaaw := i ; aaaaao := aaaaaq ++ aaaaar ; aaaaap :=  [aaaaaw] ; ret := aaaaao ++ aaaaap ; aaaaal := aaaaai ; i := iterGetNext < >  (aaaaal) ;  }}
+
+successors are:
+return ret ;
+aaaaas := i ;
+
+
+5 : return ret ;
+successors are:
+
+
+6 : aaaaas := i ;
+successors are:
+aaaaaq :=  [aaaaas] ;
+
+
+7 : aaaaaq :=  [aaaaas] ;
+successors are:
+aaaaar := ret ;
+
+
+8 : aaaaar := ret ;
+successors are:
+aaaaaw := i ;
+
+
+9 : aaaaaw := i ;
+successors are:
+aaaaao := aaaaaq ++ aaaaar ;
+
+
+10 : aaaaao := aaaaaq ++ aaaaar ;
+successors are:
+aaaaap :=  [aaaaaw] ;
+
+
+11 : aaaaap :=  [aaaaaw] ;
+successors are:
+ret := aaaaao ++ aaaaap ;
+
+
+12 : ret := aaaaao ++ aaaaap ;
+successors are:
+aaaaal := aaaaai ;
+
+
+13 : aaaaal := aaaaai ;
+successors are:
+i := iterGetNext < >  (aaaaal) ;
+
+
+14 : i := iterGetNext < >  (aaaaal) ;
+successors are:
+ForToWhile(i!=NULL) {
+aaaaai = (Iterable *)i;
+i = aaaaai->value;
+{   aaaaas := i ; aaaaaq :=  [aaaaas] ; aaaaar := ret ; aaaaaw := i ; aaaaao := aaaaaq ++ aaaaar ; aaaaap :=  [aaaaaw] ; ret := aaaaao ++ aaaaap ; aaaaal := aaaaai ; i := iterGetNext < >  (aaaaal) ;  }}
+
+
+
+printing the CFG with in out use def sets
+0 : ret :=  [] ;
+in set is:
+[aaaaac]
+out set is:
+[ret, aaaaac]
+use set is:
+[]
+def set is:
+[ret]
+
+
+1 : aaaaac := input ;
+in set is:
+[ret, aaaaac]
+out set is:
+[ret, aaaaac]
+use set is:
+[aaaaac]
+def set is:
+[aaaaac]
+
+
+2 : i := aaaaac ;
+in set is:
+[ret, aaaaac]
+out set is:
+[ret, i]
+use set is:
+[aaaaac]
+def set is:
+[i]
+
+
+3 : if (i!=NULL) {
+if (i.isNotIter)
+i = strToIter(i);
+}
+
+in set is:
+[ret, i]
+out set is:
+[ret, i]
+use set is:
+[i]
+def set is:
+[]
+
+
+4 : ForToWhile(i!=NULL) {
+aaaaai = (Iterable *)i;
+i = aaaaai->value;
+{   aaaaas := i ; aaaaaq :=  [aaaaas] ; aaaaar := ret ; aaaaaw := i ; aaaaao := aaaaaq ++ aaaaar ; aaaaap :=  [aaaaaw] ; ret := aaaaao ++ aaaaap ; aaaaal := aaaaai ; i := iterGetNext < >  (aaaaal) ;  }}
+
+in set is:
+[ret, i]
+out set is:
+[ret, aaaaai, i]
+use set is:
+[i]
+def set is:
+[aaaaai]
+
+
+5 : return ret ;
+in set is:
+[ret]
+out set is:
+[]
+use set is:
+[ret]
+def set is:
+[]
+
+
+6 : aaaaas := i ;
+in set is:
+[aaaaai, i, ret]
+out set is:
+[aaaaai, i, ret, aaaaas]
+use set is:
+[i]
+def set is:
+[aaaaas]
+
+
+7 : aaaaaq :=  [aaaaas] ;
+in set is:
+[aaaaai, i, ret, aaaaas]
+out set is:
+[aaaaai, aaaaaq, i, ret]
+use set is:
+[aaaaas]
+def set is:
+[aaaaaq]
+
+
+8 : aaaaar := ret ;
+in set is:
+[aaaaai, aaaaaq, i, ret]
+out set is:
+[aaaaai, aaaaaq, aaaaar, i]
+use set is:
+[ret]
+def set is:
+[aaaaar]
+
+
+9 : aaaaaw := i ;
+in set is:
+[aaaaai, aaaaaq, aaaaar, i]
+out set is:
+[aaaaai, aaaaaw, aaaaaq, aaaaar]
+use set is:
+[i]
+def set is:
+[aaaaaw]
+
+
+10 : aaaaao := aaaaaq ++ aaaaar ;
+in set is:
+[aaaaai, aaaaaw, aaaaaq, aaaaar]
+out set is:
+[aaaaai, aaaaao, aaaaaw]
+use set is:
+[aaaaaq, aaaaar]
+def set is:
+[aaaaao]
+
+
+11 : aaaaap :=  [aaaaaw] ;
+in set is:
+[aaaaai, aaaaao, aaaaaw]
+out set is:
+[aaaaai, aaaaao, aaaaap]
+use set is:
+[aaaaaw]
+def set is:
+[aaaaap]
+
+
+12 : ret := aaaaao ++ aaaaap ;
+in set is:
+[aaaaai, aaaaao, aaaaap]
+out set is:
+[ret, aaaaai]
+use set is:
+[aaaaao, aaaaap]
+def set is:
+[ret]
+
+
+13 : aaaaal := aaaaai ;
+in set is:
+[ret, aaaaai]
+out set is:
+[ret, aaaaal]
+use set is:
+[aaaaai]
+def set is:
+[aaaaal]
+
+
+14 : i := iterGetNext < >  (aaaaal) ;
+in set is:
+[ret, aaaaal]
+out set is:
+[ret, i]
+use set is:
+[aaaaal]
+def set is:
+[i]
+
+
+printing the CFG
+0 : ret :=  [] ;
+successors are:
+aaaaac := input ;
+
+
+1 : aaaaac := input ;
+successors are:
+i := aaaaac ;
+
+
+2 : i := aaaaac ;
+successors are:
+if (i!=NULL) {
+if (i.isNotIter)
+i = strToIter(i);
+}
+
+
+
+3 : if (i!=NULL) {
+if (i.isNotIter)
+i = strToIter(i);
+}
+
+successors are:
+ForToWhile(i!=NULL) {
+aaaaai = (Iterable *)i;
+i = aaaaai->value;
+{   aaaaas := i ; aaaaaq :=  [aaaaas] ; aaaaar := ret ; aaaaaw := i ; aaaaao := aaaaaq ++ aaaaar ; aaaaap :=  [aaaaaw] ; ret := aaaaao ++ aaaaap ; aaaaal := aaaaai ; i := iterGetNext < >  (aaaaal) ;  }}
+
+
+
+4 : ForToWhile(i!=NULL) {
+aaaaai = (Iterable *)i;
+i = aaaaai->value;
+{   aaaaas := i ; aaaaaq :=  [aaaaas] ; aaaaar := ret ; aaaaaw := i ; aaaaao := aaaaaq ++ aaaaar ; aaaaap :=  [aaaaaw] ; ret := aaaaao ++ aaaaap ; aaaaal := aaaaai ; i := iterGetNext < >  (aaaaal) ;  }}
+
+successors are:
+return ret ;
+aaaaas := i ;
+
+
+5 : return ret ;
+successors are:
+
+
+6 : aaaaas := i ;
+successors are:
+aaaaaq :=  [aaaaas] ;
+
+
+7 : aaaaaq :=  [aaaaas] ;
+successors are:
+aaaaar := ret ;
+
+
+8 : aaaaar := ret ;
+successors are:
+aaaaaw := i ;
+
+
+9 : aaaaaw := i ;
+successors are:
+aaaaao := aaaaaq ++ aaaaar ;
+
+
+10 : aaaaao := aaaaaq ++ aaaaar ;
+successors are:
+aaaaap :=  [aaaaaw] ;
+
+
+11 : aaaaap :=  [aaaaaw] ;
+successors are:
+ret := aaaaao ++ aaaaap ;
+
+
+12 : ret := aaaaao ++ aaaaap ;
+successors are:
+aaaaal := aaaaai ;
+
+
+13 : aaaaal := aaaaai ;
+successors are:
+i := iterGetNext < >  (aaaaal) ;
+
+
+14 : i := iterGetNext < >  (aaaaal) ;
+successors are:
+ForToWhile(i!=NULL) {
+aaaaai = (Iterable *)i;
+i = aaaaai->value;
+{   aaaaas := i ; aaaaaq :=  [aaaaas] ; aaaaar := ret ; aaaaaw := i ; aaaaao := aaaaaq ++ aaaaar ; aaaaap :=  [aaaaaw] ; ret := aaaaao ++ aaaaap ; aaaaal := aaaaai ; i := iterGetNext < >  (aaaaal) ;  }}
+
+
+
+printing the CFG with in out use def sets
+0 : ret :=  [] ;
+in set is:
+[aaaaac]
+out set is:
+[ret, aaaaac]
+use set is:
+[]
+def set is:
+[ret]
+
+
+1 : aaaaac := input ;
+in set is:
+[ret, aaaaac]
+out set is:
+[ret, aaaaac]
+use set is:
+[aaaaac]
+def set is:
+[aaaaac]
+
+
+2 : i := aaaaac ;
+in set is:
+[ret, aaaaac]
+out set is:
+[ret, i]
+use set is:
+[aaaaac]
+def set is:
+[i]
+
+
+3 : if (i!=NULL) {
+if (i.isNotIter)
+i = strToIter(i);
+}
+
+in set is:
+[ret, i]
+out set is:
+[ret, i]
+use set is:
+[i]
+def set is:
+[]
+
+
+4 : ForToWhile(i!=NULL) {
+aaaaai = (Iterable *)i;
+i = aaaaai->value;
+{   aaaaas := i ; aaaaaq :=  [aaaaas] ; aaaaar := ret ; aaaaaw := i ; aaaaao := aaaaaq ++ aaaaar ; aaaaap :=  [aaaaaw] ; ret := aaaaao ++ aaaaap ; aaaaal := aaaaai ; i := iterGetNext < >  (aaaaal) ;  }}
+
+in set is:
+[ret, i]
+out set is:
+[ret, aaaaai, i]
+use set is:
+[i]
+def set is:
+[aaaaai]
+
+
+5 : return ret ;
+in set is:
+[ret]
+out set is:
+[]
+use set is:
+[ret]
+def set is:
+[]
+
+
+6 : aaaaas := i ;
+in set is:
+[aaaaai, i, ret]
+out set is:
+[aaaaai, i, ret, aaaaas]
+use set is:
+[i]
+def set is:
+[aaaaas]
+
+
+7 : aaaaaq :=  [aaaaas] ;
+in set is:
+[aaaaai, i, ret, aaaaas]
+out set is:
+[aaaaai, aaaaaq, i, ret]
+use set is:
+[aaaaas]
+def set is:
+[aaaaaq]
+
+
+8 : aaaaar := ret ;
+in set is:
+[aaaaai, aaaaaq, i, ret]
+out set is:
+[aaaaai, aaaaaq, aaaaar, i]
+use set is:
+[ret]
+def set is:
+[aaaaar]
+
+
+9 : aaaaaw := i ;
+in set is:
+[aaaaai, aaaaaq, aaaaar, i]
+out set is:
+[aaaaai, aaaaaw, aaaaaq, aaaaar]
+use set is:
+[i]
+def set is:
+[aaaaaw]
+
+
+10 : aaaaao := aaaaaq ++ aaaaar ;
+in set is:
+[aaaaai, aaaaaw, aaaaaq, aaaaar]
+out set is:
+[aaaaai, aaaaao, aaaaaw]
+use set is:
+[aaaaaq, aaaaar]
+def set is:
+[aaaaao]
+
+
+11 : aaaaap :=  [aaaaaw] ;
+in set is:
+[aaaaai, aaaaao, aaaaaw]
+out set is:
+[aaaaai, aaaaao, aaaaap]
+use set is:
+[aaaaaw]
+def set is:
+[aaaaap]
+
+
+12 : ret := aaaaao ++ aaaaap ;
+in set is:
+[aaaaai, aaaaao, aaaaap]
+out set is:
+[ret, aaaaai]
+use set is:
+[aaaaao, aaaaap]
+def set is:
+[ret]
+
+
+13 : aaaaal := aaaaai ;
+in set is:
+[ret, aaaaai]
+out set is:
+[ret, aaaaal]
+use set is:
+[aaaaai]
+def set is:
+[aaaaal]
+
+
+14 : i := iterGetNext < >  (aaaaal) ;
+in set is:
+[ret, aaaaal]
+out set is:
+[ret, i]
+use set is:
+[aaaaal]
+def set is:
+[i]
+
+
+PRINT HIR, after deadcode elimination====================
+{  ret :=  [] ;  }
+{  aaaaac := input ; i := aaaaac ; if (i!=NULL) {
+if (i.isNotIter)
+i = strToIter(i);
+}
+ ForToWhile(i!=NULL) {
+aaaaai = (Iterable *)i;
+i = aaaaai->value;
+{   aaaaas := i ; aaaaaq :=  [aaaaas] ; aaaaar := ret ; aaaaaw := i ; aaaaao := aaaaaq ++ aaaaar ; aaaaap :=  [aaaaaw] ; ret := aaaaao ++ aaaaap ; aaaaal := aaaaai ; i := iterGetNext < >  (aaaaal) ;  }}
+  }
+{  return ret ;  }
