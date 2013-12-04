@@ -1,0 +1,13 @@
+#c:=8;
+c:=[6,7,6,7,8];
+
+c:=[if (i <3) 1+i];
+c:=[];
+
+fun lessThans(i : Int) : Iter<Prop<Int>> 
+ = [for (j in 0<.i) lessThan(j)]; 
+
+fun locations(i : Int, j : Int) : Double<Int> 
+ = [for (x in 0..i) 
+ for (y in 0..j) 
+ Double<Int>(x, y)];

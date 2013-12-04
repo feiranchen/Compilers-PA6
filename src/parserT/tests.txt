@@ -1,0 +1,24 @@
+return 3;
+#should fail w/o return
+return 3++4;
+return 4+ "haha";
+return "haha" +4;
+return nothing;
+# parser test program 2
+interface GoodStudent extends Student
+{
+  fun doHomework() : GoodGrade;
+  fun askQuestion() : Knowledge;
+   fun foo(y : Integer) : Integer = y * 2;
+}
+
+return 3;
+
+return "hello world";     
+
+while (["string",1]) return 3;
+
+#return 1 * 2 / -3 + 4 - - - 5; 
+#return (1 + (1 + (1 + (1))));
+#return ((((1) + 1) + 1) + 1);
+#return ((((((((((((((((((1))))))))))))))))));

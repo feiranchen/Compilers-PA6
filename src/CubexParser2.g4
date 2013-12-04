@@ -1,4 +1,4 @@
-parser grammar CubexParser2;
+ parser grammar CubexParser2;
 
 options { tokenVocab = CubexLexer2; }
 @header {
@@ -45,6 +45,11 @@ type returns [CuType t]
 typescheme returns [CuTypeScheme ts]
 : kc=kindcontext tc=typecontext COLON t=type {$ts = new TypeScheme($kc.kc, $tc.tc, $t.t);};
 
+comprehension returns [CuComprehension c]
+: lst=exprs {$c= new ExprLstCmph($lst.cu);} (c_=comprehension {$c.add($c_.c);})?
+| IF LPAREN e=expr RPAREN c_=comprehension {$c = new IfCmph($e.e, $c_.c);} 
+| FOR LPAREN v_=vv IN e=expr RPAREN c_=comprehension {$c = new ForCmph($v_.v, $e.e, $c_.c);};
+
 expr returns [CuExpr e]
 : LPAREN ex=expr RPAREN {$e = $ex.e;}
 | VAR {$e = new VvExp($VAR.text);}
@@ -55,7 +60,8 @@ expr returns [CuExpr e]
 | FALSE {$e = new CBoolean(false);}
 | INTEGER {$e = new CInteger($INTEGER.int);}
 | STRING {$e = new CString($STRING.text);}
-| LBRACKET es=exprs RBRACKET {$e = new BrkExpr($es.cu);} 
+| LBRACKET  RBRACKET {$e =new ComExpr(new EmptyCmph());} 
+| LBRACKET c_=comprehension RBRACKET {$e = new ComExpr($c_.c);} 
 | op=(DASH | BANG) ex=expr
   { $e = $op.type == DASH ? new NegativeExpr($ex.e) : new NegateExpr($ex.e); }
 | l=expr op=(STAR | SLASH | PERCENT) r=expr
@@ -92,7 +98,7 @@ expr returns [CuExpr e]
 | l=expr APPEND r=expr {$e = new AppExpr($l.e, $r.e); } ;
 
 exprs returns [List<CuExpr> cu] 
-: {$cu = new ArrayList<CuExpr>();} (e=expr {$cu.add($e.e);} (COMMA e=expr {$cu.add($e.e);})*)?;
+: {$cu = new ArrayList<CuExpr>();} e=expr {$cu.add($e.e);} ((COMMA e=expr {$cu.add($e.e);})*)?;
 
 stat returns [CuStat s]
 : LBRACE ss=stats RBRACE {$s = new Stats($ss.cu);}

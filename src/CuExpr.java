@@ -566,6 +566,14 @@ Helper.P("common parent of types is " + type.toString());
 	}
 }
 
+class ComExpr extends CuExpr{
+	CuComprehension c;
+	public ComExpr(CuComprehension c){
+		this.c=c;
+	}
+}
+
+//deprecated
 class BrkExpr extends CuExpr {
 	public List<CuExpr> val;
 	public BrkExpr(List<CuExpr> es){
