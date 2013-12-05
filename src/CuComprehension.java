@@ -17,6 +17,7 @@ public class CuComprehension {
 class EmptyCmph extends CuComprehension{
 	
 }
+
 class ExprLstCmph extends CuComprehension{
 	List<CuExpr> lst=new ArrayList<CuExpr>();
 	CuComprehension c=new EmptyCmph();
@@ -31,8 +32,11 @@ class ExprLstCmph extends CuComprehension{
 class IfCmph extends CuComprehension {
 	CuExpr e;
 	CuComprehension c;
-	public IfCmph(CuExpr e, CuComprehension c){
+	
+	public IfCmph(CuExpr e){
 		this.e=e;
+	}
+	public void add(CuComprehension c){
 		this.c=c;
 	}
 }
@@ -42,9 +46,12 @@ class ForCmph extends CuComprehension {
 	CuExpr e;
 	CuComprehension c;
 
-	public ForCmph(CuVvc v, CuExpr e, CuComprehension c){
+	public ForCmph(CuVvc v, CuExpr e){
 		this.v=v;
 		this.e=e;
+	}
+
+	public void add(CuComprehension c){
 		this.c=c;
 	}
 }
