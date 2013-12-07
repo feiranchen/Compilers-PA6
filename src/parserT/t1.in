@@ -1,6 +1,8 @@
 #c:=8;
 c:=[6,7,6,7,8];
 
+i := 0;
+
 c:=[if (i <3) 1+i];
 c:=[];
 
@@ -11,3 +13,5 @@ fun locations(i : Int, j : Int) : Double<Int>
  = [for (x in 0..i) 
  for (y in 0..j) 
  Double<Int>(x, y)];
+ 
+ return ["hello"];

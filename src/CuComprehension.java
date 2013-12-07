@@ -64,7 +64,7 @@ class IfCmph extends CuComprehension {
 class ForCmph extends CuComprehension {
 	CuVvc v;
 	CuExpr e;
-	CuComprehension c;
+	CuComprehension c = new EmptyCmph();
 
 	public ForCmph(CuVvc v, CuExpr e){
 		this.v=v;

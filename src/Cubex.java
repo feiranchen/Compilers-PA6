@@ -26,17 +26,18 @@ public class Cubex {
 		parser.addErrorListener(new ParserErrorListener(false)); //prevent printing debugging messages
 		
 		CuProgr ourProgram = null;
-		//try {
+		try {
 			ourProgram = parser.program().p;
-			Helper.P("parser succeeded");
-//			ourProgram.calculateType(context);
+			if (Helper.debug)
+				System.out.println("parser succeeded");
+			ourProgram.calculateType(context);
 			//Helper.ToDo("comment out accept when we submit");
 			System.out.println("accept");
-		//} catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("reject");
 			//even if rejected, we still generate a 
 			//System.exit(-2);
-		//}
+		}
 /*		//first, convert to HIR, in debug mode, this print out the first HIR
         ourProgram.toHIR();
         //next, build CFG, use and def sets are built here

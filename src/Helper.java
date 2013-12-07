@@ -11,7 +11,7 @@ import java.util.regex.*;
 
 public class Helper {
 	//change this to false when submit
-	protected static boolean debug = false;
+	protected static boolean debug = true;
 	//switch for primitive optimization
 	protected static boolean opt_primitive = true;
 	//added for primitive optimization, unboxed variables, from name to type
