@@ -571,6 +571,11 @@ class ComExpr extends CuExpr{
 	public ComExpr(CuComprehension c){
 		this.c=c;
 	}
+	
+	@Override
+	protected CuType calculateType(CuContext context) throws NoSuchTypeException {
+		return new Iter(c.calculateType(context));
+	}
 }
 
 //deprecated

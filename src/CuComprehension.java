@@ -12,6 +12,8 @@ public class CuComprehension {
 		return cText;
 	}
 	@Override public String toString() {return text;}
+	
+	protected CuType calculateType(CuContext context) throws NoSuchTypeException { return CuType.bottom;};
 }
 
 class EmptyCmph extends CuComprehension{
@@ -27,17 +29,35 @@ class ExprLstCmph extends CuComprehension{
 	public void add(CuComprehension c){
 		this.c=c;
 	}
+	
+	@Override
+	protected CuType calculateType(CuContext context) throws NoSuchTypeException {
+		CuType reType = CuType.bottom;
+		for (CuExpr ce : lst) {
+			reType = CuType.commonParent(reType, ce.calculateType(context));
+		}
+		reType = CuType.commonParent(reType, c.calculateType(context));
+		return reType;
+	}
 }
 
 class IfCmph extends CuComprehension {
 	CuExpr e;
-	CuComprehension c;
+	CuComprehension c = new EmptyCmph();
 	
 	public IfCmph(CuExpr e){
 		this.e=e;
 	}
 	public void add(CuComprehension c){
 		this.c=c;
+	}
+	@Override
+	protected CuType calculateType(CuContext context) throws NoSuchTypeException {
+		CuType eType = e.calculateType(context);
+		if (!eType.equals(CuType.bool)) {
+			throw new NoSuchTypeException(Helper.getLineInfo());
+		}
+		return c.calculateType(context);
 	}
 }
 
@@ -53,6 +73,26 @@ class ForCmph extends CuComprehension {
 
 	public void add(CuComprehension c){
 		this.c=c;
+	}
+	
+	@Override
+	protected CuType calculateType(CuContext context) throws NoSuchTypeException {
+		CuType eType = e.calculateType(context);
+ 		Boolean flag = eType.isIterable();
+    	if (flag != true) {
+    		throw new NoSuchTypeException(Helper.getLineInfo()); 
+    	}
+    	//eType.type = Helper.getTypeForIterable(eType.toString());
+    	//var can't appear immutable variables
+    	if (context.inVar(this.v.toString())) {
+    		throw new NoSuchTypeException(Helper.getLineInfo()); 
+    	}
+    	//System.out.println("etype is " + eType.toString());
+    	CuType iter_type = eType.type;
+    	//System.out.println("variable type is " + iter_type.id);
+    	CuContext s_context = new CuContext(context);
+    	s_context.updateType(this.v.toString(), iter_type);
+    	return c.calculateType(s_context);
 	}
 }
 
