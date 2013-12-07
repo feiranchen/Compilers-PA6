@@ -18,7 +18,7 @@ public class CubexParser2 extends Parser {
 		new PredictionContextCache();
 	public static final int
 		APPEND=42, CLASS=11, STAR=31, LRTHR=46, THR=43, WHILE=4, LONW=48, CLSINTF=17, 
-		COMMENTS_POND=55, ONW=47, LANGLE=36, GTE=50, LBRACE=29, THING=13, FOR=5, 
+		COMMENTS_POND=55, ONW=47, LANGLE=36, GTE=50, LBRACE=29, FOR=5, THING=13, 
 		SPACE=56, LTE=49, LPAREN=25, IF=2, LBRACKET=21, RPAREN=26, LTHR=44, SLASH=32, 
 		IN=6, COMMENTS=54, COMMA=27, EQUAL=24, RETURN=7, NOTHING=14, PLUS=34, 
 		PIPE=40, VAR=19, SUPER=12, RBRACKET=22, RANGLE=37, DOT=41, RTHR=45, INTEGER=20, 
@@ -543,14 +543,10 @@ public class CubexParser2 extends Parser {
 
 	public static class ComprehensionContext extends ParserRuleContext {
 		public CuComprehension c;
-		public ExprsContext lst;
-		public ComprehensionContext c_;
 		public ExprContext e;
+		public ComprehensionContext c_;
 		public VvContext v_;
 		public TerminalNode IN() { return getToken(CubexParser2.IN, 0); }
-		public ExprsContext exprs() {
-			return getRuleContext(ExprsContext.class,0);
-		}
 		public TerminalNode IF() { return getToken(CubexParser2.IF, 0); }
 		public ComprehensionContext comprehension() {
 			return getRuleContext(ComprehensionContext.class,0);
@@ -590,8 +586,8 @@ public class CubexParser2 extends Parser {
 			case BANG:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(131); ((ComprehensionContext)_localctx).lst = exprs();
-				((ComprehensionContext)_localctx).c =  new ExprLstCmph(((ComprehensionContext)_localctx).lst.cu);
+				setState(131); ((ComprehensionContext)_localctx).e = expr(0);
+				((ComprehensionContext)_localctx).c =  new ExprLstCmph(((ComprehensionContext)_localctx).e.e);
 				setState(137);
 				_la = _input.LA(1);
 				if (_la==COMMA) {
@@ -712,10 +708,10 @@ public class CubexParser2 extends Parser {
 		public TerminalNode LONW() { return getToken(CubexParser2.LONW, 0); }
 		public TerminalNode RPAREN() { return getToken(CubexParser2.RPAREN, 0); }
 		public TerminalNode LTHR() { return getToken(CubexParser2.LTHR, 0); }
+		public TerminalNode INTEGER() { return getToken(CubexParser2.INTEGER, 0); }
 		public ParatypeContext paratype() {
 			return getRuleContext(ParatypeContext.class,0);
 		}
-		public TerminalNode INTEGER() { return getToken(CubexParser2.INTEGER, 0); }
 		public TerminalNode STRING() { return getToken(CubexParser2.STRING, 0); }
 		public TerminalNode SLASH() { return getToken(CubexParser2.SLASH, 0); }
 		public TerminalNode FALSE() { return getToken(CubexParser2.FALSE, 0); }
@@ -1078,8 +1074,8 @@ public class CubexParser2 extends Parser {
 	public final ExprsContext exprs() throws RecognitionException {
 		ExprsContext _localctx = new ExprsContext(_ctx, getState());
 		enterRule(_localctx, 20, RULE_exprs);
+		int _la;
 		try {
-			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
 			((ExprsContext)_localctx).cu =  new ArrayList<CuExpr>();
@@ -1091,20 +1087,18 @@ public class CubexParser2 extends Parser {
 				{
 				setState(274);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,19,_ctx);
-				while ( _alt!=2 && _alt!=-1 ) {
-					if ( _alt==1 ) {
-						{
-						{
-						setState(268); match(COMMA);
-						setState(269); ((ExprsContext)_localctx).e = expr(0);
-						_localctx.cu.add(((ExprsContext)_localctx).e.e);
-						}
-						} 
+				_la = _input.LA(1);
+				while (_la==COMMA) {
+					{
+					{
+					setState(268); match(COMMA);
+					setState(269); ((ExprsContext)_localctx).e = expr(0);
+					_localctx.cu.add(((ExprsContext)_localctx).e.e);
+					}
 					}
 					setState(276);
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,19,_ctx);
+					_la = _input.LA(1);
 				}
 				}
 				break;
@@ -1145,10 +1139,10 @@ public class CubexParser2 extends Parser {
 			return getRuleContext(StatContext.class,i);
 		}
 		public TerminalNode FOR() { return getToken(CubexParser2.FOR, 0); }
-		public TerminalNode ELSE() { return getToken(CubexParser2.ELSE, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
+		public TerminalNode ELSE() { return getToken(CubexParser2.ELSE, 0); }
 		public TerminalNode ASSIGN() { return getToken(CubexParser2.ASSIGN, 0); }
 		public TerminalNode RPAREN() { return getToken(CubexParser2.RPAREN, 0); }
 		public TerminalNode RETURN() { return getToken(CubexParser2.RETURN, 0); }
@@ -1854,8 +1848,8 @@ public class CubexParser2 extends Parser {
 		"\1\2uv\7)\2\2vw\5\f\7\2wx\b\b\1\2xz\3\2\2\2yu\3\2\2\2z{\3\2\2\2{y\3\2"+
 		"\2\2{|\3\2\2\2|~\3\2\2\2}p\3\2\2\2}s\3\2\2\2~\17\3\2\2\2\177\u0080\5\6"+
 		"\4\2\u0080\u0081\5\b\5\2\u0081\u0082\7\31\2\2\u0082\u0083\5\16\b\2\u0083"+
-		"\u0084\b\t\1\2\u0084\21\3\2\2\2\u0085\u0086\5\26\f\2\u0086\u008b\b\n\1"+
-		"\2\u0087\u0088\7\35\2\2\u0088\u0089\5\22\n\2\u0089\u008a\b\n\1\2\u008a"+
+		"\u0084\b\t\1\2\u0084\21\3\2\2\2\u0085\u0086\5\24\13\2\u0086\u008b\b\n"+
+		"\1\2\u0087\u0088\7\35\2\2\u0088\u0089\5\22\n\2\u0089\u008a\b\n\1\2\u008a"+
 		"\u008c\3\2\2\2\u008b\u0087\3\2\2\2\u008b\u008c\3\2\2\2\u008c\u00a4\3\2"+
 		"\2\2\u008d\u008e\7\4\2\2\u008e\u008f\7\33\2\2\u008f\u0090\5\24\13\2\u0090"+
 		"\u0091\7\34\2\2\u0091\u0095\b\n\1\2\u0092\u0093\5\22\n\2\u0093\u0094\b"+

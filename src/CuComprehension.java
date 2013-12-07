@@ -17,28 +17,111 @@ public class CuComprehension {
 }
 
 class EmptyCmph extends CuComprehension{
-	
+	@Override
+	public boolean equals(Object that){
+		if (that instanceof EmptyCmph)
+			return true;
+		else 
+			return false;
+	}
 }
 
 class ExprLstCmph extends CuComprehension{
-	List<CuExpr> lst=new ArrayList<CuExpr>();
+	CuExpr e=null;
 	CuComprehension c=new EmptyCmph();
-	public ExprLstCmph(List<CuExpr> es){
-		lst=es;
+	public ExprLstCmph(CuExpr e){
+		this.e=e;
 	}
 	public void add(CuComprehension c){
 		this.c=c;
 	}
 	
 	@Override
+	public boolean equals(Object that){
+		if (that instanceof ExprLstCmph &&
+				e.equals(((ExprLstCmph)that).e)&&
+				c.equals(((ExprLstCmph)that).c))
+			return true;
+		else 
+			return false;
+	}
+	
+	@Override
 	protected CuType calculateType(CuContext context) throws NoSuchTypeException {
 		CuType reType = CuType.bottom;
-		for (CuExpr ce : lst) {
-			reType = CuType.commonParent(reType, ce.calculateType(context));
-		}
+		reType = CuType.commonParent(reType, e.calculateType(context));
 		reType = CuType.commonParent(reType, c.calculateType(context));
 		return reType;
 	}
+	
+	
+	@Override
+	public String toC(ArrayList<String> localVars) {
+		String eToC = "", typeCast = "";
+		
+		ArrayList<String> tempNameArr=new ArrayList<String>();	
+		ArrayList<String> tempDataArr=new ArrayList<String>();
+		for (CuExpr e : val) {
+			eToC = e.toC(localVars);
+			String eC = e.construct();
+			name += eC;
+			
+			/*if (!e.getDef().isEmpty())
+				def.addAll(e.getDef());
+			if (!e.getUse().isEmpty())
+				use.addAll(e.getUse());
+*/			
+			String eCastType = e.getCastType();
+			if (eCastType.equals(""))
+				eCastType = Helper.cVarType.get(e.toString());
+			
+			if(iterType == null)
+				iterType = "";
+			
+			if(iterType.equals("")) 
+				iterType = eCastType;
+			else if (!iterType.equals(eCastType))
+				iterType = "Thing";
+			
+			
+			tempNameArr.add(Helper.getVarName());
+			tempDataArr.add(eToC);
+			typeCast = e.getCastType();
+			if(typeCast == null) 
+				typeCast = Helper.cVarType.get(eToC);
+		}
+		tempNameArr.add("NULL");
+
+		int i;
+		for (i= val.size() - 1; i >= 0; i--) {
+			name += "Iterable* " + tempNameArr.get(i) + ";\n" 
+					+ tempNameArr.get(i) + " = (Iterable*) x3malloc(sizeof(Iterable));\n"
+					+ tempNameArr.get(i) + "->isIter = 1;\n"
+					+ tempNameArr.get(i) + "->nrefs = 1;\n" 
+					+ tempNameArr.get(i) + "->value = " + tempDataArr.get(i) + ";\n"
+					+ tempNameArr.get(i) + "->additional = " + tempNameArr.get(i + 1) + ";\n" 
+					+ tempNameArr.get(i) + "->next = NULL;\n" 
+					+ tempNameArr.get(i)+ "->concat = NULL;\n";
+			
+			if (!tempDataArr.isEmpty())
+				name += Helper.incrRefCount(tempDataArr.get(i));
+			
+			//def.add(tempNameArr.get(i+1));
+		}	
+			
+		if (!tempDataArr.isEmpty())
+			name += tempNameArr.get(0) + "->nrefs = 0;\n";
+		//def.add(tempNameArr.get(0));
+		
+		cText = tempNameArr.get(0);
+		
+		if(val.size() == 0) 
+			iterType = "Empty";
+		
+		super.castType = "Iterable";
+		return super.toC(localVars);
+	}
+	
 }
 
 class IfCmph extends CuComprehension {
@@ -50,6 +133,16 @@ class IfCmph extends CuComprehension {
 	}
 	public void add(CuComprehension c){
 		this.c=c;
+	}
+	
+	@Override
+	public boolean equals(Object that){
+		if (that instanceof IfCmph &&
+				e.equals(((IfCmph)that).e)&&
+				c.equals(((IfCmph)that).c))
+			return true;
+		else 
+			return false;
 	}
 	@Override
 	protected CuType calculateType(CuContext context) throws NoSuchTypeException {
@@ -73,6 +166,17 @@ class ForCmph extends CuComprehension {
 
 	public void add(CuComprehension c){
 		this.c=c;
+	}
+	
+	@Override
+	public boolean equals(Object that){
+		if (that instanceof ForCmph &&
+				v.text.equals(((ForCmph)that).v.text)&&
+				e.equals(((ForCmph)that).e)&&
+				c.equals(((ForCmph)that).c))
+			return true;
+		else 
+			return false;
 	}
 	
 	@Override

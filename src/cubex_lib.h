@@ -44,6 +44,16 @@ typedef struct iter{
 	struct iter* concat;
 }Iterable;
 
+typedef struct cmph
+{
+	int nrefs;
+	void* gen;
+	void* enode;
+	void* ifB;
+	Iterable* forYield;
+	struct cmph* (*next) (void*); 
+}Cmph;
+
 void freeStr(void* str)
 {
 	if (((String*)str)->value != NULL) {

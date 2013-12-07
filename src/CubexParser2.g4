@@ -46,7 +46,7 @@ typescheme returns [CuTypeScheme ts]
 : kc=kindcontext tc=typecontext COLON t=type {$ts = new TypeScheme($kc.kc, $tc.tc, $t.t);};
 
 comprehension returns [CuComprehension c]
-: lst=exprs {$c= new ExprLstCmph($lst.cu);} (COMMA c_=comprehension {$c.add($c_.c);})?
+: e=expr {$c= new ExprLstCmph($e.e);} (COMMA c_=comprehension {$c.add($c_.c);})?
 | IF LPAREN e=expr RPAREN {$c = new IfCmph($e.e);} (c_=comprehension {$c.add($c_.c);})?
 | FOR LPAREN v_=vv IN e=expr RPAREN {$c = new ForCmph($v_.v, $e.e);} (c_=comprehension {$c.add($c_.c);})?;
 

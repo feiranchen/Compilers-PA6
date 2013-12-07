@@ -30,7 +30,7 @@ public class Cubex {
 			ourProgram = parser.program().p;
 			if (Helper.debug)
 				System.out.println("parser succeeded");
-			ourProgram.calculateType(context);
+			//ourProgram.calculateType(context);
 			//Helper.ToDo("comment out accept when we submit");
 			System.out.println("accept");
 		} catch (Exception e) {
@@ -38,8 +38,8 @@ public class Cubex {
 			//even if rejected, we still generate a 
 			//System.exit(-2);
 		}
-/*		//first, convert to HIR, in debug mode, this print out the first HIR
-        ourProgram.toHIR();
+		//first, convert to HIR, in debug mode, this print out the first HIR
+/*        ourProgram.toHIR();
         //next, build CFG, use and def sets are built here
         ourProgram.buildCFG();
 
@@ -59,7 +59,7 @@ public class Cubex {
         	System.out.println("PRINT HIR, after deadcode elimination====================");
         	ourProgram.printHIR();
         }
-        
+        */
 		ArrayList<String> localVars = new ArrayList<String>();
 		PrintWriter writer = new PrintWriter("out.c", "UTF-8");
 		String cProgram = ourProgram.toC(localVars);
@@ -68,5 +68,5 @@ public class Cubex {
 		}
 		writer.println(cProgram);
 		writer.close();
-*/	}
+	}
 }
