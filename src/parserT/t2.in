@@ -11,3 +11,91 @@ c:=[for (ii in [1,2,3]) i+1];
 c:=[for (ii in ee)];
 
 return ["hi"];
+
+s1:
+typedef struct cmph
+{
+	int nrefs;
+
+	void* enode;=8
+	void* ifB;=n
+	Iterable* forYield;=n
+
+	struct cmph* c;s2
+}Cmph;
+
+
+s2:
+typedef struct cmph
+{
+	int nrefs;
+
+	void* enode;9
+	void* ifB;n
+	Iterable* forYield;n
+
+	struct cmph* c;s3
+}Cmph;
+
+bbb=i<1;
+s3:
+typedef struct cmph
+{
+	int nrefs;
+
+	void* enode;n
+	void* (*ifB)(); *if_aad
+	Iterable* forYield;n
+
+	struct cmph* c;s4
+}Cmph;
+
+boolean if_aac(){
+	boolean aas=i<1;
+	return aas;
+}
+s4:
+typedef struct cmph
+{
+	int nrefs;
+
+	void* enode;Expr(CuString)
+	void* (*ifB)();n 
+	Iterable* forYield;n
+
+	struct cmph* c;n
+}Cmph;
+ee := [8, 9, if (i<1) "hello"];
+
+void* genCmph(Cmph* c){
+	if (enode!=NULL)
+	
+	if 
+
+}
+
+
+[8,9,forever()]
+
+aaa=8
+aab=9
+aac=forever();
+
+typedef struct cmph
+{
+	int nrefs;
+
+	void* enode;aac
+	void* ifB; n
+	Iterable* forYield;n
+
+	struct cmph* c;n
+}Cmph;
+
+
+int forever(){
+while(1);
+
+
+return 0;
+}

@@ -47,11 +47,12 @@ typedef struct iter{
 typedef struct cmph
 {
 	int nrefs;
-	void* gen;
+
 	void* enode;
-	void* ifB;
+	void* (*ifB)();
 	Iterable* forYield;
-	struct cmph* (*next) (void*); 
+
+	struct cmph* c;
 }Cmph;
 
 void freeStr(void* str)

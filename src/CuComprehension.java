@@ -54,7 +54,7 @@ class ExprLstCmph extends CuComprehension{
 		return reType;
 	}
 	
-	
+	/*
 	@Override
 	public String toC(ArrayList<String> localVars) {
 		String eToC = "", typeCast = "";
@@ -70,7 +70,7 @@ class ExprLstCmph extends CuComprehension{
 				def.addAll(e.getDef());
 			if (!e.getUse().isEmpty())
 				use.addAll(e.getUse());
-*/			
+*/	/*		
 			String eCastType = e.getCastType();
 			if (eCastType.equals(""))
 				eCastType = Helper.cVarType.get(e.toString());
@@ -121,7 +121,7 @@ class ExprLstCmph extends CuComprehension{
 		super.castType = "Iterable";
 		return super.toC(localVars);
 	}
-	
+	*/
 }
 
 class IfCmph extends CuComprehension {
