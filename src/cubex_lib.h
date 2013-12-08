@@ -57,11 +57,11 @@ typedef struct cmph
 }Cmph;
 
 
-typedef struct vnode
+typedef struct varlist
 {
 	void* val;
 	struct vnode* next;
-}varNode;
+}varList;
 
 void* cmphGetNext(Cmph* last){// :tau; update old iter
 	if (evalE!=NULL){

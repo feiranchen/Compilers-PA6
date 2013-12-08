@@ -3,7 +3,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+
 
 //*************** TO DO check related operators against figures 9************************
 
@@ -28,6 +30,10 @@ public abstract class CuExpr {
 	//added for primitive optimization, default is boxed
 	protected boolean boxed = true;
 	public void add(List<CuType> pt, List<CuExpr> es) {}
+	public void changeNames(String actual, String replacement) {
+		// TODO Auto-generated method stub
+		
+	}
 	public final CuType getType(CuContext context) throws NoSuchTypeException {
 		if(type == null) { type = calculateType(context); }
 		Helper.P("return expression type " + type);
@@ -343,6 +349,12 @@ class AndExpr extends CuExpr{
 		
 		return super.toC_opt();
 	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		left.changeNames(actual, replacement);
+		right.changeNames(actual, replacement);		
+	}
 }
 
 class AppExpr extends CuExpr {
@@ -564,6 +576,12 @@ Helper.P("common parent of types is " + type.toString());
 			use.add(right.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		left.changeNames(actual, replacement);
+		right.changeNames(actual, replacement);		
+	}
 }
 
 class ComExpr extends CuExpr{
@@ -576,9 +594,20 @@ class ComExpr extends CuExpr{
 	protected CuType calculateType(CuContext context) throws NoSuchTypeException {
 		return new Iter(c.calculateType(context));
 	}
+
 	
+	@Override
+	public String toC(ArrayList<String> localVars) {
+		return c.toC(localVars);
+	}
+
 	@Override public ArrayList<String> getUse(){
 		return c.getUse();
+	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		c.changeNames(actual, replacement);
 	}
 }
 
@@ -1293,6 +1322,12 @@ class DivideExpr extends CuExpr{
 			use.add(right.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		left.changeNames(actual, replacement);
+		right.changeNames(actual, replacement);		
+	}
 }
 
 class EqualExpr extends CuExpr{
@@ -1647,6 +1682,12 @@ class EqualExpr extends CuExpr{
 			use.add(right.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		left.changeNames(actual, replacement);
+		right.changeNames(actual, replacement);		
+	}
 }
 
 class GreaterThanExpr extends CuExpr{
@@ -1819,6 +1860,12 @@ class GreaterThanExpr extends CuExpr{
 		if (right.isVariableExpression())
 			use.add(right.getVal());
 		return use;
+	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		left.changeNames(actual, replacement);
+		right.changeNames(actual, replacement);		
 	}
 }
 
@@ -1999,6 +2046,12 @@ class LessThanExpr extends CuExpr{
 			use.add(right.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		left.changeNames(actual, replacement);
+		right.changeNames(actual, replacement);		
+	}
 }
 
 class MinusExpr extends CuExpr{
@@ -2159,6 +2212,12 @@ class MinusExpr extends CuExpr{
 		if (right.isVariableExpression())
 			use.add(right.getVal());
 		return use;
+	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		left.changeNames(actual, replacement);
+		right.changeNames(actual, replacement);		
 	}
 }
 
@@ -2331,6 +2390,12 @@ class ModuloExpr extends CuExpr{
 			use.add(right.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		left.changeNames(actual, replacement);
+		right.changeNames(actual, replacement);		
+	}
 }
 
 class NegateExpr extends CuExpr{
@@ -2446,6 +2511,11 @@ class NegateExpr extends CuExpr{
 			use.add(val.getVal());
 
 		return use;
+	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		val.changeNames(actual, replacement);	
 	}
 }
 
@@ -2566,6 +2636,11 @@ class NegativeExpr extends CuExpr{
 		if (val.isVariableExpression())
 			use.add(val.getVal());
 		return use;
+	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		val.changeNames(actual, replacement);	
 	}
 }
 
@@ -2781,6 +2856,11 @@ class OnwardsExpr extends CuExpr{
 			use.add(val.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		val.changeNames(actual, replacement);	
+	}
 }
 
 class OrExpr extends CuExpr{
@@ -2935,6 +3015,12 @@ class OrExpr extends CuExpr{
 		if (right.isVariableExpression())
 			use.add(right.getVal());
 		return use;
+	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		left.changeNames(actual, replacement);
+		right.changeNames(actual, replacement);		
 	}
 }
 
@@ -3097,6 +3183,12 @@ class PlusExpr extends CuExpr{
 		if (right.isVariableExpression())
 			use.add(right.getVal());
 		return use;
+	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		left.changeNames(actual, replacement);
+		right.changeNames(actual, replacement);		
 	}
 }
 
@@ -3473,6 +3565,12 @@ class ThroughExpr extends CuExpr{
 			use.add(right.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		left.changeNames(actual, replacement);
+		right.changeNames(actual, replacement);		
+	}
 }
 
 class TimesExpr extends CuExpr{
@@ -3626,6 +3724,12 @@ class TimesExpr extends CuExpr{
 			use.add(right.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		left.changeNames(actual, replacement);
+		right.changeNames(actual, replacement);		
+	}
 }
 
 class VarExpr extends CuExpr{// e.vv<tao1...>(e1,...)
@@ -3639,9 +3743,9 @@ class VarExpr extends CuExpr{// e.vv<tao1...>(e1,...)
 		this.types = pt;
 		this.es = es;
 		//containsVar.addAll(e.containsVar);
-		for (CuExpr elem : es){
+		//for (CuExpr elem : es){
 			//containsVar.addAll(elem.containsVar);
-		}
+		//}
 	}
 
 	@Override
@@ -3809,7 +3913,13 @@ class VarExpr extends CuExpr{// e.vv<tao1...>(e1,...)
 		return super.toC(localVars);
 		}
 
+	@Override
+		public void changeNames(String actual, String replacement) {
+			for (CuExpr exp : es)
+				exp.changeNames(actual, replacement);			
+		}
 }
+
 class VcExp extends CuExpr {// vc<tao1...>(e1,...)
 	public String val; 
 	public List<CuType> types;
@@ -3820,9 +3930,9 @@ class VcExp extends CuExpr {// vc<tao1...>(e1,...)
 		this.types=pt;
 		this.es=e;
 
-		for (CuExpr elem : es){
+		//for (CuExpr elem : es){
 			//containsVar.addAll(elem.containsVar);
-		}
+		//}
 	}
 
 	@Override
@@ -3971,6 +4081,12 @@ class VcExp extends CuExpr {// vc<tao1...>(e1,...)
 		//super.name += "\n"+Helper.cClassStats.get(val) + "\n";
 		super.cText= objectName;
 		return super.toC(localVars);
+	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		for (CuExpr exp : es)
+			exp.changeNames(actual, replacement);		
 	}
 }
 
@@ -4361,5 +4477,11 @@ Helper.P(" 1mapping is " + mapping.toString());
 			//use.add(val);
 		}
 		return super.toC(localVars);
+	}
+	
+	@Override
+	public void changeNames(String actual, String replacement) {
+		if (val == actual) 
+			val = replacement;		
 	}
 }

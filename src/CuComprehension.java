@@ -13,6 +13,10 @@ public class CuComprehension {
 	}
 	@Override public String toString() {return text;}
 	
+	public void changeNames(String actual, String replacement) {
+	}
+	
+	
 	public ArrayList<String> getUse(){
 		return new ArrayList<String>();
 	}
@@ -31,6 +35,8 @@ class EmptyCmph extends CuComprehension{
 	public ArrayList<String> getUse(){
 		return new ArrayList<String>();
 	}
+	@Override
+	public void changeNames(String actual, String replacement) {}
 }
 
 class ExprLstCmph extends CuComprehension{
@@ -137,6 +143,11 @@ class ExprLstCmph extends CuComprehension{
 		
 		return use;
 	}
+	@Override
+	public void changeNames(String actual, String replacement) {
+		e.changeNames(actual, replacement);
+		c.changeNames(actual, replacement);		
+	}
 }
 
 class IfCmph extends CuComprehension {
@@ -174,6 +185,12 @@ class IfCmph extends CuComprehension {
 		use.addAll(c.getUse());
 		
 		return use;
+	}
+
+	@Override
+	public void changeNames(String actual, String replacement) {
+		e.changeNames(actual, replacement);
+		c.changeNames(actual, replacement);		
 	}
 }
 
@@ -230,6 +247,12 @@ class ForCmph extends CuComprehension {
 		use.addAll(c.getUse());
 		
 		return use;
+	}
+
+	@Override
+	public void changeNames(String actual, String replacement) {
+		e.changeNames(actual, replacement);
+		c.changeNames(actual, replacement);		
 	}
 }
 
