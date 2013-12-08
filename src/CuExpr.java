@@ -606,7 +606,7 @@ class ComExpr extends CuExpr{
 	protected CuType calculateType(CuContext context) throws NoSuchTypeException {
 		return new Iter(c.calculateType(context));
 	}
-	
+
 	@Override
 	public Pair<List<CuStat>, CuExpr> toHIR() {
 		
@@ -617,6 +617,9 @@ class ComExpr extends CuExpr{
 	public String toC(ArrayList<String> localVars) {
 		
 		return super.toC(localVars);
+
+	@Override public ArrayList<String> getUse(){
+		return c.getUse();
 	}
 }
 

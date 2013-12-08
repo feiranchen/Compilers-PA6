@@ -13,6 +13,9 @@ public class CuComprehension {
 	}
 	@Override public String toString() {return text;}
 	
+	public ArrayList<String> getUse(){
+		return new ArrayList<String>();
+	}
 	protected CuType calculateType(CuContext context) throws NoSuchTypeException { return CuType.bottom;};
 }
 
@@ -23,6 +26,10 @@ class EmptyCmph extends CuComprehension{
 			return true;
 		else 
 			return false;
+	}
+	
+	public ArrayList<String> getUse(){
+		return new ArrayList<String>();
 	}
 }
 
@@ -70,7 +77,8 @@ class ExprLstCmph extends CuComprehension{
 				def.addAll(e.getDef());
 			if (!e.getUse().isEmpty())
 				use.addAll(e.getUse());
-*/	/*		
+			*/
+			/*
 			String eCastType = e.getCastType();
 			if (eCastType.equals(""))
 				eCastType = Helper.cVarType.get(e.toString());
@@ -120,8 +128,15 @@ class ExprLstCmph extends CuComprehension{
 		
 		super.castType = "Iterable";
 		return super.toC(localVars);
+	}*/
+	
+	public ArrayList<String> getUse(){
+		ArrayList<String>use = new ArrayList<String>();
+		use.addAll(e.getUse());
+		use.addAll(c.getUse());
+		
+		return use;
 	}
-	*/
 }
 
 class IfCmph extends CuComprehension {
@@ -151,6 +166,14 @@ class IfCmph extends CuComprehension {
 			throw new NoSuchTypeException(Helper.getLineInfo());
 		}
 		return c.calculateType(context);
+	}
+	
+	public ArrayList<String> getUse(){
+		ArrayList<String>use = new ArrayList<String>();
+		use.addAll(e.getUse());
+		use.addAll(c.getUse());
+		
+		return use;
 	}
 }
 
@@ -197,6 +220,16 @@ class ForCmph extends CuComprehension {
     	CuContext s_context = new CuContext(context);
     	s_context.updateType(this.v.toString(), iter_type);
     	return c.calculateType(s_context);
+	}
+	
+	
+	
+	public ArrayList<String> getUse(){
+		ArrayList<String>use = new ArrayList<String>();
+		use.addAll(e.getUse());
+		use.addAll(c.getUse());
+		
+		return use;
 	}
 }
 
