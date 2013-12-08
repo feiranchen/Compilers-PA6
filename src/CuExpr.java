@@ -576,6 +576,10 @@ class ComExpr extends CuExpr{
 	protected CuType calculateType(CuContext context) throws NoSuchTypeException {
 		return new Iter(c.calculateType(context));
 	}
+	
+	@Override public ArrayList<String> getUse(){
+		return c.getUse();
+	}
 }
 
 //deprecated

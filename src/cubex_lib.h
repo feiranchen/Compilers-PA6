@@ -21,9 +21,7 @@ typedef struct string {
 } String;
 
 typedef struct boolean {
-	int nrefs;(for i in ee){
-	return i+1;
-} 
+	int nrefs;
 	int isIter;
 	int isStr;
 	int value;
@@ -64,6 +62,37 @@ typedef struct vnode
 	void* val;
 	struct vnode* next;
 }varNode;
+
+void* cmphGetNext(Cmph* last){// :tau; update old iter
+	if (evalE!=NULL){
+		void* retE=last->evalE(NULL,0);
+		last=last->c;
+		return retE;
+	}
+	else if (ifB!=NULL){
+		if (ifB()){
+			last=last->c;
+			return cmphGetNext(last);
+		}
+		else 
+			return NULL;
+	}
+	else if (forYield!=NULL){
+		//first time
+		if (c==NULL&&
+				forYield!=NULL){
+
+			void* value = forYield->value;
+			forYield=itergetnext(forYield);
+			c=forHelp(value);
+		}
+		if (c=NULL)
+			return NULL;
+
+		return cmphGetNext(c);
+	}
+
+}
 
 void freeStr(void* str)
 {
