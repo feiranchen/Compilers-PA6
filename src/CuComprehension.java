@@ -4,8 +4,9 @@ import java.util.List;
 
 public class CuComprehension {
 
-	protected String text = "";
-	protected String cText = "";
+	String text = "";
+	String cText = "";
+	String defString="";
 
 	public void add(CuComprehension c){}
 	public String toC(ArrayList<String> localVars) {
@@ -70,49 +71,12 @@ class ExprLstCmph extends CuComprehension{
 	
 	@Override
 	public String toC(ArrayList<String> localVars) {
-		String eToC = "", typeCast = "";
-		
-		ArrayList<String> tempNameArr=new ArrayList<String>();	
-		ArrayList<String> tempDataArr=new ArrayList<String>();
-		for (CuExpr e : val) {
-			eToC = e.toC(localVars);
-			String eC = e.construct();
-			name += eC;
-			
-			/*if (!e.getDef().isEmpty())
-				def.addAll(e.getDef());
-			if (!e.getUse().isEmpty())
-				use.addAll(e.getUse());
-			*/
-			
-			String eCastType = e.getCastType();
-			if (eCastType.equals(""))
-				eCastType = Helper.cVarType.get(e.toString());
-			
-			if(iterType == null)
-				iterType = "";
-			
-			if(iterType.equals("")) 
-				iterType = eCastType;
-			else if (!iterType.equals(eCastType))
-				iterType = "Thing";
-			
-			
-			tempNameArr.add(Helper.getVarName());
-			tempDataArr.add(eToC);
-			typeCast = e.getCastType();
-			if(typeCast == null) 
-				typeCast = Helper.cVarType.get(eToC);
-		}
-		tempNameArr.add("NULL");
-
-		int i;
-		for (i= val.size() - 1; i >= 0; i--) {
-			name += "Iterable* " + tempNameArr.get(i) + ";\n" 
-					+ tempNameArr.get(i) + " = (Iterable*) x3malloc(sizeof(Iterable));\n"
-					+ tempNameArr.get(i) + "->isIter = 1;\n"
-					+ tempNameArr.get(i) + "->nrefs = 1;\n" 
-					+ tempNameArr.get(i) + "->value = " + tempDataArr.get(i) + ";\n"
+		String cmhName=Helper.getVarName();
+		defString = "Cmph* " + cmhName + ";\n" 
+				+ cmhName + " = (Cmph*) x3malloc(sizeof(Cmph));\n"
+				+ cmhName + "->isIter = 1;\n"
+				+ cmhName + "->nrefs = 1;\n" 
+				+ cmhName + "->value = " + tempDataArr.get(i) + ";\n"
 					+ tempNameArr.get(i) + "->additional = " + tempNameArr.get(i + 1) + ";\n" 
 					+ tempNameArr.get(i) + "->next = NULL;\n" 
 					+ tempNameArr.get(i)+ "->concat = NULL;\n";
