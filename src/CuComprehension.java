@@ -67,10 +67,17 @@ class ExprLstCmph extends CuComprehension{
 		return reType;
 	}
 	
-	/*
+	
 	@Override
 	public String toC(ArrayList<String> localVars) {
-		String eToC = "", typeCast = "";
+		ArrayList<String> usedVars = getUse();
+		for (String var : usedVars){
+			changeNames(var, Helper.getVarName());
+		}
+		
+		return super.toC(localVars);
+	}
+		/*	String eToC = "", typeCast = "";
 		
 		ArrayList<String> tempNameArr=new ArrayList<String>();	
 		ArrayList<String> tempDataArr=new ArrayList<String>();
