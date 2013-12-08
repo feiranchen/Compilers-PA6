@@ -3,7 +3,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+
 
 //*************** TO DO check related operators against figures 9************************
 
@@ -90,6 +92,10 @@ public abstract class CuExpr {
 	
 	public Pair<List<CuStat>, CuExpr> toHIR() {
 		return hir;
+	}
+	
+	public void changeNames(Map<String, String> replacements) {
+		
 	}
 	
 	public boolean isFunCall () {
@@ -343,6 +349,18 @@ class AndExpr extends CuExpr{
 		
 		return super.toC_opt();
 	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (left instanceof VvExp && ((VvExp) left).val == temp.getKey()) {
+				((VvExp) left).val = temp.getValue();
+			}
+			if (right instanceof VvExp && ((VvExp) right).val == temp.getKey()) {
+				((VvExp) right).val = temp.getValue();
+			}
+		}
+	}
 }
 
 class AppExpr extends CuExpr {
@@ -564,6 +582,18 @@ Helper.P("common parent of types is " + type.toString());
 			use.add(right.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (left instanceof VvExp && ((VvExp) left).val == temp.getKey()) {
+				((VvExp) left).val = temp.getValue();
+			}
+			if (right instanceof VvExp && ((VvExp) right).val == temp.getKey()) {
+				((VvExp) right).val = temp.getValue();
+			}
+		}
+	}
 }
 
 class ComExpr extends CuExpr{
@@ -575,6 +605,18 @@ class ComExpr extends CuExpr{
 	@Override
 	protected CuType calculateType(CuContext context) throws NoSuchTypeException {
 		return new Iter(c.calculateType(context));
+	}
+	
+	@Override
+	public Pair<List<CuStat>, CuExpr> toHIR() {
+		
+		return super.toHIR();
+	}
+	
+	@Override
+	public String toC(ArrayList<String> localVars) {
+		
+		return super.toC(localVars);
 	}
 }
 
@@ -1289,6 +1331,18 @@ class DivideExpr extends CuExpr{
 			use.add(right.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (left instanceof VvExp && ((VvExp) left).val == temp.getKey()) {
+				((VvExp) left).val = temp.getValue();
+			}
+			if (right instanceof VvExp && ((VvExp) right).val == temp.getKey()) {
+				((VvExp) right).val = temp.getValue();
+			}
+		}
+	}
 }
 
 class EqualExpr extends CuExpr{
@@ -1643,6 +1697,18 @@ class EqualExpr extends CuExpr{
 			use.add(right.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (left instanceof VvExp && ((VvExp) left).val == temp.getKey()) {
+				((VvExp) left).val = temp.getValue();
+			}
+			if (right instanceof VvExp && ((VvExp) right).val == temp.getKey()) {
+				((VvExp) right).val = temp.getValue();
+			}
+		}
+	}
 }
 
 class GreaterThanExpr extends CuExpr{
@@ -1815,6 +1881,18 @@ class GreaterThanExpr extends CuExpr{
 		if (right.isVariableExpression())
 			use.add(right.getVal());
 		return use;
+	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (left instanceof VvExp && ((VvExp) left).val == temp.getKey()) {
+				((VvExp) left).val = temp.getValue();
+			}
+			if (right instanceof VvExp && ((VvExp) right).val == temp.getKey()) {
+				((VvExp) right).val = temp.getValue();
+			}
+		}
 	}
 }
 
@@ -1995,6 +2073,18 @@ class LessThanExpr extends CuExpr{
 			use.add(right.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (left instanceof VvExp && ((VvExp) left).val == temp.getKey()) {
+				((VvExp) left).val = temp.getValue();
+			}
+			if (right instanceof VvExp && ((VvExp) right).val == temp.getKey()) {
+				((VvExp) right).val = temp.getValue();
+			}
+		}
+	}
 }
 
 class MinusExpr extends CuExpr{
@@ -2155,6 +2245,18 @@ class MinusExpr extends CuExpr{
 		if (right.isVariableExpression())
 			use.add(right.getVal());
 		return use;
+	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (left instanceof VvExp && ((VvExp) left).val == temp.getKey()) {
+				((VvExp) left).val = temp.getValue();
+			}
+			if (right instanceof VvExp && ((VvExp) right).val == temp.getKey()) {
+				((VvExp) right).val = temp.getValue();
+			}
+		}
 	}
 }
 
@@ -2327,6 +2429,18 @@ class ModuloExpr extends CuExpr{
 			use.add(right.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (left instanceof VvExp && ((VvExp) left).val == temp.getKey()) {
+				((VvExp) left).val = temp.getValue();
+			}
+			if (right instanceof VvExp && ((VvExp) right).val == temp.getKey()) {
+				((VvExp) right).val = temp.getValue();
+			}
+		}
+	}
 }
 
 class NegateExpr extends CuExpr{
@@ -2442,6 +2556,15 @@ class NegateExpr extends CuExpr{
 			use.add(val.getVal());
 
 		return use;
+	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (val instanceof VvExp && ((VvExp) val).val == temp.getKey()) {
+				((VvExp) val).val = temp.getValue();
+			}
+		}
 	}
 }
 
@@ -2562,6 +2685,15 @@ class NegativeExpr extends CuExpr{
 		if (val.isVariableExpression())
 			use.add(val.getVal());
 		return use;
+	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (val instanceof VvExp && ((VvExp) val).val == temp.getKey()) {
+				((VvExp) val).val = temp.getValue();
+			}			
+		}
 	}
 }
 
@@ -2777,6 +2909,15 @@ class OnwardsExpr extends CuExpr{
 			use.add(val.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (val instanceof VvExp && ((VvExp) val).val == temp.getKey()) {
+				((VvExp) val).val = temp.getValue();
+			}
+		}
+	}
 }
 
 class OrExpr extends CuExpr{
@@ -2931,6 +3072,18 @@ class OrExpr extends CuExpr{
 		if (right.isVariableExpression())
 			use.add(right.getVal());
 		return use;
+	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (left instanceof VvExp && ((VvExp) left).val == temp.getKey()) {
+				((VvExp) left).val = temp.getValue();
+			}
+			if (right instanceof VvExp && ((VvExp) right).val == temp.getKey()) {
+				((VvExp) right).val = temp.getValue();
+			}
+		}
 	}
 }
 
@@ -3093,6 +3246,18 @@ class PlusExpr extends CuExpr{
 		if (right.isVariableExpression())
 			use.add(right.getVal());
 		return use;
+	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (left instanceof VvExp && ((VvExp) left).val == temp.getKey()) {
+				((VvExp) left).val = temp.getValue();
+			}
+			if (right instanceof VvExp && ((VvExp) right).val == temp.getKey()) {
+				((VvExp) right).val = temp.getValue();
+			}
+		}
 	}
 }
 
@@ -3469,6 +3634,18 @@ class ThroughExpr extends CuExpr{
 			use.add(right.getVal());
 		return use;
 	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (left instanceof VvExp && ((VvExp) left).val == temp.getKey()) {
+				((VvExp) left).val = temp.getValue();
+			}
+			if (right instanceof VvExp && ((VvExp) right).val == temp.getKey()) {
+				((VvExp) right).val = temp.getValue();
+			}
+		}
+	}
 }
 
 class TimesExpr extends CuExpr{
@@ -3621,6 +3798,18 @@ class TimesExpr extends CuExpr{
 		if (right.isVariableExpression())
 			use.add(right.getVal());
 		return use;
+	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (left instanceof VvExp && ((VvExp) left).val == temp.getKey()) {
+				((VvExp) left).val = temp.getValue();
+			}
+			if (right instanceof VvExp && ((VvExp) right).val == temp.getKey()) {
+				((VvExp) right).val = temp.getValue();
+			}
+		}
 	}
 }
 
@@ -3805,7 +3994,13 @@ class VarExpr extends CuExpr{// e.vv<tao1...>(e1,...)
 		return super.toC(localVars);
 		}
 
+	@Override
+		public void changeNames(Map<String, String> replacements) {
+			for (CuExpr exp : es)
+				exp.changeNames(replacements);			
+		}
 }
+
 class VcExp extends CuExpr {// vc<tao1...>(e1,...)
 	public String val; 
 	public List<CuType> types;
@@ -3967,6 +4162,12 @@ class VcExp extends CuExpr {// vc<tao1...>(e1,...)
 		//super.name += "\n"+Helper.cClassStats.get(val) + "\n";
 		super.cText= objectName;
 		return super.toC(localVars);
+	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (CuExpr exp : es)
+			exp.changeNames(replacements);		
 	}
 }
 
@@ -4357,5 +4558,14 @@ Helper.P(" 1mapping is " + mapping.toString());
 			//use.add(val);
 		}
 		return super.toC(localVars);
+	}
+	
+	@Override
+	public void changeNames(Map<String, String> replacements) {
+		for (Entry<String, String> temp : replacements.entrySet()) {
+			if (val == temp.getKey()) {
+				val = temp.getValue();
+			}			
+		}
 	}
 }

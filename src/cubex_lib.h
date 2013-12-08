@@ -21,9 +21,7 @@ typedef struct string {
 } String;
 
 typedef struct boolean {
-	int nrefs;(for i in ee){
-	return i+1;
-} 
+	int nrefs;
 	int isIter;
 	int isStr;
 	int value;
@@ -59,11 +57,11 @@ typedef struct cmph
 }Cmph;
 
 
-typedef struct vnode
+typedef struct varlist
 {
 	void* val;
 	struct vnode* next;
-}varNode;
+}varList;
 
 void freeStr(void* str)
 {
