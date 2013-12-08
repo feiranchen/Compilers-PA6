@@ -1,12 +1,17 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import CubexParser2.ComprehensionContext;
+
 
 public class CuComprehension {
-
 	String text = "";
 	String cText = "";
 	String defString="";
+	static String funString="";
+
+	String cmhName="NULL";
+	String eFunName="NULL";
 
 	public void add(CuComprehension c){}
 	public String toC(ArrayList<String> localVars) {
@@ -14,14 +19,13 @@ public class CuComprehension {
 	}
 	@Override public String toString() {return text;}
 	
-	public void changeNames(String actual, String replacement) {
-	}
-	
+	public void changeNames(String actual, String replacement) {}
 	
 	public ArrayList<String> getUse(){
 		return new ArrayList<String>();
 	}
-	protected CuType calculateType(CuContext context) throws NoSuchTypeException { return CuType.bottom;};
+	protected CuType calculateType(CuContext context) throws NoSuchTypeException { 
+		return CuType.bottom;}
 }
 
 class EmptyCmph extends CuComprehension{
@@ -36,6 +40,7 @@ class EmptyCmph extends CuComprehension{
 	public ArrayList<String> getUse(){
 		return new ArrayList<String>();
 	}
+	
 	@Override
 	public void changeNames(String actual, String replacement) {}
 }
@@ -43,8 +48,11 @@ class EmptyCmph extends CuComprehension{
 class ExprLstCmph extends CuComprehension{
 	CuExpr e=null;
 	CuComprehension c=new EmptyCmph();
+
 	public ExprLstCmph(CuExpr e){
 		this.e=e;
+		cmhName=Helper.getVarName();
+		eFunName="e_wrapper_"+Helper.getVarName();
 	}
 	public void add(CuComprehension c){
 		this.c=c;
@@ -71,33 +79,53 @@ class ExprLstCmph extends CuComprehension{
 	
 	@Override
 	public String toC(ArrayList<String> localVars) {
-		String cmhName=Helper.getVarName();
+		//update vars to reserve org value
+		ArrayList<String> usedVars = getUse();
+        for (String var : usedVars){
+                changeNames(var, Helper.getVarName());
+        }
+		
+		//defination/declaration
 		defString = "Cmph* " + cmhName + ";\n" 
 				+ cmhName + " = (Cmph*) x3malloc(sizeof(Cmph));\n"
-				+ cmhName + "->isIter = 1;\n"
-				+ cmhName + "->nrefs = 1;\n" 
-				+ cmhName + "->value = " + tempDataArr.get(i) + ";\n"
-					+ tempNameArr.get(i) + "->additional = " + tempNameArr.get(i + 1) + ";\n" 
-					+ tempNameArr.get(i) + "->next = NULL;\n" 
-					+ tempNameArr.get(i)+ "->concat = NULL;\n";
+				+ cmhName + "->nrefs = 1;\n"
+				+ cmhName + "->isIter = 0;\n"
+				+ cmhName + "->isStr = 0;\n"
+				+ cmhName + "->evalE = " + eFunName + ";\n"
+				+ cmhName + "->ifB = NULL;\n" 
+				+ cmhName + "->forYield = NULL;\n" 
+				+ cmhName + "->c = "+c.cmhName +" ;\n";
 			
-			if (!tempDataArr.isEmpty())
-				name += Helper.incrRefCount(tempDataArr.get(i));
-			
-			//def.add(tempNameArr.get(i+1));
-		}	
-			
-		if (!tempDataArr.isEmpty())
-			name += tempNameArr.get(0) + "->nrefs = 0;\n";
-		//def.add(tempNameArr.get(0));
 		
-		cText = tempNameArr.get(0);
+		//construct wrapper function for expression
+		String realEfunName=Helper.getVarName();
+		String eWrapperString= "void* "+eFunName +"() {\n" +
+				"return " +realEfunName +"(";
+		String delim="";
+		for (String tempv : this.getUse()){
+			eWrapperString+= delim+ tempv;
+			delim=", ";
+		}
+		eWrapperString+="); \n" +
+				"}\n";
+				
+		//construct expression function
+		String eRealString= "void* "+realEfunName +"(";
+		delim="";
+		for (String tempv : this.getUse()){
+			eRealString+= delim+ "void* " + tempv;
+			delim=", ";
+		}
+		String funContent=e.toC(new ArrayList<String>());
+		eRealString +=") {\n" +
+				e.construct() +
+				"return "+ funContent +
+				"}\n";
 		
-		if(val.size() == 0) 
-			iterType = "Empty";
+		cText=defString;
+		CuComprehension.funString+=eRealString+eWrapperString;
 		
-		super.castType = "Iterable";
-		return super.toC(localVars);
+		return cmhName;
 	}
 	
 	public ArrayList<String> getUse(){
@@ -120,6 +148,8 @@ class IfCmph extends CuComprehension {
 	
 	public IfCmph(CuExpr e){
 		this.e=e;
+		cmhName=Helper.getVarName();
+		eFunName="e_wrapper_"+Helper.getVarName();
 	}
 	public void add(CuComprehension c){
 		this.c=c;
@@ -166,6 +196,9 @@ class ForCmph extends CuComprehension {
 	public ForCmph(CuVvc v, CuExpr e){
 		this.v=v;
 		this.e=e;
+
+		cmhName=Helper.getVarName();
+		eFunName="e_wrapper_"+Helper.getVarName();
 	}
 
 	public void add(CuComprehension c){

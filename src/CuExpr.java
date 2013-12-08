@@ -703,7 +703,7 @@ class BrkExpr extends CuExpr {
 				def.addAll(e.getDef());
 			if (!e.getUse().isEmpty())
 				use.addAll(e.getUse());
-*/			
+			 */			
 			String eCastType = e.getCastType();
 			if (eCastType.equals(""))
 				eCastType = Helper.cVarType.get(e.toString());
