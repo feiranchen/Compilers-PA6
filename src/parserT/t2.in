@@ -1,12 +1,23 @@
+his in c:
 
-c:=[6,7,6,7,8];
+fun something(){
+ 	
+	i=1;
+	
+}
+c:=[6+i,7,6,7,8];
+
+fun() // every function
+//don't know i
 
 i := 8;
 
 ee := [8, 9, if (i<1) "hello"];
 
 c:=[if (i <3)];
-c:=[for (ii in [1,2,3]) i+1];
+
+c:=[for (ii in [1,2,3]) ii+1];
+d:=ii+1; //4?????????????????????????redefine?
 
 c:=[for (ii in ee)];
 
