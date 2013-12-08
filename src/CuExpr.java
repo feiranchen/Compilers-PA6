@@ -595,16 +595,10 @@ class ComExpr extends CuExpr{
 		return new Iter(c.calculateType(context));
 	}
 
-	@Override
-	public Pair<List<CuStat>, CuExpr> toHIR() {
-		
-		return super.toHIR();
-	}
 	
 	@Override
 	public String toC(ArrayList<String> localVars) {
-		
-		return super.toC(localVars);
+		return c.toC(localVars);
 	}
 
 	@Override public ArrayList<String> getUse(){
@@ -613,7 +607,7 @@ class ComExpr extends CuExpr{
 	
 	@Override
 	public void changeNames(String actual, String replacement) {
-	
+		c.changeNames(actual, replacement);
 	}
 }
 
