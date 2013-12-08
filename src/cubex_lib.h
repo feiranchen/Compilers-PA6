@@ -47,7 +47,9 @@ typedef struct iter{
 typedef struct cmph
 {
 	int nrefs;
-
+	int isIter;
+	int isStr;
+	
 	void* (*evalE)(void*, size);
 	void* (*ifB)();
 	Iterable* forYield;
