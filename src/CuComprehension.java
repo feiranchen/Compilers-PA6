@@ -90,7 +90,7 @@ class ExprLstCmph extends CuComprehension{
 		//definition / declaration
         c.snapShotName=snapShotName;
         c.toC(new ArrayList<String>());
-        defString=c.defString;
+        defString +=c.defString;
 		defString += "Cmph* " + cmphName + ";\n" 
 				+ cmphName + " = (Cmph*) x3malloc(sizeof(Cmph));\n"
 				+ cmphName + "->nrefs = 1;\n"
@@ -102,14 +102,14 @@ class ExprLstCmph extends CuComprehension{
 				+ cmphName + "->c = "+c.cmphName +" ;\n\n";
 		
 		String eSnapShotString="";
-		if((!cmphName.equals(snapShotName))&&(!orgVars.isEmpty())){
+		if((cmphName.equals(snapShotName))&&(!orgVars.isEmpty())){
 			//construct struct (snapshot) for use variables 
 			eSnapShotString= "typedef struct " +snapShotName+ "_struct {\n"; 
 			for (String tempv : orgVars){
 				eSnapShotString+="\tvoid* "+tempv+";\n";
 			}
 			eSnapShotString+="}"+ snapShotName+"_c;\n";
-			eSnapShotString+=snapShotName+"_c* "+snapShotName+"C;";// =("+snapShotName+"*)x3malloc(sizeof("+snapShotName+"));\n";
+			eSnapShotString+=snapShotName+"_c* "+snapShotName+"C;\n";// =("+snapShotName+"*)x3malloc(sizeof("+snapShotName+"));\n";
 			
 			//inline snapshot at comprehension initiation
 		
