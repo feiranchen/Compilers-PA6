@@ -613,7 +613,7 @@ class ComExpr extends CuExpr{
 				+ iter + "->isIter = 1;\n"
 				+ iter + "->nrefs = 0;\n" 
 				+ iter + "->value = NULL;\n"
-				+ iter + "->cmph = &" + c.cmphName + ";\n"
+				+ iter + "->cmph = " + c.cmphName + ";\n"
 				+ iter + "->additional = NULL;\n"
 				+ iter + "->next = &cmph_onwards;\n" 
 				+ iter + "->concat = NULL;\n";
@@ -622,7 +622,7 @@ class ComExpr extends CuExpr{
 		cText = iter;
 		castType = "Iterable";
 		//need to set iterType
-		return c.toC(localVars);
+		return super.toC(localVars);
 	}
 
 	@Override public ArrayList<String> getUse(){
