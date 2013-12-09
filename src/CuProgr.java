@@ -173,7 +173,7 @@ class FullPrg extends CuProgr {
     		temp_str = temp_str.replaceAll("void \\* " + str + " = NULL;\n", "");
     	}	
     	
-		super.ctext +=  fnClass_str + "\n\n"
+		super.ctext += CuComprehension.cmphEarlyPrint + fnClass_str + "\n\n"
 				+ "void* our_main()\n{\n";
 		
     	for (String str : super.newVars) {
