@@ -86,6 +86,7 @@ class ExprLstCmph extends CuComprehension{
         }
 		
 		//definition/declaration
+        c.toC(new ArrayList<String>());
         defString=c.defString;
 		defString += "Cmph* " + cmphName + ";\n" 
 				+ cmphName + " = (Cmph*) x3malloc(sizeof(Cmph));\n"
@@ -98,29 +99,32 @@ class ExprLstCmph extends CuComprehension{
 				+ cmphName + "->c = "+c.cmphName +" ;\n\n";
 		
 		//construct struct (snapshot) for use variables 
-		
 		String eSnapShotString= "typedef struct " +eFunName+ "_struct {\n"; 
-		for (String tempv : this.getUse()){
+		for (String tempv : orgVars){
 			eSnapShotString+="\tvoid* "+tempv+";\n";
 		}
 		eSnapShotString+="}"+ eFunName+"_c;\n";
-		eSnapShotString=eFunName+"_c*"+eFunName+"C ;\n";
+		eSnapShotString+=eFunName+"_c* "+eFunName+"C;\n";
 		
 		//inline snapshot at comprehension initiation
-		for (String tempv : this.getUse()){
+		for (String tempv : orgVars){
 			defString+=eFunName+"C."+tempv+"="+tempv+"; \n";
 		}
 		
 		//construct expression function
 		String eFunString= "void* "+eFunName +"_f() {\n";
-		for (String tempv : this.getUse()){
+		for (String tempv : orgVars){
 			eFunString+= tempv+"="+eFunName+"C."+tempv+"; \n";
 		}
+		String funContent=e.toC(new ArrayList<String>());
 		eFunString +=e.construct() +
-				"return "+ e.toC(new ArrayList<String>()) +
+				"return "+ funContent +";\n"+
 				"}\n";
 		
 		cText=defString;
+		if (orgVars.isEmpty()){
+			eSnapShotString="";
+		}
 		CuComprehension.cmphEarlyPrint+=eSnapShotString+eFunString;
 		
 		return cmphName;
@@ -186,51 +190,7 @@ class IfCmph extends CuComprehension {
 	}
 	@Override
 	public String toC(ArrayList<String> localVars) {
-		//update vars to reserve org value
-		ArrayList<String> usedVars = getUse();
-        for (String var : usedVars){
-                changeNames(var, eFunName+"C."+var);
-        }
-		
-		//definition/declaration
-        defString=c.defString;
-		defString += "Cmph* " + cmphName + ";\n" 
-				+ cmphName + " = (Cmph*) x3malloc(sizeof(Cmph));\n"
-				+ cmphName + "->nrefs = 1;\n"
-				+ cmphName + "->isIter = 0;\n"
-				+ cmphName + "->isStr = 0;\n"
-				+ cmphName + "->evalE = &" + eFunName + "_f;\n"
-				+ cmphName + "->ifB = NULL;\n" 
-				+ cmphName + "->forYield = NULL;\n" 
-				+ cmphName + "->c = "+c.cmphName +" ;\n";
-		
-		//construct struct (snapshot) for use variables 
-		
-		String eSnapShotString= "typedef struct " +eFunName+ "_struct {\n"; 
-		for (String tempv : this.getUse()){
-			eSnapShotString+="\tvoid* "+tempv+";\n";
-		}
-		eSnapShotString+="}"+ eFunName+"_c;\n";
-		eSnapShotString=eFunName+"_c*"+eFunName+"C ;\n";
-		
-		//inline snapshot at comprehension initiation
-		for (String tempv : this.getUse()){
-			defString+=eFunName+"C."+tempv+"="+tempv+"; \n";
-		}
-		
-		//construct expression function
-		String eFunString= "void* "+eFunName +"_f() {\n";
-		for (String tempv : this.getUse()){
-			eFunString+= tempv+"="+eFunName+"C."+tempv+"; \n";
-		}
-		eFunString +=e.construct() +
-				"return "+ e.toC(new ArrayList<String>()) +
-				"}\n";
-		
-		cText=defString;
-		CuComprehension.cmphEarlyPrint+=eSnapShotString+eFunString;
-		
-		return cmphName;
+		return "";
 	}
 	
 }
