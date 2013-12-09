@@ -68,7 +68,7 @@ typedef struct varlist
 
 void* cmphGetNext(Cmph* last){// :tau; update old iter
 	if (evalE!=NULL){
-		void* retE=last->evalE(NULL,0);
+		void* retE=last->evalE();
 		last=last->c;
 		return retE;
 	}
@@ -77,8 +77,10 @@ void* cmphGetNext(Cmph* last){// :tau; update old iter
 			last=last->c;
 			return cmphGetNext(last);
 		}
-		else 
+		else {
+			last=NULL;
 			return NULL;
+		}
 	}
 	else if (forYield!=NULL){
 		//first time
