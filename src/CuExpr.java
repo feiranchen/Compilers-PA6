@@ -598,6 +598,30 @@ class ComExpr extends CuExpr{
 	
 	@Override
 	public String toC(ArrayList<String> localVars) {
+		String iter = Helper.getVarName();
+		
+		c.toC(localVars);
+		
+		
+		name += c.cText;
+		
+		if (c.cText == "NULL")
+			iter = "NULL";
+		else {
+			name += "Iterable* " + iter + ";\n" 
+				+ iter + " = (Iterable*) x3malloc(sizeof(Iterable));\n"
+				+ iter + "->isIter = 1;\n"
+				+ iter + "->nrefs = 0;\n" 
+				+ iter + "->value = NULL;\n"
+				+ iter + "->cmph = &" + c.cmhName + ";\n"
+				+ iter + "->additional = NULL;\n"
+				+ iter + "->next = &cmph_onwards;\n" 
+				+ iter + "->concat = NULL;\n";
+		}
+		
+		cText = iter;
+		castType = "Iterable";
+		//need to set iterType
 		return c.toC(localVars);
 	}
 
@@ -616,9 +640,9 @@ class BrkExpr extends CuExpr {
 	public List<CuExpr> val;
 	public BrkExpr(List<CuExpr> es){
 		this.val = es;
-		for (CuExpr e : es){
+		//for (CuExpr e : es){
 			//containsVar.addAll(e.containsVar);
-		}
+		//}
 		super.boxed = true;
 		super.expType = "Iterable";
 	}	

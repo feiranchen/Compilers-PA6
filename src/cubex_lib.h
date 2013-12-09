@@ -39,6 +39,7 @@ typedef struct iter{
 	int isIter;
 	int isStr;
 	void* value;
+	Cmph* c;
 	void* additional;
 	struct iter* (*next)(void*);
 	struct iter* concat;
@@ -125,6 +126,25 @@ Iterable* Integer_through(void* head){
 		this->concat = last->concat;
 		return this;
 	}
+}
+
+Iterable* cmph_onwards(void* head){
+	Iterable* last;
+	last = (Iterable*) head;
+	
+	Iterable* this = x3malloc(sizeof(Iterable));
+	this->isIter = 1;
+	this->nrefs=0;
+	this->value = cmphGetNext(last->c);
+	this->additional = NULL;
+	this->next = last->next;	
+	this->concat = last->concat;
+	
+	if (this->value)
+		return this;
+	else
+		return NULL;
+	
 }
 
 Iterable* input_onwards(void* head){
