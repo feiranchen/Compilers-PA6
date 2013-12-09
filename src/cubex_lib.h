@@ -34,6 +34,20 @@ typedef struct character {
 	char value;
 } Character;
 
+typedef struct cmph
+{
+	int nrefs;
+	int isIter;
+	int isStr;
+	
+	void* (*evalE)();
+	void* (*ifB)();
+	struct iter* forYield;
+	void* (*forHelp)(void*);
+
+	struct cmph* c;
+}Cmph;
+
 typedef struct iter{
 	int nrefs;
 	int isIter;
@@ -44,60 +58,6 @@ typedef struct iter{
 	struct iter* (*next)(void*);
 	struct iter* concat;
 }Iterable;
-
-typedef struct cmph
-{
-	int nrefs;
-	int isIter;
-	int isStr;
-	
-	void* (*evalE)();
-	void* (*ifB)();
-	Iterable* forYield;
-	void* (*forHelp)(*void);
-
-	struct cmph* c;
-}Cmph;
-
-
-typedef struct varlist
-{
-	void* val;
-	struct vnode* next;
-}varList;
-
-void* cmphGetNext(Cmph* last){// :tau; update old iter
-	if (evalE!=NULL){
-		void* retE=last->evalE();
-		last=last->c;
-		return retE;
-	}
-	else if (ifB!=NULL){
-		if (ifB()){
-			last=last->c;
-			return cmphGetNext(last);
-		}
-		else {
-			last=NULL;
-			return NULL;
-		}
-	}
-	else if (forYield!=NULL){
-		//first time
-		if (c==NULL&&
-				forYield!=NULL){
-
-			void* value = forYield->value;
-			forYield=itergetnext(forYield);
-			c=forHelp(value);
-		}
-		if (c=NULL)
-			return NULL;
-
-		return cmphGetNext(c);
-	}
-
-}
 
 void freeStr(void* str)
 {
@@ -128,25 +88,6 @@ Iterable* Integer_through(void* head){
 		this->concat = last->concat;
 		return this;
 	}
-}
-
-Iterable* cmph_onwards(void* head){
-	Iterable* last;
-	last = (Iterable*) head;
-	
-	Iterable* this = x3malloc(sizeof(Iterable));
-	this->isIter = 1;
-	this->nrefs=0;
-	this->value = cmphGetNext(last->c);
-	this->additional = NULL;
-	this->next = last->next;	
-	this->concat = last->concat;
-	
-	if (this->value)
-		return this;
-	else
-		return NULL;
-	
 }
 
 Iterable* input_onwards(void* head){
@@ -267,7 +208,6 @@ void freeIter(void* iter) {
 	}
 }
 
-
 Iterable* iterGetNext(Iterable* last){
 	if (last == NULL)
 		return NULL;
@@ -288,6 +228,56 @@ Iterable* iterGetNext(Iterable* last){
 	}
 	
 	return (this);
+}
+
+void* cmphGetNext(Cmph* last){
+	if (last->evalE!=NULL){
+		void* retE=last->evalE();
+		last=last->c;
+		return retE;
+	}
+	else if (last->ifB!=NULL){
+		if (last->ifB()){
+			last=last->c;
+			return cmphGetNext(last);
+		}
+		else {
+			last=NULL;
+			return NULL;
+		}
+	}
+	else if (last->forYield!=NULL){
+		if (last->c==NULL&&
+				last->forYield!=NULL){
+
+			void* value = last->forYield->value;
+			last->forYield=iterGetNext(last->forYield);
+			last->c=last->forHelp(value);
+		}
+		if (last->c==NULL)
+			return NULL;
+
+		return cmphGetNext(last->c);
+	}
+	return NULL;
+}
+
+Iterable* cmph_onwards(void* head){
+	Iterable* last;
+	last = (Iterable*) head;
+	
+	Iterable* this = x3malloc(sizeof(Iterable));
+	this->isIter = 1;
+	this->nrefs=0;
+	this->value = cmphGetNext(last->c);
+	this->additional = NULL;
+	this->next = last->next;	
+	this->concat = last->concat;
+	
+	if (this->value)
+		return this;
+	else
+		return NULL;
 }
 
 Iterable* concatenate(Iterable* fst, Iterable* snd){
