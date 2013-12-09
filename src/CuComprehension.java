@@ -1,16 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import CubexParser2.ComprehensionContext;
-
 
 public class CuComprehension {
 	String text = "";
 	String cText = "";
 	String defString="";
-	static String funString="";
+	static String cmphEarlyPrint="";
 
-	String cmhName="NULL";
+	String cmphName="NULL";
 	String eFunName="NULL";
 
 	public void add(CuComprehension c){}
@@ -51,7 +49,7 @@ class ExprLstCmph extends CuComprehension{
 
 	public ExprLstCmph(CuExpr e){
 		this.e=e;
-		cmhName=Helper.getVarName();
+		cmphName=Helper.getVarName();
 		eFunName="e_wrapper_"+Helper.getVarName();
 	}
 	public void add(CuComprehension c){
@@ -82,50 +80,47 @@ class ExprLstCmph extends CuComprehension{
 		//update vars to reserve org value
 		ArrayList<String> usedVars = getUse();
         for (String var : usedVars){
-                changeNames(var, Helper.getVarName());
+                changeNames(var, eFunName+"C."+var);
         }
 		
-		//defination/declaration
-		defString = "Cmph* " + cmhName + ";\n" 
-				+ cmhName + " = (Cmph*) x3malloc(sizeof(Cmph));\n"
-				+ cmhName + "->nrefs = 1;\n"
-				+ cmhName + "->isIter = 0;\n"
-				+ cmhName + "->isStr = 0;\n"
-				+ cmhName + "->evalE = " + eFunName + ";\n"
-				+ cmhName + "->ifB = NULL;\n" 
-				+ cmhName + "->forYield = NULL;\n" 
-				+ cmhName + "->c = "+c.cmhName +" ;\n";
-			
+		//definition/declaration
+		defString = "Cmph* " + cmphName + ";\n" 
+				+ cmphName + " = (Cmph*) x3malloc(sizeof(Cmph));\n"
+				+ cmphName + "->nrefs = 1;\n"
+				+ cmphName + "->isIter = 0;\n"
+				+ cmphName + "->isStr = 0;\n"
+				+ cmphName + "->evalE = &" + eFunName + "_f;\n"
+				+ cmphName + "->ifB = NULL;\n" 
+				+ cmphName + "->forYield = NULL;\n" 
+				+ cmphName + "->c = "+c.cmphName +" ;\n";
 		
-		//construct wrapper function for expression
-		String realEfunName=Helper.getVarName();
-		String eWrapperString= "void* "+eFunName +"() {\n" +
-				"return " +realEfunName +"(";
-		String delim="";
+		//construct struct (snapshot) for use variables 
+		
+		String eSnapShotString= "typedef struct " +eFunName+ "_struct {\n"; 
 		for (String tempv : this.getUse()){
-			eWrapperString+= delim+ tempv;
-			delim=", ";
+			eSnapShotString+="\tvoid* "+tempv+";\n";
 		}
-		eWrapperString+="); \n" +
-				"}\n";
-				
+		eSnapShotString+="}"+ eFunName+"_c;\n";
+		eSnapShotString=eFunName+"_c*"+eFunName+"C ;\n";
+		
+		//inline snapshot at comprehension initiation
+		for (String tempv : this.getUse()){
+			defString+=eFunName+"C."+tempv+"="+tempv+"; \n";
+		}
+		
 		//construct expression function
-		String eRealString= "void* "+realEfunName +"(";
-		delim="";
+		String eFunString= "void* "+eFunName +"_f() {\n";
 		for (String tempv : this.getUse()){
-			eRealString+= delim+ "void* " + tempv;
-			delim=", ";
+			eFunString+= tempv+"="+eFunName+"C."+tempv+"; \n";
 		}
-		String funContent=e.toC(new ArrayList<String>());
-		eRealString +=") {\n" +
-				e.construct() +
-				"return "+ funContent +
+		eFunString +=e.construct() +
+				"return "+ e.toC(new ArrayList<String>()) +
 				"}\n";
 		
 		cText=defString;
-		CuComprehension.funString+=eRealString+eWrapperString;
+		CuComprehension.cmphEarlyPrint+=eSnapShotString+eFunString;
 		
-		return cmhName;
+		return cmphName;
 	}
 	
 	public ArrayList<String> getUse(){
@@ -148,7 +143,7 @@ class IfCmph extends CuComprehension {
 	
 	public IfCmph(CuExpr e){
 		this.e=e;
-		cmhName=Helper.getVarName();
+		cmphName=Helper.getVarName();
 		eFunName="e_wrapper_"+Helper.getVarName();
 	}
 	public void add(CuComprehension c){
@@ -197,7 +192,7 @@ class ForCmph extends CuComprehension {
 		this.v=v;
 		this.e=e;
 
-		cmhName=Helper.getVarName();
+		cmphName=Helper.getVarName();
 		eFunName="e_wrapper_"+Helper.getVarName();
 	}
 

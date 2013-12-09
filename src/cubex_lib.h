@@ -50,7 +50,7 @@ typedef struct cmph
 	int isIter;
 	int isStr;
 	
-	void* (*evalE)(void*, size);
+	void* (*evalE)();
 	void* (*ifB)();
 	Iterable* forYield;
 	void* (*forHelp)(*void);
