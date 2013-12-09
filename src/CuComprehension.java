@@ -10,6 +10,8 @@ public class CuComprehension {
 
 	String cmphName="NULL";
 	String eFunName="NULL";
+	
+	ArrayList<String> orgVars=new ArrayList<String>();
 
 	public void add(CuComprehension c){}
 	public String toC(ArrayList<String> localVars) {
@@ -50,7 +52,7 @@ class ExprLstCmph extends CuComprehension{
 	public ExprLstCmph(CuExpr e){
 		this.e=e;
 		cmphName=Helper.getVarName();
-		eFunName="e_wrapper_"+Helper.getVarName();
+		eFunName=Helper.getVarName();
 	}
 	public void add(CuComprehension c){
 		this.c=c;
@@ -78,8 +80,8 @@ class ExprLstCmph extends CuComprehension{
 	@Override
 	public String toC(ArrayList<String> localVars) {
 		//update vars to reserve org value
-		ArrayList<String> usedVars = getUse();
-        for (String var : usedVars){
+		orgVars = getUse();
+        for (String var : orgVars){
                 changeNames(var, eFunName+"C."+var);
         }
 		
@@ -93,7 +95,7 @@ class ExprLstCmph extends CuComprehension{
 				+ cmphName + "->evalE = &" + eFunName + "_f;\n"
 				+ cmphName + "->ifB = NULL;\n" 
 				+ cmphName + "->forYield = NULL;\n" 
-				+ cmphName + "->c = "+c.cmphName +" ;\n";
+				+ cmphName + "->c = "+c.cmphName +" ;\n\n";
 		
 		//construct struct (snapshot) for use variables 
 		
@@ -145,7 +147,7 @@ class IfCmph extends CuComprehension {
 	public IfCmph(CuExpr e){
 		this.e=e;
 		cmphName=Helper.getVarName();
-		eFunName="e_wrapper_"+Helper.getVarName();
+		eFunName=Helper.getVarName();
 	}
 	public void add(CuComprehension c){
 		this.c=c;
@@ -243,7 +245,7 @@ class ForCmph extends CuComprehension {
 		this.e=e;
 
 		cmphName=Helper.getVarName();
-		eFunName="e_wrapper_"+Helper.getVarName();
+		eFunName=Helper.getVarName();
 	}
 
 	public void add(CuComprehension c){
