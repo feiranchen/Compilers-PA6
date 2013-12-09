@@ -109,18 +109,18 @@ class ExprLstCmph extends CuComprehension{
 				eSnapShotString+="\tvoid* "+tempv+";\n";
 			}
 			eSnapShotString+="}"+ snapShotName+"_c;\n";
-			eSnapShotString+=snapShotName+"_c* "+snapShotName+"C;\n";// =("+snapShotName+"*)x3malloc(sizeof("+snapShotName+"));\n";
+			eSnapShotString+=snapShotName+"_c "+snapShotName+"C;\n";// =("+snapShotName+"*)x3malloc(sizeof("+snapShotName+"));\n";
 			
 			//inline snapshot at comprehension initiation
 		
 			for (String tempv : orgVars){
-				defString+="void* "+snapShotName+"C."+tempv+"="+tempv+"; \n";
+				defString+=snapShotName+"C."+tempv+"="+tempv+"; \n";
 			}
 		}
 		//construct expression function and passing environment variables
 		String eFunString= "void* "+cmphName +"_ef() {\n";
 		for (String tempv : orgVars){
-			eFunString+= tempv+"="+snapShotName+"C."+tempv+"; \n";
+			eFunString+= "void*"+tempv+"="+snapShotName+"C."+tempv+"; \n";
 		}
 		String funContent=e.toC(new ArrayList<String>());
 		eFunString +=e.construct() +
