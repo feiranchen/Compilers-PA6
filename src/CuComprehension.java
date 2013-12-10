@@ -217,7 +217,6 @@ class IfCmph extends CuComprehension {
         		
 		//definition / declaration
         defString +=c.defString;
-        String nextC;
 		defString += cmphName+"S* " + cmphName + ";\n" 
 				+ cmphName + " = ("+cmphName+"S*) x3malloc(sizeof("+cmphName+"S));\n"
 				+ cmphName + "->nrefs = 1;\n"
@@ -241,10 +240,11 @@ class IfCmph extends CuComprehension {
 		String funContent=e.toC(new ArrayList<String>());
 		nextFunString +=e.construct() +
 				"if( "+ funContent +"){\n" +
-				"\treturn ("+c.cmphName+"S*)(this->ifC)->next(forC);\n"+
+				"\treturn ("+c.cmphName+"S*)(this->ifC)->next(this->ifC);\n"+
 				"}\n" +
 				"else {\n" +
 				"\treturn NULL;\n" +
+				"}\n" +
 				"}\n";
 
 		if (c instanceof EmptyCmph)
@@ -384,13 +384,13 @@ class ForCmph extends CuComprehension {
 			if (!forVar.contains(tempv))
 				nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
 		}
-		nextFunString+="void*"+v.text+"=this.iter.value;\n" +
-				"void* ret=("+c.cmphName+"S*)(this->forC)->next(forC);\n" +
+		nextFunString+="void*"+v.text+"=this->iter->value;\n" +
+				"void* ret=("+c.cmphName+"S*)(this->forC)->next(this->forC);\n" +
 				"if (ret==NULL){\n" +
-				"\t ("+c.cmphName+"S*)(this->forC)->i=i;\n" +
-				"\t iter=iter->next(iter);\n" +
+				"\t ("+c.cmphName+"S*)(this->forC)->"+v.text+"="+v.text+";\n" +
+				"\t this->iter=this->iter->next(this->iter);\n" +
 				"}\n" +
-				"return ("+c.cmphName+"S*)(this->forC)->next(forC);\n" +
+				"return ("+c.cmphName+"S*)(this->forC)->next(this->forC);\n" +
 				"}\n";
 		}else{
 			nextFunString+="return NULL;\n" +
