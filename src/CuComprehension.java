@@ -8,7 +8,8 @@ public class CuComprehension {
 	String cText = "";
 	String defString="";
 	String structString="";
-	static String cmphEarlyPrint="";
+	static String nextFunStringGlobal = "";
+	static String structStringGlobal = "";
 
 	String cmphName="NULL";
 	HashSet<String> forVar=new HashSet<String>();
@@ -30,9 +31,6 @@ public class CuComprehension {
 }
 
 class EmptyCmph extends CuComprehension{
-	EmptyCmph(){
-		cText="NULL";
-	}
 	@Override
 	public boolean equals(Object that){
 		if (that instanceof EmptyCmph)
@@ -96,8 +94,10 @@ class ExprLstCmph extends CuComprehension{
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
+        		"\tint isEC; \n" +
         		"\tvoid* eC;\n" +
-        		"\tvoid* (*next)(void*);\n";
+        		"\tvoid* (*next)(void*);\n" +
+        		"\tint visited;\n";
         
         for (String tempv : getUse()){
         	structString+="\tvoid* "+tempv+";\n";
@@ -106,14 +106,15 @@ class ExprLstCmph extends CuComprehension{
         		
 		//definition / declaration
         defString +=c.defString;
-        String nextC;
 		defString += cmphName+"S* " + cmphName + ";\n" 
 				+ cmphName + " = ("+cmphName+"S*) x3malloc(sizeof("+cmphName+"S));\n"
 				+ cmphName + "->nrefs = 1;\n"
 				+ cmphName + "->isIter = 0;\n"
 				+ cmphName + "->isStr = 0;\n"
+				+ cmphName + "->isEC = 1;\n"
 				+ cmphName + "->eC = "+c.cmphName + ";\n"
-				+ cmphName + "->next = &"+cmphName + "F;\n";
+				+ cmphName + "->next = &"+cmphName + "F;\n" 
+				+ cmphName + "->visited= 0;\n";
 		for (String tempv : getUse()){
 			if (!forVar.contains(tempv)){
 				defString+=cmphName + "->"+tempv+"="+tempv+";\n";
@@ -121,21 +122,35 @@ class ExprLstCmph extends CuComprehension{
 			}
 		}
 		
+		CuComprehension.structStringGlobal += "void* " +cmphName+ "F(void*);\n";
 		String nextFunString="";
-		nextFunString= "void* " +cmphName+ "F(void* c) {\n" +
+		nextFunString+= "void* " +cmphName+ "F(void* c) {\n" +
 				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
 		for (String tempv : getUse()){
 				nextFunString+="void*"+tempv+"=this->"+tempv+";\n";
 		}
-		
+		if (c instanceof EmptyCmph){
+			nextFunString+="if(this->visited){ \n" +
+					"\treturn NULL;\n";
+		}else{
+		nextFunString+="if(this->visited){ \n" +
+					"\treturn (("+c.cmphName+"S*)this->eC)->next(this->eC);\n";
+					
+		}
+		nextFunString+="}else {\n" +
+				"\tthis->visited=1; \n";
+		if (c instanceof ExprLstCmph)
+			nextFunString+="(("+c.cmphName+"S*)this->eC)->visited=0;\n";
 		
 		String funContent=e.toC(new ArrayList<String>());
 		nextFunString +=e.construct() +
 				"return "+ funContent +";\n"+
+				"}\n" +
 				"}\n";
 		
 		cText=defString;
-		CuComprehension.cmphEarlyPrint+=structString+nextFunString;
+		CuComprehension.structStringGlobal+=structString;
+		CuComprehension.nextFunStringGlobal += nextFunString;
 		return cmphName;
 	}
 	
@@ -206,6 +221,7 @@ class IfCmph extends CuComprehension {
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
+        		"\tint isEC; \n" +
         		"\tvoid* ifC;\n" +
         		"\tvoid* (*next)(void*);\n";
         
@@ -220,7 +236,8 @@ class IfCmph extends CuComprehension {
 				+ cmphName + " = ("+cmphName+"S*) x3malloc(sizeof("+cmphName+"S));\n"
 				+ cmphName + "->nrefs = 1;\n"
 				+ cmphName + "->isIter = 0;\n"
-				+ cmphName + "->isStr = 0;\n"
+				+ cmphName + "->isStr = 0;\n" 
+				+ cmphName + "->isEC =0;\n"
 				+ cmphName + "->ifC = "+c.cmphName + ";\n"
 				+ cmphName + "->next = &"+cmphName + "F;\n";
 		for (String tempv : getUse()){
@@ -230,6 +247,7 @@ class IfCmph extends CuComprehension {
 			}
 		}
 
+		CuComprehension.structStringGlobal += "void* " +cmphName+ "F(void*);\n";
 		String nextFunString="";
 		nextFunString= "void* " +cmphName+ "F(void* c) {\n" +
 				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
@@ -238,16 +256,19 @@ class IfCmph extends CuComprehension {
 		}
 		String funContent=e.toC(new ArrayList<String>());
 		nextFunString +=e.construct() +
-				"if( "+ funContent +"){\n" +
-				"\treturn (("+c.cmphName+"S*)this->ifC)->next(this->ifC);\n"+
-				"}\n" +
+				"if( "+ funContent +"->value){\n" +
+				"\tvoid* ret= (("+c.cmphName+"S*)this->ifC)->next(this->ifC);\n" +
+				"\t \n" +
+				"\treturn ret; \n"+
+				"} \n" +
 				"else {\n" +
 				"\treturn NULL;\n" +
 				"}\n" +
 				"}\n";
 
 		cText=defString;
-		CuComprehension.cmphEarlyPrint+=structString+nextFunString;
+		CuComprehension.structStringGlobal+=structString;
+		CuComprehension.nextFunStringGlobal+=nextFunString;
 		return cmphName;
 	}
 	
@@ -336,6 +357,7 @@ class ForCmph extends CuComprehension {
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
+        		"\tint isEC; \n" +
         		"\tvoid* forC;\n" +
         		"\tIterable* iter;\n" +
         		"\tvoid* (*next)(void*);\n";
@@ -358,6 +380,7 @@ class ForCmph extends CuComprehension {
 				+ cmphName + "->nrefs = 1;\n"
 				+ cmphName + "->isIter = 0;\n"
 				+ cmphName + "->isStr = 0;\n"
+				+ cmphName + "->isEC =0;\n"
 				+ cmphName + "->forC = "+c.cmphName + ";\n"
 		        + cmphName + "->iter = "+eVarName + ";\n"
 				+ cmphName + "->next = &"+cmphName + "F;\n";
@@ -368,6 +391,7 @@ class ForCmph extends CuComprehension {
 			}
 		}
 
+		CuComprehension.structStringGlobal += "void* " +cmphName+ "F(void*);\n";
 		String nextFunString="";
 		nextFunString+= "void* " +cmphName+ "F(void* c) {\n" +
 				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
@@ -377,15 +401,22 @@ class ForCmph extends CuComprehension {
 				if (!forVar.contains(tempv))
 					nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
 			}
-			nextFunString+="if (this->iter->value==NULL) return NULL;\n" +
+			nextFunString+="if (this->iter==NULL) {return NULL;}\n" +
+					"if (this->iter->value==NULL) {" +//handle beginning
+					"this->iter=iterGetNext(this->iter);}\n" +
+					"if (this->iter->value==NULL) {return NULL;}\n" +
+					"if (this->iter==NULL) {return NULL;}\n" +
 					"void*"+v.text+"=this->iter->value;\n" +
 					"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n" +
 					"void* ret=(("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
 					"if (ret==NULL){\n" +
-						"\t this->iter=this->iter->next(this->iter);\n" +
+						"\t this->iter=iterGetNext(this->iter);\n" +
+						"if (this->iter==NULL) {return NULL;};\n" +
 						v.text+"=this->iter->value;\n" +
-						"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n" +
-						"return (("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
+						"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n";
+			if (c instanceof ExprLstCmph){
+				nextFunString+="(("+c.cmphName+"S*)this->forC)->visited=0;\n";}
+			nextFunString+="return (("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
 					"}\n" +
 						
 					"return ret;\n" +
@@ -396,7 +427,8 @@ class ForCmph extends CuComprehension {
 		}
 		
 		cText=defString;
-		CuComprehension.cmphEarlyPrint+=structString+nextFunString;
+		CuComprehension.structStringGlobal+=structString;
+		CuComprehension.nextFunStringGlobal+=nextFunString;
 		return cmphName;
 		
 	}

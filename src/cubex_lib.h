@@ -232,6 +232,8 @@ Iterable* iterGetNext(Iterable* last){
 	}
 	else if (this==NULL){
 		this=last->concat;
+		if (this->c != NULL)
+			this = iterGetNext(this);
 	}
 	
 	return (this);
@@ -257,117 +259,171 @@ Iterable* cmph_onwards(void* head){
 }
 
 Iterable* concatenate(Iterable* fst, Iterable* snd){
-	Iterable* head = NULL;
-	Iterable *temp, *temp1, *temp2;
-	if (fst != NULL) {
-		
-		head = (Iterable*) x3malloc(sizeof(Iterable)); 
-		head->nrefs = 0;
-		head->isIter = 1;
-		head->value = fst->value;
-		if (head->value != NULL)
-			(*(int *)(head->value))++;
-		head->additional = NULL;
-		head->next = fst->next;
-		head->concat = fst->concat;
-		if (head->concat!= NULL)
-			(*(int *)(head->concat))++;
-		
-			
-		temp = head;
-		if(temp->next == NULL) {
-			while(temp!=NULL) {
-				temp1 = temp;
-				temp = temp->additional;
-				temp2 = NULL;
-				if (temp != NULL) {
-					temp2 = (Iterable*) x3malloc(sizeof(Iterable)); 
-					temp2->nrefs = 1;
-					temp2->isIter = 1;
-					temp2->value = temp->value;
-					if (temp2->value!= NULL)
-						(*(int *)(temp2->value))++;
-					temp2->additional = NULL;
-					temp2->next = temp->next;
-					temp2->concat = temp->concat;	
-					if (temp2->concat!= NULL)
-						(*(int *)(temp2->concat))++;
-					
-					temp1->additional = temp2;
-				}
-			}
-		}
-		else {
-			head->additional = fst->additional;
-			if (head->additional != NULL)
-				(*(int *)(head->additional))++;
-		}
-	
-	}
-	
-	if (snd == NULL)
-		return head;
-		
-	Iterable* second = (Iterable*) x3malloc(sizeof(Iterable)); 
-	second->nrefs = 1;
-	second->isIter = 1;
-	second->value = snd->value;
-	if (second->value != NULL)
-		(*(int *)(second->value))++;
-	second->additional = NULL;
-	second->next = snd->next;
-	second->concat = snd->concat;
-	if (second->concat != NULL)
-		(*(int *)(second->concat))++;
-		
-	temp = second;
-	if(temp->next == NULL) {
-		while(temp!=NULL) {
-			temp1 = temp;
-			temp = temp->additional;
-			temp2 = NULL;
-			if (temp != NULL) {
-				temp2 = (Iterable*) x3malloc(sizeof(Iterable)); 
-				temp2->nrefs = 1;
-				temp2->isIter = 1;
-				temp2->value = temp->value;
-				if (temp2->value!= NULL)
-					(*(int *)(temp2->value))++;
-				temp2->additional = NULL;
-				temp2->next = temp->next;
-				temp2->concat = temp->concat;	
-				if (temp2->concat!= NULL)
-					(*(int *)(temp2->concat))++;
-				
-				temp1->additional = temp2;
-			}
-		}
-	}
-	else {
-		second->additional = snd->additional;
-		if (second->additional != NULL)
-			(*(int *)(second->additional))++;
-	}
-	
-	if (fst == NULL)
-		head = second;	
-	else {
-		temp = head;
-		
-		while ((temp->additional && temp->next == NULL) || temp->concat) {
-			while(temp->additional && temp->next == NULL) {
-				temp = temp->additional;
-			}
-			
-			while(temp->concat) {
-				temp=temp->concat;
-			}
-		}
-		temp->concat = second;
-	
-		
-	}
-	return head;
+        Iterable* head = NULL;
+        Iterable *temp, *temp1, *temp2, *last1;
+        if (fst != NULL) {
+                
+                head = (Iterable*) x3malloc(sizeof(Iterable)); 
+                head->nrefs = 0;
+                head->isIter = 1;
+                head->value = fst->value;
+                if (head->value != NULL)
+                        (*(int *)(head->value))++;
+                
+                head->c = fst->c;
+                head->next = fst->next;
+                head->concat = fst->concat;
+                if (head->concat!= NULL)
+                        (*(int *)(head->concat))++;
+                
+                head->additional = fst->additional;
+                if (head->additional!= NULL)
+                        (*(int *)(head->additional))++;
+                        
+                temp1 = head;
+                temp = fst;
+                        
+                while ((temp->additional && temp->next == NULL) || temp->concat) {
+                        while(temp->additional && temp->next == NULL) {
+                                temp = temp->additional;
+                                temp2 = NULL;
+                                if (temp != NULL) {
+                                        temp2 = (Iterable*) x3malloc(sizeof(Iterable)); 
+                                        temp2->nrefs = 1;
+                                        temp2->isIter = 1;
+                                        temp2->value = temp->value;
+                                        if (temp2->value!= NULL)
+                                              (*(int *)(temp2->value))++;
+                                        temp2->additional = temp->additional;
+                                        if (temp2->additional != NULL)
+                                              (*(int *)(temp2->additional))++;
+                                        temp2->next = temp->next;
+                                        temp2->concat = temp->concat;     
+                                        temp2->c = temp->c;   
+                                        if (temp2->concat!= NULL)
+                                                (*(int *)(temp2->concat))++;
+                                        
+                                        decRef(temp1->additional);
+                                        temp1->additional = temp2;
+                                }
+                                temp1 = temp1->additional;
+                        }
+                        
+                        while(temp->concat) {
+                                temp = temp->concat;
+                                temp2 = NULL;
+                                
+                                temp2 = (Iterable*) x3malloc(sizeof(Iterable)); 
+                                temp2->nrefs = 1;
+                                temp2->isIter = 1;
+                                temp2->value = temp->value;
+                                if (temp2->value!= NULL)
+                                        (*(int *)(temp2->value))++;
+                                temp2->additional = temp->additional;
+                                if (temp2->additional != NULL)
+                                        (*(int *)(temp2->additional))++;
+                                temp2->next = temp->next;
+                                temp2->c = temp->c;
+                                temp2->concat = temp->concat;        
+                                if (temp2->concat!= NULL)
+                                        (*(int *)(temp2->concat))++;
+                                
+                                decRef(temp1->concat);
+                                temp1->concat = temp2;
+                                
+                                temp1 = temp1->concat;
+                        }
+                }        
+        }
+        
+        if (snd == NULL)
+                return head;
+        
+        last1 = temp1;
+        
+        Iterable* second = (Iterable*) x3malloc(sizeof(Iterable)); 
+        second->nrefs = 0;
+        second->isIter = 1;
+        second->value = snd->value;
+        if (second->value != NULL)
+                (*(int *)(second->value))++;
+
+        second->next = snd->next;
+        second->concat = snd->concat;
+        if (second->concat != NULL)
+                (*(int *)(second->concat))++;
+        
+        second->c = snd->c;
+        second->additional = snd->additional;
+        if (second->additional!= NULL)
+                (*(int *)(second->additional))++;        
+        
+        temp1 = second;
+        temp = snd;
+                                
+        while ((temp->additional && temp->next == NULL) || temp->concat) {
+                while(temp->additional && temp->next == NULL) {
+                        temp = temp->additional;
+                        temp2 = NULL;
+                        if (temp != NULL) {
+                                temp2 = (Iterable*) x3malloc(sizeof(Iterable)); 
+                                temp2->nrefs = 1;
+                                temp2->isIter = 1;
+                                temp2->value = temp->value;
+                                if (temp2->value!= NULL)
+                                      (*(int *)(temp2->value))++;
+                                temp2->additional = temp->additional;
+                                if (temp2->additional != NULL)
+                                      (*(int *)(temp2->additional))++;
+                                temp2->next = temp->next;
+                                temp2->c = temp->c;
+                                temp2->concat = temp->concat;        
+                                if (temp2->concat!= NULL)
+                                        (*(int *)(temp2->concat))++;
+                                
+                                decRef(temp1->additional);
+                                temp1->additional = temp2;
+                        }
+                        temp1 = temp1->additional;
+                }
+                
+                while(temp->concat) {
+                        temp1 = temp;
+                        temp = temp->concat;
+                        temp2 = NULL;
+                        
+                        temp2 = (Iterable*) x3malloc(sizeof(Iterable)); 
+                        temp2->nrefs = 1;
+                        temp2->isIter = 1;
+                        temp2->value = temp->value;
+                        if (temp2->value!= NULL)
+                                (*(int *)(temp2->value))++;
+                        temp2->additional = temp->additional;
+                        if (temp2->additional != NULL)
+                                (*(int *)(temp2->additional))++;
+                        temp2->next = temp->next;
+                        temp2->concat = temp->concat;     
+                        temp2->c = temp->c;
+                        if (temp2->concat!= NULL)
+                                (*(int *)(temp2->concat))++;
+                        
+                        decRef(temp1->concat);
+                        temp1->concat = temp2;
+                        
+                        temp1 = temp1->concat;
+                }
+        }
+        
+        if (fst == NULL)
+                head = second;        
+        else {
+
+                last1->concat = second;
+        
+                if (last1->concat != NULL)
+                        (*(int *)(last1->concat))++;
+        }
+        return head;
 }
 
 Iterable* Integer_onwards(void* head){
@@ -448,14 +504,13 @@ String* concatChars(Iterable *charIter){
 	return new;
 }
 
-
-
 Iterable* strToIter (char* input, int length){
   if(length==0)
   	return NULL;
   Iterable *curr;
   curr=(Iterable*) x3malloc(sizeof(Iterable));
   curr->isIter = 1;
+  curr->c = NULL;
   Iterable *result;
   result=curr;
   int i=0;

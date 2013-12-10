@@ -625,30 +625,28 @@ class ComExpr extends CuExpr{
 		
 		c.toC(localVars);
 		
-		
 		name += c.cText;
 		
-		if (c.cText == "NULL")
+		if (c.cText == "")
 			iter = "NULL";
 		else {
+			
 			String temp = Helper.getVarName();
-			CuComprehension.cmphEarlyPrint+="Iterable* "+c.cmphName+"IterNext(void* iter){ \n";
-			CuComprehension.cmphEarlyPrint+="Iterable* this=(Iterable*)iter;\n" +
+			CuComprehension.structStringGlobal += "Iterable* "+c.cmphName+ "IterNext(void*);\n";
+			CuComprehension.nextFunStringGlobal+="Iterable* "+c.cmphName+"IterNext(void* iter){ \n";
+			CuComprehension.nextFunStringGlobal+="Iterable* this=(Iterable*)iter;\n" +
 					"if ((("+c.cmphName+"S*)this->c) != NULL) {\n" +
 					"\tvoid* " + temp + " = this->value;\n" + 
 					"\tthis->value=(("+c.cmphName+"S*)this->c)->next(this->c);\n\t" +
 					Helper.incrRefCount("this->value") + "\t" +
 					Helper.decRefCount(temp);
 			
-			if (c instanceof ExprLstCmph){
-				CuComprehension.cmphEarlyPrint+="\tthis->c=(("+c.cmphName+"S*)this->c)->eC;\n";
-			}
-			CuComprehension.cmphEarlyPrint+="\treturn this;\n\t}\n"
+			CuComprehension.nextFunStringGlobal+="\tif(this->value)\n\t\treturn this;\n\t"
+					+ "else\n\t\treturn NULL;\n}\n"
 					+ "else\n\t"
 					+ "return NULL;\n" +
 					"}\n";
-			
-			
+			//iter = c.cmphName+"I";
 			name += "Iterable* " + iter + ";\n" 
 				+ iter + " = (Iterable*) x3malloc(sizeof(Iterable));\n"
 				+ iter + "->isIter = 1;\n"
@@ -657,7 +655,9 @@ class ComExpr extends CuExpr{
 				+ iter + "->c = " + c.cmphName + ";\n"
 				+ iter + "->additional = NULL;\n"
 				+ iter + "->next = &"+c.cmphName+"IterNext;\n" 
-				+ iter + "->concat = NULL;\n";
+				+ iter + "->concat = NULL;\n\n";
+				
+			//name += c.cmphName + "->parent = " + iter + ";\n";
 		}
 		
 		cText = iter;

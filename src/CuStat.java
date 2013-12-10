@@ -402,7 +402,7 @@ class ForToWhileStat extends CuStat {
 				      +"\t\t((Iterable*)" + rrName + ")->c = ((Iterable*)" + var.toString() + ")->c;\n"
 				      +"\t\t((Iterable*)" + rrName + ")->additional = ((Iterable*)" + var.toString() + ")->additional;\n"
 				      +"\t\t((Iterable*)" + rrName + ")->next = ((Iterable*)" + var.toString() + ")->next;\n"
-				      +"\t\t((Iterable*)" + rrName + ")->concat = ((Iterable*)" + var.toString() + ")->concat;\n";
+				      +"\t\t((Iterable*)" + rrName + ")->concat = ((Iterable*)" + var.toString() + ")->concat;\n\t\t";
 		//increase c's ref count
 		super.ctext += Helper.incrRefCount("(((Iterable*)" + rrName + ")->c)");
 		super.ctext += "\t\t" + var.toString() + " = iterGetNext(" + rrName + ");\n";

@@ -209,8 +209,8 @@ class FullPrg extends CuProgr {
     		temp_str = temp_str.replaceAll("void \\* " + str + " = NULL;\n", "");
     	}	
     	
-		super.ctext += CuComprehension.cmphEarlyPrint + fnClass_str + "\n\n"
-				+ "void* our_main()\n{\n";
+		super.ctext += CuComprehension.structStringGlobal + "\n" + fnClass_str + "\n" + 
+					CuComprehension.nextFunStringGlobal + "\n"	+ "void* our_main()\n{\n";
 		
     	for (String str : super.newVars) {
     		super.ctext += "void * " + str + " = NULL;\n";
@@ -224,7 +224,8 @@ class FullPrg extends CuProgr {
 				+ "Iterable* ourMain, *temp;\n"
 				+ "ourMain = (Iterable*) our_main();\n"
 				+ "temp = ourMain;\n"
-				+ "if (ourMain->c != NULL)\n\t"
+				+ "if (ourMain != NULL)\n\t"
+				+ "if (ourMain->c != NULL)\n\t\t"
 				+ "ourMain = iterGetNext(ourMain);\n"
 				+ "while(ourMain != NULL) {\n\t"
 				+ "print_line(((String*)ourMain->value)->value, ((String*)ourMain->value)->len);\n\t"
