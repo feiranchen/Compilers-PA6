@@ -2592,7 +2592,8 @@ class NegateExpr extends CuExpr{
 	public String toC(ArrayList<String> localVars) {
 		String temp = Helper.getVarName();
 		
-		super.cText = temp+".val";
+		//super.cText = temp+".val";
+		super.cText = temp;
 		super.castType = "Boolean";
 		String valToC = val.toC(localVars);
 		String eC = val.construct();		
@@ -4315,6 +4316,13 @@ class VvExp extends CuExpr{//varname or function call
 						use.add(str);
 				}
 			}
+		      if (Helper.fun_gvars.keySet().contains(val)) {
+		          for (String str : Helper.fun_gvars.get(val)) {
+		            if (!use.contains(str))
+		              use.add(str);
+		          }
+		        }
+
 		}
 		return use;
 	}
