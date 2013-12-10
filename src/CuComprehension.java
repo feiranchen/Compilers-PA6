@@ -8,7 +8,8 @@ public class CuComprehension {
 	String cText = "";
 	String defString="";
 	String structString="";
-	static String cmphEarlyPrint="";
+	static String nextFunStringGlobal = "";
+	static String structStringGlobal = "";
 
 	String cmphName="NULL";
 	HashSet<String> forVar=new HashSet<String>();
@@ -121,6 +122,7 @@ class ExprLstCmph extends CuComprehension{
 			}
 		}
 		
+		CuComprehension.structStringGlobal += "void* " +cmphName+ "F(void*);\n";
 		String nextFunString="";
 		nextFunString+= "void* " +cmphName+ "F(void* c) {\n" +
 				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
@@ -147,7 +149,8 @@ class ExprLstCmph extends CuComprehension{
 				"}\n";
 		
 		cText=defString;
-		CuComprehension.cmphEarlyPrint+=structString+nextFunString;
+		CuComprehension.structStringGlobal+=structString;
+		CuComprehension.nextFunStringGlobal += nextFunString;
 		return cmphName;
 	}
 	
@@ -244,6 +247,7 @@ class IfCmph extends CuComprehension {
 			}
 		}
 
+		CuComprehension.structStringGlobal += "void* " +cmphName+ "F(void*);\n";
 		String nextFunString="";
 		nextFunString= "void* " +cmphName+ "F(void* c) {\n" +
 				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
@@ -263,7 +267,8 @@ class IfCmph extends CuComprehension {
 				"}\n";
 
 		cText=defString;
-		CuComprehension.cmphEarlyPrint+=structString+nextFunString;
+		CuComprehension.structStringGlobal+=structString;
+		CuComprehension.nextFunStringGlobal+=nextFunString;
 		return cmphName;
 	}
 	
@@ -386,6 +391,7 @@ class ForCmph extends CuComprehension {
 			}
 		}
 
+		CuComprehension.structStringGlobal += "void* " +cmphName+ "F(void*);\n";
 		String nextFunString="";
 		nextFunString+= "void* " +cmphName+ "F(void* c) {\n" +
 				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
@@ -421,7 +427,8 @@ class ForCmph extends CuComprehension {
 		}
 		
 		cText=defString;
-		CuComprehension.cmphEarlyPrint+=structString+nextFunString;
+		CuComprehension.structStringGlobal+=structString;
+		CuComprehension.nextFunStringGlobal+=nextFunString;
 		return cmphName;
 		
 	}

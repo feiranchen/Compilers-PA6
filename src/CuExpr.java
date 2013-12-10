@@ -632,14 +632,19 @@ class ComExpr extends CuExpr{
 		else {
 			
 			String temp = Helper.getVarName();
-			CuComprehension.cmphEarlyPrint+="Iterable* "+c.cmphName+"IterNext(void* iter){ \n";
-			CuComprehension.cmphEarlyPrint+="Iterable* this=(Iterable*)iter;\n" +
+			CuComprehension.structStringGlobal += "Iterable* "+c.cmphName+ "IterNext(void*);\n";
+			CuComprehension.nextFunStringGlobal+="Iterable* "+c.cmphName+"IterNext(void* iter){ \n";
+			CuComprehension.nextFunStringGlobal+="Iterable* this=(Iterable*)iter;\n" +
 					"if ((("+c.cmphName+"S*)this->c) != NULL) {\n" +
 					"\tvoid* " + temp + " = this->value;\n" + 
 					"\tthis->value=(("+c.cmphName+"S*)this->c)->next(this->c);\n\t" +
 					Helper.incrRefCount("this->value") + "\t" +
 					Helper.decRefCount(temp);
-			CuComprehension.cmphEarlyPrint+="\tif(this->value)\n\t\treturn this;\n\t"
+			
+			if (c instanceof ExprLstCmph){
+				CuComprehension.nextFunStringGlobal+="\tthis->c=(("+c.cmphName+"S*)this->c)->eC;\n";
+			}
+			CuComprehension.nextFunStringGlobal+="\tif(this->value)\n\t\treturn this;\n\t"
 					+ "else\n\t\treturn NULL;\n}\n"
 					+ "else\n\t"
 					+ "return NULL;\n" +
