@@ -13,8 +13,7 @@ public class CuComprehension {
 	String cmphName="NULL";
 	HashSet<String> forVar=new HashSet<String>();
 
-
-
+	
 	public void add(CuComprehension c){}
 	public String toC(ArrayList<String> localVars) {
 		return cText;
@@ -31,6 +30,9 @@ public class CuComprehension {
 }
 
 class EmptyCmph extends CuComprehension{
+	EmptyCmph(){
+		cText="NULL";
+	}
 	@Override
 	public boolean equals(Object that){
 		if (that instanceof EmptyCmph)
@@ -94,6 +96,7 @@ class ExprLstCmph extends CuComprehension{
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
+        		"\tint isEC; \n"+
         		"\tvoid* eC;\n" +
         		"\tvoid* (*next)(void*);\n";
         
@@ -105,21 +108,18 @@ class ExprLstCmph extends CuComprehension{
 		//definition / declaration
         defString +=c.defString;
         String nextC;
-        if (c.cmphName.equals("NULL")){
-        	nextC="NULL";
-        }else{
-        	nextC="&"+c.cmphName;
-        }
 		defString += cmphName+"S* " + cmphName + ";\n" 
 				+ cmphName + " = ("+cmphName+"S*) x3malloc(sizeof("+cmphName+"S));\n"
 				+ cmphName + "->nrefs = 1;\n"
 				+ cmphName + "->isIter = 0;\n"
 				+ cmphName + "->isStr = 0;\n"
-				+ cmphName + "->eC = "+nextC + ";\n"
-				+ cmphName + "->next = "+cmphName + "F;\n";
+				+ cmphName + "->isEC = 1;\n"
+				+ cmphName + "->eC = "+c.cmphName + ";\n"
+				+ cmphName + "->next = &"+cmphName + "F;\n";
 		for (String tempv : getUse()){
 			if (!forVar.contains(tempv))
 			defString+=cmphName + "->"+tempv+"="+tempv+";\n";
+			defString+=Helper.incrRefCount(tempv);
 		}
 		
 		String nextFunString="";
@@ -141,8 +141,14 @@ class ExprLstCmph extends CuComprehension{
 	
 	public ArrayList<String> getUse(){
 		ArrayList<String>use = new ArrayList<String>();
-		use.addAll(e.getUse());
-		use.addAll(c.getUse());
+		for (String s : e.getUse()){
+			if (!use.contains(s))
+				use.add(s);
+		}
+		for (String s : c.getUse()){
+			if (!use.contains(s))
+				use.add(s);
+		}
 		
 		return use;
 	}
@@ -196,11 +202,11 @@ class IfCmph extends CuComprehension {
 		
         //struct for this cmph
         c.toC(new ArrayList<String>());
-        structString += c.structString;
         structString += "typedef struct "+cmphName + "_struct {\n" +
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
+        		"\tint isEC; \n"+
         		"\tvoid* ifC;\n" +
         		"\tvoid* (*next)(void*);\n";
         
@@ -212,18 +218,14 @@ class IfCmph extends CuComprehension {
 		//definition / declaration
         defString +=c.defString;
         String nextC;
-        if (c.cmphName.equals("NULL")){
-        	nextC="NULL";
-        }else{
-        	nextC="&"+c.cmphName;
-        }
 		defString += cmphName+"S* " + cmphName + ";\n" 
 				+ cmphName + " = ("+cmphName+"S*) x3malloc(sizeof("+cmphName+"S));\n"
 				+ cmphName + "->nrefs = 1;\n"
 				+ cmphName + "->isIter = 0;\n"
 				+ cmphName + "->isStr = 0;\n"
-				+ cmphName + "->ifC = "+nextC + ";\n"
-				+ cmphName + "->next = "+cmphName + "F;\n";
+				+ cmphName + "->isEC = 1;\n"
+				+ cmphName + "->ifC = "+c.cmphName + ";\n"
+				+ cmphName + "->next = &"+cmphName + "F;\n";
 		for (String tempv : getUse()){
 			if (!forVar.contains(tempv))
 			defString+=cmphName + "->"+tempv+"="+tempv+";\n";
@@ -252,8 +254,14 @@ class IfCmph extends CuComprehension {
 	
 	public ArrayList<String> getUse(){
 		ArrayList<String>use = new ArrayList<String>();
-		use.addAll(e.getUse());
-		use.addAll(c.getUse());
+		for (String s : e.getUse()){
+			if (!use.contains(s))
+				use.add(s);
+		}
+		for (String s : c.getUse()){
+			if (!use.contains(s))
+				use.add(s);
+		}
 		
 		return use;
 	}
@@ -326,11 +334,11 @@ class ForCmph extends CuComprehension {
 		
         //struct for this cmph
         c.toC(new ArrayList<String>());
-        structString += c.structString;
         structString += "typedef struct "+cmphName + "_struct {\n" +
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
+        		"\tint isEC; \n"+
         		"\tvoid* forC;\n" +
         		"\tIterable* iter;\n" +
         		"\tvoid* (*next)(void*);\n";
@@ -349,19 +357,15 @@ class ForCmph extends CuComprehension {
 				"}\n";
         
         String nextC;
-        if (c.cmphName.equals("NULL")){
-        	nextC="NULL";
-        }else{
-        	nextC="&"+c.cmphName;
-        }
 		defString += cmphName+"S* " + cmphName + ";\n" 
 				+ cmphName + " = ("+cmphName+"S*) x3malloc(sizeof("+cmphName+"S));\n"
 				+ cmphName + "->nrefs = 1;\n"
 				+ cmphName + "->isIter = 0;\n"
 				+ cmphName + "->isStr = 0;\n"
-				+ cmphName + "->forC = "+nextC + ";\n"
+				+ cmphName + "->isEC = 1;\n"
+				+ cmphName + "->forC = "+c.cmphName + ";\n"
 		        + cmphName + "->iter = "+iterContent + ";\n"
-				+ cmphName + "->next = "+cmphName + "F;\n";
+				+ cmphName + "->next = &"+cmphName + "F;\n";
 		for (String tempv : getUse()){
 			if (!forVar.contains(tempv))
 			defString+=cmphName + "->"+tempv+"="+tempv+";\n";
@@ -394,8 +398,14 @@ class ForCmph extends CuComprehension {
 	
 	public ArrayList<String> getUse(){
 		ArrayList<String>use = new ArrayList<String>();
-		use.addAll(e.getUse());
-		use.addAll(c.getUse());
+		for (String s : e.getUse()){
+			if (!use.contains(s))
+				use.add(s);
+		}
+		for (String s : c.getUse()){
+			if (!use.contains(s))
+				use.add(s);
+		}
 		use.remove(v.text);
 		
 		return use;

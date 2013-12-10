@@ -631,6 +631,16 @@ class ComExpr extends CuExpr{
 		if (c.cText == "NULL")
 			iter = "NULL";
 		else {
+			CuComprehension.cmphEarlyPrint+="Iterable* "+c.cmphName+"IterNext(void* iter){ \n";
+			CuComprehension.cmphEarlyPrint+="Iterable* this=(Iterable*)iter;\n" +
+					"\tthis->value=this->c->next(this->c);\n";
+			
+			if (c instanceof ExprLstCmph){
+				CuComprehension.cmphEarlyPrint+="\tthis->c=("+c.cmphName+"S*)(iter->c)->eC";
+			}
+			CuComprehension.cmphEarlyPrint+="Return this;\n" +
+					"}\n";
+			
 			name += "Iterable* " + iter + ";\n" 
 				+ iter + " = (Iterable*) x3malloc(sizeof(Iterable));\n"
 				+ iter + "->isIter = 1;\n"
@@ -638,7 +648,7 @@ class ComExpr extends CuExpr{
 				+ iter + "->value = NULL;\n"
 				+ iter + "->c = " + c.cmphName + ";\n"
 				+ iter + "->additional = NULL;\n"
-				+ iter + "->next = &"+c.cmphName+"F;\n" 
+				+ iter + "->next = &"+c.cmphName+"IterNext;\n" 
 				+ iter + "->concat = NULL;\n";
 		}
 		
