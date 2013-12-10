@@ -80,6 +80,10 @@ class ExprLstCmph extends CuComprehension{
 	
 	@Override
 	public String toC(ArrayList<String> localVars) {
+		for (String s : forVar){
+			if (!c.forVar.contains(s))
+				c.forVar.add(s);
+		}
 		//update vars to reserve org value
 		//ArrayList<String> orgVarsE = e.getUse();
 		//ArrayList<String> orgVarsC = c.getUse();
@@ -94,10 +98,10 @@ class ExprLstCmph extends CuComprehension{
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
-        		"\tint isEC; \n" +
+        		"\tint isEC; \n"+
         		"\tint visited;\n" +
         		"\tvoid* eC;\n" +
-        		"\tvoid* (*next)(void*);\n";
+        		"\tvoid* (*next)(void*);\n" ;
         
         for (String tempv : getUse()){
         	structString+="\tvoid* "+tempv+";\n";
@@ -129,19 +133,25 @@ class ExprLstCmph extends CuComprehension{
 		for (String tempv : getUse()){
 				nextFunString+="void*"+tempv+"=this->"+tempv+";\n";
 		}
+		if (!(c instanceof EmptyCmph)){
+			for (String tempv : forVar){
+				if (c.getUse().contains(tempv))
+					nextFunString+="(("+c.cmphName+"S*)this->eC)->"+tempv+"=this->"+tempv+";\n";
+			}
+		}
 		if (c instanceof EmptyCmph){
 			nextFunString+="if(this->visited){ \n" +
-					"\treturn NULL;\n";
+					"\treturn NULL;\n" +
+					"}else {\n"+
+					"\tthis->visited=1; \n";
 		}else{
 		nextFunString+="if(this->visited){ \n" +
-					"\treturn (("+c.cmphName+"S*)this->eC)->next(this->eC);\n";
-					
+					"\treturn (("+c.cmphName+"S*)this->eC)->next(this->eC);\n"+
+					"}else {\n" +
+					"\tthis->visited=1; \n"+
+					"(("+c.cmphName+"S*)this->eC)->visited=0;\n";
 		}
-		nextFunString+="}else {\n" +
-				"\tthis->visited=1; \n";
-		if (c instanceof ExprLstCmph)
-			nextFunString+="(("+c.cmphName+"S*)this->eC)->visited=0;\n";
-		
+			
 		String funContent=e.toC(new ArrayList<String>());
 		nextFunString +=e.construct() +
 				"return "+ funContent +";\n"+
@@ -207,6 +217,10 @@ class IfCmph extends CuComprehension {
 
 	@Override
 	public String toC(ArrayList<String> localVars) {
+		for (String s : forVar){
+			if (!c.forVar.contains(s))
+				c.forVar.add(s);
+		}
 		//update vars to reserve org value
 		//ArrayList<String> orgVarsE = e.getUse();
 		//ArrayList<String> orgVarsC = c.getUse();
@@ -241,7 +255,8 @@ class IfCmph extends CuComprehension {
 				+ cmphName + "->isEC =0;\n"
 				+ cmphName + "->visited= 0;\n"
 				+ cmphName + "->ifC = "+c.cmphName + ";\n"
-				+ cmphName + "->next = &"+cmphName + "F;\n";
+				+ cmphName + "->next = &"+cmphName + "F;\n"
+				+ cmphName + "->visited= 0;\n";
 		for (String tempv : getUse()){
 			if (!forVar.contains(tempv)){
 				defString+=cmphName + "->"+tempv+"="+tempv+";\n";
@@ -256,17 +271,32 @@ class IfCmph extends CuComprehension {
 		for (String tempv : getUse()){
 			nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
 		}
+		if (!(c instanceof EmptyCmph)){
+			for (String tempv : forVar){
+				if (c.getUse().contains(tempv))
+					nextFunString+="(("+c.cmphName+"S*)this->ifC)->"+tempv+"=this->"+tempv+";\n";
+			}
+		}
+		
 		String funContent=e.toC(new ArrayList<String>());
-		nextFunString +=e.construct() +
-				"if( "+ funContent +"->value){\n" +
-				"\tvoid* ret= (("+c.cmphName+"S*)this->ifC)->next(this->ifC);\n" +
-				"\t \n" +
-				"\treturn ret; \n"+
-				"} \n" +
-				"else {\n" +
-				"\treturn NULL;\n" +
-				"}\n" +
-				"}\n";
+		if (!(c instanceof EmptyCmph)){
+			nextFunString +=
+					"if (this->ifC!=NULL&&this->visited==0){"+
+				    	"\t(("+c.cmphName+"S*)this->ifC)->visited=0;}\n"+
+					"this->visited=1; \n" +
+				    	
+					e.construct() +
+					"if( "+ funContent +"->value){\n" +
+					"\treturn (("+c.cmphName+"S*)this->ifC)->next(this->ifC);\n" +
+					"} \n" +
+					"else {\n" +
+					"\treturn NULL;\n" +
+					"}\n" +
+					"}\n";
+		}else{
+			nextFunString +="\treturn NULL;\n" +
+					"}\n";
+		}
 
 		cText=defString;
 		CuComprehension.structStringGlobal+=structString;
@@ -345,6 +375,10 @@ class ForCmph extends CuComprehension {
 	
 	public String toC(ArrayList<String> localVars) {
 		c.forVar.add(v.text);
+		for (String s : forVar){
+			if (!c.forVar.contains(s))
+				c.forVar.add(s);
+		}
 		//update vars to reserve org value
 		//ArrayList<String> orgVarsE = e.getUse();
 		//ArrayList<String> orgVarsC = c.getUse();
@@ -387,7 +421,8 @@ class ForCmph extends CuComprehension {
 				+ cmphName + "->visited= 0;\n"
 				+ cmphName + "->forC = "+c.cmphName + ";\n"
 		        + cmphName + "->iter = "+eVarName + ";\n"
-				+ cmphName + "->next = &"+cmphName + "F;\n";
+				+ cmphName + "->next = &"+cmphName + "F;\n"
+				+ cmphName + "->visited= 0;\n";
 		for (String tempv : getUse()){
 			if (!forVar.contains(tempv)){
 				defString+=cmphName + "->"+tempv+"="+tempv+";\n";
@@ -405,22 +440,31 @@ class ForCmph extends CuComprehension {
 				if (!forVar.contains(tempv))
 					nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
 			}
-			nextFunString+="if (this->iter==NULL) {return NULL;}\n" +
+			if (!(c instanceof EmptyCmph)){
+				for (String tempv : forVar){
+					if (c.getUse().contains(tempv))
+						nextFunString+="(("+c.cmphName+"S*)this->forC)->"+tempv+"=this->"+tempv+";\n";
+				}
+			}
+
+			nextFunString+="if (this->forC!=NULL&&this->visited==0){"+
+			    	"\t(("+c.cmphName+"S*)this->forC)->visited=0;}\n"+
+					"this->visited=1; \n" +
+			    	"if (this->iter==NULL) {return NULL;}\n" +
 					"if (this->iter->value==NULL) {" +//handle beginning
 					"this->iter=iterGetNext(this->iter);}\n" +
-					"if (this->iter->value==NULL) {return NULL;}\n" +
-					"if (this->iter==NULL) {return NULL;}\n" +
+					"if (this->iter==NULL||this->iter->value==NULL) {return NULL;}\n" +
 					"void*"+v.text+"=this->iter->value;\n" +
 					"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n" +
+					"\tthis->visited=1; \n" +
 					"void* ret=(("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
 					"if (ret==NULL){\n" +
 						"\t this->iter=iterGetNext(this->iter);\n" +
-						"if (this->iter==NULL) {return NULL;};\n" +
-						v.text+"=this->iter->value;\n" +
-						"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n";
-			if (c instanceof ExprLstCmph){
-				nextFunString+="(("+c.cmphName+"S*)this->forC)->visited=0;\n";}
-			nextFunString+="return (("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
+						"if (this->iter==NULL) {return NULL;}\n" +
+						"(("+c.cmphName+"S*)this->forC)->visited=0;\n" +
+						"\t"+v.text+"=this->iter->value;\n" +
+						"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n"+
+						"return (("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
 					"}\n" +
 						
 					"return ret;\n" +
