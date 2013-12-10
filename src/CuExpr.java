@@ -628,7 +628,7 @@ class ComExpr extends CuExpr{
 		
 		name += c.cText;
 		
-		if (c.cText == "NULL")
+		if (c.cText == "")
 			iter = "NULL";
 		else {
 			String temp = Helper.getVarName();

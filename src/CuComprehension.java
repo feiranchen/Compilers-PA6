@@ -30,9 +30,6 @@ public class CuComprehension {
 }
 
 class EmptyCmph extends CuComprehension{
-	EmptyCmph(){
-		cText="NULL";
-	}
 	@Override
 	public boolean equals(Object that){
 		if (that instanceof EmptyCmph)
@@ -377,12 +374,15 @@ class ForCmph extends CuComprehension {
 				if (!forVar.contains(tempv))
 					nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
 			}
-			nextFunString+="if (this->iter->value==NULL) return NULL;\n" +
+			nextFunString+="if (this->iter->value==NULL) {" +
+					"this->iter=iterGetNext(this->iter);}\n" +
+					"if (this->iter->value==NULL) {return NULL;};\n" +
+					"\n" +
 					"void*"+v.text+"=this->iter->value;\n" +
 					"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n" +
 					"void* ret=(("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
 					"if (ret==NULL){\n" +
-						"\t this->iter=this->iter->next(this->iter);\n" +
+						"\t this->iter=iterGetNext(this->iter);\n" +
 						v.text+"=this->iter->value;\n" +
 						"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n" +
 						"return (("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
