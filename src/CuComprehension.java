@@ -384,8 +384,8 @@ class ForCmph extends CuComprehension {
 					nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
 			}
 			nextFunString+="void*"+v.text+"=this->iter->value;\n" +
-					"void* ret=("+c.cmphName+"S*)(this->forC)->next(this->forC);\n" +
 					"\t ("+c.cmphName+"S*)(this->forC)->"+v.text+"="+v.text+";\n" +
+					"void* ret=("+c.cmphName+"S*)(this->forC)->next(this->forC);\n" +
 					"if (ret==NULL){\n" +
 						"\t this->iter=this->iter->next(this->iter);\n" +
 						"\t ("+c.cmphName+"S*)(this->forC)->"+v.text+"="+v.text+";\n" +
