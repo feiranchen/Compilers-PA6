@@ -1,5 +1,7 @@
 
 i:=1;
-c:=[6+i,if (i>2) i];
+#c:=[6+i,if (i>2) i];
+#c:=["hello",if (i>0) "world"];
+d:=["haha", for (v in ["a","b","c","d"]) v];
 
-return ["faehi","out"];
+return d;
