@@ -185,14 +185,16 @@ typedef struct aaaaag_struct {
 }aaaaagS;
 void* aaaaagF(void* c) {
 aaaaagS* this= (aaaaagS*) c;
+if (this->iter==NULL) {return NULL;}
 if (this->iter->value==NULL) {this->iter=iterGetNext(this->iter);}
-if (this->iter->value==NULL) {return NULL;};
-
+if (this->iter->value==NULL) {return NULL;}
+if (this->iter==NULL) {return NULL;}
 void*v=this->iter->value;
 	 ((aaaaajS*)this->forC)->v=v;
 void* ret=((aaaaajS*)this->forC)->next(this->forC);
 if (ret==NULL){
 	 this->iter=iterGetNext(this->iter);
+if (this->iter==NULL) {return NULL;};
 v=this->iter->value;
 	 ((aaaaajS*)this->forC)->v=v;
 ((aaaaajS*)this->forC)->visited=0;

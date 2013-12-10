@@ -395,11 +395,11 @@ class ForCmph extends CuComprehension {
 				if (!forVar.contains(tempv))
 					nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
 			}
-			nextFunString+="void*"+v.text+"=this->iter->value;\n" +
+			nextFunString+="if (this->iter==NULL) {return NULL;}\n" +
 					"if (this->iter->value==NULL) {" +//handle beginning
 					"this->iter=iterGetNext(this->iter);}\n" +
-					"if (this->iter->value==NULL) {return NULL;};\n" +
-					"if (this->iter==NULL) {return NULL;};\n" +
+					"if (this->iter->value==NULL) {return NULL;}\n" +
+					"if (this->iter==NULL) {return NULL;}\n" +
 					"void*"+v.text+"=this->iter->value;\n" +
 					"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n" +
 					"void* ret=(("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
