@@ -236,8 +236,10 @@ Iterable* iterGetNext(Iterable* last){
 	}
 	else if (this==NULL){
 		this=last->concat;
-		if (this->c != NULL)
+		if (this->c != NULL) {
 			this = iterGetNext(this);
+			(*((int*)((Iterable*)this)->c+5)) = 0;
+		}
 	}
 	
 	return (this);

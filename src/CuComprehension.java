@@ -95,9 +95,9 @@ class ExprLstCmph extends CuComprehension{
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
         		"\tint isEC; \n" +
+        		"\tint visited;\n" +
         		"\tvoid* eC;\n" +
-        		"\tvoid* (*next)(void*);\n" +
-        		"\tint visited;\n";
+        		"\tvoid* (*next)(void*);\n";
         
         for (String tempv : getUse()){
         	structString+="\tvoid* "+tempv+";\n";
@@ -112,9 +112,9 @@ class ExprLstCmph extends CuComprehension{
 				+ cmphName + "->isIter = 0;\n"
 				+ cmphName + "->isStr = 0;\n"
 				+ cmphName + "->isEC = 1;\n"
+				+ cmphName + "->visited= 0;\n"
 				+ cmphName + "->eC = "+c.cmphName + ";\n"
-				+ cmphName + "->next = &"+cmphName + "F;\n" 
-				+ cmphName + "->visited= 0;\n";
+				+ cmphName + "->next = &"+cmphName + "F;\n";
 		for (String tempv : getUse()){
 			if (!forVar.contains(tempv)){
 				defString+=cmphName + "->"+tempv+"="+tempv+";\n";
@@ -221,7 +221,8 @@ class IfCmph extends CuComprehension {
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
-        		"\tint isEC; \n" +
+        		"\tint isEC; \n"  +
+        		"\tint visited;\n" +
         		"\tvoid* ifC;\n" +
         		"\tvoid* (*next)(void*);\n";
         
@@ -238,6 +239,7 @@ class IfCmph extends CuComprehension {
 				+ cmphName + "->isIter = 0;\n"
 				+ cmphName + "->isStr = 0;\n" 
 				+ cmphName + "->isEC =0;\n"
+				+ cmphName + "->visited= 0;\n"
 				+ cmphName + "->ifC = "+c.cmphName + ";\n"
 				+ cmphName + "->next = &"+cmphName + "F;\n";
 		for (String tempv : getUse()){
@@ -357,7 +359,8 @@ class ForCmph extends CuComprehension {
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
-        		"\tint isEC; \n" +
+        		"\tint isEC; \n"  +
+        		"\tint visited;\n" +
         		"\tvoid* forC;\n" +
         		"\tIterable* iter;\n" +
         		"\tvoid* (*next)(void*);\n";
@@ -381,6 +384,7 @@ class ForCmph extends CuComprehension {
 				+ cmphName + "->isIter = 0;\n"
 				+ cmphName + "->isStr = 0;\n"
 				+ cmphName + "->isEC =0;\n"
+				+ cmphName + "->visited= 0;\n"
 				+ cmphName + "->forC = "+c.cmphName + ";\n"
 		        + cmphName + "->iter = "+eVarName + ";\n"
 				+ cmphName + "->next = &"+cmphName + "F;\n";
