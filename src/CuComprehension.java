@@ -128,7 +128,7 @@ class ExprLstCmph extends CuComprehension{
 		
 		CuComprehension.structStringGlobal += "void* " +cmphName+ "F(void*);\n";
 		String nextFunString="";
-		String argName = Helper.getVarName(), thisName = Helper.getVarName();
+		String argName = Helper.getVarName(), thisName = "this_" + Helper.getVarName();
 		nextFunString+= "void* " +cmphName+ "F(void* c_" + argName + ") {\n" +
 				cmphName+"S* " + thisName + "= ("+cmphName+"S*) c_" + argName + ";\n"; 
 		for (String tempv : getUse()){
@@ -267,7 +267,7 @@ class IfCmph extends CuComprehension {
 
 		CuComprehension.structStringGlobal += "void* " +cmphName+ "F(void*);\n";
 		String nextFunString="";
-		String argName = Helper.getVarName(), thisName = Helper.getVarName();
+		String argName = Helper.getVarName(), thisName = "this_" + Helper.getVarName();
 		nextFunString= "void* " +cmphName+ "F(void* c_"+argName+") {\n" +
 				cmphName+"S* "+thisName+"= ("+cmphName+"S*) c_"+argName+";\n"; 
 		for (String tempv : getUse()){
@@ -438,18 +438,20 @@ class ForCmph extends CuComprehension {
 				+ cmphName + "->next = &"+cmphName + "F;\n"
 				+ cmphName + "->visited= 0;\n";
 		
+		String nextFunString="", thisName = "this_" + Helper.getVarName(), argName = Helper.getVarName();
+		
 		String copyIter= "Iterable *" + eVarName + "Copy;\n" 
-				  +"\t\tthis->iter= (Iterable *)x3malloc(sizeof(Iterable));\n"
-			      +"\t\tthis->iter->nrefs =this->iterorg->nrefs;\n"
-			      +"\t\tthis->iter->isIter =this->iterorg->isIter;\n"
-			      +"\t\tthis->iter->isStr =this->iterorg->isStr;\n"
-			      +"\t\tthis->iter->value =this->iterorg->value;\n"
-			      +"\t\tthis->iter->c =this->iterorg->c;\n"
-			      +"\t\tthis->iter->additional =this->iterorg->additional;\n"
-			      +"\t\tthis->iter->next =this->iterorg->next;\n"
-			      +"\t\tthis->iter->concat =this->iterorg->concat;\n\t\t"
-			      +"\t\t*((int*)this->iter->c+4)=0;\n"
-			      +Helper.incrRefCount("this->iterorg->c");
+				  +"\t\t" + thisName + "->iter= (Iterable *)x3malloc(sizeof(Iterable));\n"
+			      +"\t\t" + thisName + "->iter->nrefs =" + thisName + "->iterorg->nrefs;\n"
+			      +"\t\t" + thisName + "->iter->isIter =" + thisName + "->iterorg->isIter;\n"
+			      +"\t\t" + thisName + "->iter->isStr =" + thisName + "->iterorg->isStr;\n"
+			      +"\t\t" + thisName + "->iter->value =" + thisName + "->iterorg->value;\n"
+			      +"\t\t" + thisName + "->iter->c =" + thisName + "->iterorg->c;\n"
+			      +"\t\t" + thisName + "->iter->additional =" + thisName + "->iterorg->additional;\n"
+			      +"\t\t" + thisName + "->iter->next =" + thisName + "->iterorg->next;\n"
+			      +"\t\t" + thisName + "->iter->concat =" + thisName + "->iterorg->concat;\n\t\t"
+			      +"\t\t*((int*)" + thisName + "->iter->c+4)=0;\n"
+			      +Helper.incrRefCount("" + thisName + "->iterorg->c");
 		
 		for (String tempv : getUse()){
 			if (!forVar.contains(tempv)){
@@ -459,7 +461,6 @@ class ForCmph extends CuComprehension {
 		}
 
 		CuComprehension.structStringGlobal += "void* " +cmphName+ "F(void*);\n";
-		String nextFunString="", thisName = Helper.getVarName(), argName = Helper.getVarName();
 		nextFunString+= "void* " +cmphName+ "F(void* c_"+argName+") {\n" +
 				cmphName+"S* "+thisName+"= ("+cmphName+"S*) c_"+argName+";\n"; 
 
