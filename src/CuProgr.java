@@ -204,6 +204,9 @@ class FullPrg extends CuProgr {
 				+ "#include \"cubex_external_functions.h\"\n"
 				+ "#include \"cubex_lib.h\"\n\n";
 		
+		//input is a global variable
+		super.ctext += "Iterable* " + "input" + "= NULL;\n";
+		
     	for (String str : gVars) {
     		super.ctext += "void * " + str + " = NULL;\n";
     		temp_str = temp_str.replaceAll("void \\* " + str + " = NULL;\n", "");
