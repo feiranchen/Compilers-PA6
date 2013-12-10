@@ -633,7 +633,7 @@ class ComExpr extends CuExpr{
 		else {
 			CuComprehension.cmphEarlyPrint+="Iterable* "+c.cmphName+"IterNext(void* iter){ \n";
 			CuComprehension.cmphEarlyPrint+="Iterable* this=(Iterable*)iter;\n" +
-					"\tthis->value=this->c->next(this->c);\n";
+					"\tthis->value=(("+c.cmphName+"S*)this->c)->next(this->c);\n";
 			
 			if (c instanceof ExprLstCmph){
 				CuComprehension.cmphEarlyPrint+="\tthis->c=("+c.cmphName+"S*)(iter->c)->eC";

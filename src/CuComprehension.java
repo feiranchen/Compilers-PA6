@@ -229,22 +229,27 @@ class IfCmph extends CuComprehension {
 		for (String tempv : getUse()){
 			if (!forVar.contains(tempv))
 			defString+=cmphName + "->"+tempv+"="+tempv+";\n";
+			defString+=Helper.incrRefCount(tempv);
 		}
 
 		String nextFunString="";
 		nextFunString= "void* " +cmphName+ "F(void* c) {\n" +
 				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
 		for (String tempv : getUse()){
-			nextFunString+=tempv+"=this->"+tempv+";\n";
+			nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
 		}
 		String funContent=e.toC(new ArrayList<String>());
 		nextFunString +=e.construct() +
 				"if( "+ funContent +"){\n" +
-				"\treturn ifC->next(forC);\n"+
+				"\treturn ("+c.cmphName+"S*)(this->ifC)->next(forC);\n"+
 				"}\n" +
 				"else {\n" +
 				"\treturn NULL;\n" +
 				"}\n";
+
+		if (c instanceof EmptyCmph)
+			nextFunString="";
+		
 		
 		cText=defString;
 		CuComprehension.cmphEarlyPrint+=structString+nextFunString;
@@ -351,10 +356,8 @@ class ForCmph extends CuComprehension {
 		//definition / declaration
         defString +=c.defString;
         
-        String iterContent=e.toC(new ArrayList<String>());
-        defString +=e.construct() +
-				"return "+ iterContent +";\n"+
-				"}\n";
+        String eVarName=e.toC(new ArrayList<String>());
+        defString +=e.construct();
         
         String nextC;
 		defString += cmphName+"S* " + cmphName + ";\n" 
@@ -364,31 +367,36 @@ class ForCmph extends CuComprehension {
 				+ cmphName + "->isStr = 0;\n"
 				+ cmphName + "->isEC = 1;\n"
 				+ cmphName + "->forC = "+c.cmphName + ";\n"
-		        + cmphName + "->iter = "+iterContent + ";\n"
+		        + cmphName + "->iter = "+eVarName + ";\n"
 				+ cmphName + "->next = &"+cmphName + "F;\n";
 		for (String tempv : getUse()){
 			if (!forVar.contains(tempv))
 			defString+=cmphName + "->"+tempv+"="+tempv+";\n";
+			defString+=Helper.incrRefCount(tempv);
 		}
 
 		String nextFunString="";
 		nextFunString+= "void* " +cmphName+ "F(void* c) {\n" +
 				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
+
+		if (!(c instanceof EmptyCmph)){
 		for (String tempv : getUse()){
 			if (!forVar.contains(tempv))
-				nextFunString+=tempv+"=this->"+tempv+";\n";
+				nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
 		}
 		nextFunString+="void*"+v.text+"=this.iter.value;\n" +
-				"void* ret=forC->next(forC);\n" +
+				"void* ret=("+c.cmphName+"S*)(this->forC)->next(forC);\n" +
 				"if (ret==NULL){\n" +
-				"\t forC.i=i;\n" +
+				"\t ("+c.cmphName+"S*)(this->forC)->i=i;\n" +
 				"\t iter=iter->next(iter);\n" +
 				"}\n" +
-				"return forC->next(forC);\n";
-		String funContent=e.toC(new ArrayList<String>());
-		nextFunString +=e.construct() +
-				"return "+ funContent +";\n"+
+				"return ("+c.cmphName+"S*)(this->forC)->next(forC);\n" +
 				"}\n";
+		}else{
+			nextFunString+="return NULL;\n" +
+					"}\n";
+		}
+			
 		
 		cText=defString;
 		CuComprehension.cmphEarlyPrint+=structString+nextFunString;
