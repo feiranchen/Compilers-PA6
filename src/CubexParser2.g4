@@ -97,8 +97,11 @@ expr returns [CuExpr e]
 | l=expr PIPE r=expr  { $e = new OrExpr($l.e, $r.e); }
 | l=expr APPEND r=expr {$e = new AppExpr($l.e, $r.e); } ;
 
-exprs returns [List<CuExpr> cu] 
+cexprs returns [List<CuExpr> cu] 
 : {$cu = new ArrayList<CuExpr>();} e=expr {$cu.add($e.e);} ((COMMA e=expr {$cu.add($e.e);})*)?;
+
+exprs returns [List<CuExpr> cu] 
+: {$cu = new ArrayList<CuExpr>();} (e=expr {$cu.add($e.e);} (COMMA e=expr {$cu.add($e.e);})*)?;
 
 stat returns [CuStat s]
 : LBRACE ss=stats RBRACE {$s = new Stats($ss.cu);}
