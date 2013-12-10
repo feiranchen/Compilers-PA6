@@ -136,7 +136,10 @@ class ExprLstCmph extends CuComprehension{
 					
 		}
 		nextFunString+="}else {\n" +
-				"\tthis->visited=1;";
+				"\tthis->visited=1; \n";
+		if (c instanceof ExprLstCmph)
+			nextFunString+="(("+c.cmphName+"S*)this->eC)->visited=0;\n";
+		
 		String funContent=e.toC(new ArrayList<String>());
 		nextFunString +=e.construct() +
 				"return "+ funContent +";\n"+
@@ -402,8 +405,10 @@ class ForCmph extends CuComprehension {
 					"if (ret==NULL){\n" +
 						"\t this->iter=iterGetNext(this->iter);\n" +
 						v.text+"=this->iter->value;\n" +
-						"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n" +
-						"return (("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
+						"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n";
+			if (c instanceof ExprLstCmph){
+				nextFunString+="(("+c.cmphName+"S*)this->forC)->visited=0;\n";}
+			nextFunString+="return (("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
 					"}\n" +
 						
 					"return ret;\n" +
