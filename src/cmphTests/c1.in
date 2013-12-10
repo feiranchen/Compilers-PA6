@@ -4,6 +4,6 @@ i:=5;
 #d:=["hello",if (i>2) "world"];
 
 #d:=["haha", "ahahha"];
-#d:=["haha", "ahahha", for (v in ["a","b","c","d"]) v,"stop"];
-d:=[for (v in ["a","b"]) v,"stop"];
+d:=["haha", "ahahha", for (v in ["a","b","c","d"]) v,"stop"];
+#d:=[for (v in ["a","b"]) v,"stop"];
 return d;
