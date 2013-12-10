@@ -4515,6 +4515,9 @@ Helper.P(" 1mapping is " + mapping.toString());
 			exp.add(types, newEs);
 			exp.use = use;
 			
+			//should have a clone mythod,for now, simply copying -- Yinglei
+			((VvExp)exp).retype = this.retype;
+			
 			exp.boxed = this.boxed;
 			exp.expType = this.expType;
 			
