@@ -635,10 +635,10 @@ class ComExpr extends CuExpr{
 			iter = "NULL";
 		else {
 			
-			String temp = Helper.getVarName();
+			String temp = Helper.getVarName(), argName = Helper.getVarName();
 			CuComprehension.structStringGlobal += "Iterable* "+c.cmphName+ "IterNext(void*);\n";
-			CuComprehension.nextFunStringGlobal+="Iterable* "+c.cmphName+"IterNext(void* iter){ \n";
-			CuComprehension.nextFunStringGlobal+="Iterable* this=(Iterable*)iter;\n" +
+			CuComprehension.nextFunStringGlobal+="Iterable* "+c.cmphName+"IterNext(void* " + argName + "){ \n";
+			CuComprehension.nextFunStringGlobal+="Iterable* this=(Iterable*)" + argName + ";\n" +
 					"if ((("+c.cmphName+"S*)this->c) != NULL) {\n" +
 					"\tvoid* " + temp + " = this->value;\n" + 
 					"\tthis->value=(("+c.cmphName+"S*)this->c)->next(this->c);\n\t" +
