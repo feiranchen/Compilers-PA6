@@ -96,7 +96,6 @@ class ExprLstCmph extends CuComprehension{
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
-        		"\tint isEC; \n"+
         		"\tvoid* eC;\n" +
         		"\tvoid* (*next)(void*);\n";
         
@@ -113,22 +112,23 @@ class ExprLstCmph extends CuComprehension{
 				+ cmphName + "->nrefs = 1;\n"
 				+ cmphName + "->isIter = 0;\n"
 				+ cmphName + "->isStr = 0;\n"
-				+ cmphName + "->isEC = 1;\n"
 				+ cmphName + "->eC = "+c.cmphName + ";\n"
 				+ cmphName + "->next = &"+cmphName + "F;\n";
 		for (String tempv : getUse()){
-			if (!forVar.contains(tempv))
-			defString+=cmphName + "->"+tempv+"="+tempv+";\n";
-			defString+=Helper.incrRefCount(tempv);
+			if (!forVar.contains(tempv)){
+				defString+=cmphName + "->"+tempv+"="+tempv+";\n";
+				defString+=Helper.incrRefCount(tempv);
+			}
 		}
 		
 		String nextFunString="";
 		nextFunString= "void* " +cmphName+ "F(void* c) {\n" +
 				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
 		for (String tempv : getUse()){
-			if (!forVar.contains(tempv))
 				nextFunString+="void*"+tempv+"=this->"+tempv+";\n";
 		}
+		
+		
 		String funContent=e.toC(new ArrayList<String>());
 		nextFunString +=e.construct() +
 				"return "+ funContent +";\n"+
@@ -206,7 +206,6 @@ class IfCmph extends CuComprehension {
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
-        		"\tint isEC; \n"+
         		"\tvoid* ifC;\n" +
         		"\tvoid* (*next)(void*);\n";
         
@@ -222,13 +221,13 @@ class IfCmph extends CuComprehension {
 				+ cmphName + "->nrefs = 1;\n"
 				+ cmphName + "->isIter = 0;\n"
 				+ cmphName + "->isStr = 0;\n"
-				+ cmphName + "->isEC = 1;\n"
 				+ cmphName + "->ifC = "+c.cmphName + ";\n"
 				+ cmphName + "->next = &"+cmphName + "F;\n";
 		for (String tempv : getUse()){
-			if (!forVar.contains(tempv))
-			defString+=cmphName + "->"+tempv+"="+tempv+";\n";
-			defString+=Helper.incrRefCount(tempv);
+			if (!forVar.contains(tempv)){
+				defString+=cmphName + "->"+tempv+"="+tempv+";\n";
+				defString+=Helper.incrRefCount(tempv);
+			}
 		}
 
 		String nextFunString="";
@@ -240,16 +239,13 @@ class IfCmph extends CuComprehension {
 		String funContent=e.toC(new ArrayList<String>());
 		nextFunString +=e.construct() +
 				"if( "+ funContent +"){\n" +
-				"\treturn ("+c.cmphName+"S*)(this->ifC)->next(this->ifC);\n"+
+				"\treturn (("+c.cmphName+"S*)this->ifC)->next(this->ifC);\n"+
 				"}\n" +
 				"else {\n" +
 				"\treturn NULL;\n" +
 				"}\n" +
 				"}\n";
 
-		
-		
-		
 		cText=defString;
 		CuComprehension.cmphEarlyPrint+=structString+nextFunString;
 		return cmphName;
@@ -275,8 +271,6 @@ class IfCmph extends CuComprehension {
 		e.changeNames(actual, replacement);
 		c.changeNames(actual, replacement);		
 	}
-	
-	
 }
 
 class ForCmph extends CuComprehension {
@@ -342,7 +336,6 @@ class ForCmph extends CuComprehension {
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
-        		"\tint isEC; \n"+
         		"\tvoid* forC;\n" +
         		"\tIterable* iter;\n" +
         		"\tvoid* (*next)(void*);\n";
@@ -350,6 +343,7 @@ class ForCmph extends CuComprehension {
         for (String tempv : getUse()){
         	structString+="\tvoid* "+tempv+";\n";
 		}
+    	structString+="\tvoid* "+v.text+";\n";
         structString+="}"+cmphName+"S;\n";
         		
 		//definition / declaration
@@ -364,14 +358,14 @@ class ForCmph extends CuComprehension {
 				+ cmphName + "->nrefs = 1;\n"
 				+ cmphName + "->isIter = 0;\n"
 				+ cmphName + "->isStr = 0;\n"
-				+ cmphName + "->isEC = 1;\n"
 				+ cmphName + "->forC = "+c.cmphName + ";\n"
 		        + cmphName + "->iter = "+eVarName + ";\n"
 				+ cmphName + "->next = &"+cmphName + "F;\n";
 		for (String tempv : getUse()){
-			if (!forVar.contains(tempv))
-			defString+=cmphName + "->"+tempv+"="+tempv+";\n";
-			defString+=Helper.incrRefCount(tempv);
+			if (!forVar.contains(tempv)){
+				defString+=cmphName + "->"+tempv+"="+tempv+";\n";
+				defString+=Helper.incrRefCount(tempv);
+			}
 		}
 
 		String nextFunString="";
@@ -383,14 +377,15 @@ class ForCmph extends CuComprehension {
 				if (!forVar.contains(tempv))
 					nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
 			}
-			nextFunString+="void*"+v.text+"=this->iter->value;\n" +
-					"\t ("+c.cmphName+"S*)(this->forC)->"+v.text+"="+v.text+";\n" +
-					"void* ret=("+c.cmphName+"S*)(this->forC)->next(this->forC);\n" +
+			nextFunString+="if (this->iter->value==NULL) return NULL;\n" +
+					"void*"+v.text+"=this->iter->value;\n" +
+					"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n" +
+					"void* ret=(("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
 					"if (ret==NULL){\n" +
 						"\t this->iter=this->iter->next(this->iter);\n" +
 						v.text+"=this->iter->value;\n" +
-						"\t ("+c.cmphName+"S*)(this->forC)->"+v.text+"="+v.text+";\n" +
-						"return ("+c.cmphName+"S*)(this->forC)->next(this->forC);\n" +
+						"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n" +
+						"return (("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
 					"}\n" +
 						
 					"return ret;\n" +
