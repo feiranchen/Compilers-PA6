@@ -285,7 +285,7 @@ class IfCmph extends CuComprehension {
 					"this->visited=1; \n" +
 				    	
 					e.construct() +
-					"if( "+ funContent +"->value){\n" +
+					"if( ((Boolean *)"+ funContent +")->value){\n" +
 					"\treturn (("+c.cmphName+"S*)this->ifC)->next(this->ifC);\n" +
 					"} \n" +
 					"else {\n" +

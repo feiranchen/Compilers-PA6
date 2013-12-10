@@ -4,8 +4,6 @@
 #include "cubex_lib.h"
 
 Iterable* input= NULL;
-<<<<<<< HEAD
-=======
 void* aaaaafF(void*);
 typedef struct aaaaaf_struct {
 	int nrefs; 
@@ -26,7 +24,6 @@ typedef struct aaaaae_struct {
 	void* ifC;
 	void* (*next)(void*);
 }aaaaaeS;
->>>>>>> c89f8f04e3a6bee5b3590fb15a6aa8f5757dbf6d
 void* aaaaadF(void*);
 typedef struct aaaaad_struct {
 	int nrefs; 
@@ -36,28 +33,14 @@ typedef struct aaaaad_struct {
 	int visited;
 	void* eC;
 	void* (*next)(void*);
-<<<<<<< HEAD
-	void* c;
-}aaaaadS;
-void* aaaaaaF(void*);
-typedef struct aaaaaa_struct {
-=======
 }aaaaadS;
 void* aaaaacF(void*);
 typedef struct aaaaac_struct {
->>>>>>> c89f8f04e3a6bee5b3590fb15a6aa8f5757dbf6d
 	int nrefs; 
 	int isIter; 
 	int isStr; 
 	int isEC; 
 	int visited;
-<<<<<<< HEAD
-	void* ifC;
-	void* (*next)(void*);
-	void* c;
-}aaaaaaS;
-Iterable* aaaaaaIterNext(void*);
-=======
 	void* eC;
 	void* (*next)(void*);
 }aaaaacS;
@@ -85,15 +68,9 @@ typedef struct aaaaah_struct {
 	void* (*next)(void*);
 }aaaaahS;
 Iterable* aaaaahIterNext(void*);
->>>>>>> c89f8f04e3a6bee5b3590fb15a6aa8f5757dbf6d
 
 void* forever() {
 
-<<<<<<< HEAD
-void* aaaaadF(void* c) {
-aaaaadS* this= (aaaaadS*) c;
-void*c=this->c;
-=======
 
 
 void * x = NULL;
@@ -178,27 +155,10 @@ return aaaaas;
 
 void* aaaaafF(void* c) {
 aaaaafS* this= (aaaaafS*) c;
->>>>>>> c89f8f04e3a6bee5b3590fb15a6aa8f5757dbf6d
 if(this->visited){ 
 	return NULL;
 }else {
 	this->visited=1; 
-<<<<<<< HEAD
-return c;
-}
-}
-void* aaaaaaF(void* c) {
-aaaaaaS* this= (aaaaaaS*) c;
-void* c=this->c;
-if (this->ifC!=NULL&&this->visited==0){	((aaaaadS*)this->ifC)->visited=0;}
-this->visited=1; 
-Boolean* aaaaah;
-aaaaah = (Boolean *) x3malloc(sizeof(Boolean));
-(aaaaah->nrefs) = 0;
-aaaaah->value = 1;
-if( aaaaah->value){
-	return ((aaaaadS*)this->ifC)->next(this->ifC);
-=======
 
 void* aaaaau;
 aaaaau = forever();
@@ -213,23 +173,13 @@ Boolean* aaaaav;
 aaaaav = (Boolean *) x3malloc(sizeof(Boolean));
 (aaaaav->nrefs) = 0;
 aaaaav->value = 1;
-if( aaaaav->value){
+if( ((Boolean *)aaaaav)->value){
 	return ((aaaaafS*)this->ifC)->next(this->ifC);
->>>>>>> c89f8f04e3a6bee5b3590fb15a6aa8f5757dbf6d
 } 
 else {
 	return NULL;
 }
 }
-<<<<<<< HEAD
-Iterable* aaaaaaIterNext(void* iter){ 
-Iterable* this=(Iterable*)iter;
-if (((aaaaaaS*)this->c) != NULL) {
-	void* aaaaai = this->value;
-	this->value=((aaaaaaS*)this->c)->next(this->c);
-	incRef(this->value);
-	decRef(aaaaai);
-=======
 void* aaaaadF(void* c) {
 aaaaadS* this= (aaaaadS*) c;
 if(this->visited){ 
@@ -325,7 +275,6 @@ if (((aaaaahS*)this->c) != NULL) {
 	this->value=((aaaaahS*)this->c)->next(this->c);
 	incRef(this->value);
 	decRef(aaaabl);
->>>>>>> c89f8f04e3a6bee5b3590fb15a6aa8f5757dbf6d
 	if(this->value)
 		return this;
 	else
@@ -338,38 +287,13 @@ else
 void* our_main()
 {
 void * c = NULL;
-<<<<<<< HEAD
-void * b = NULL;
-
-
-
-
-
-
-String* aaaaae;
-aaaaae = (String *) x3malloc(sizeof(String));
-(aaaaae->isIter) = 0;
-aaaaae->value = (char*) x3malloc(sizeof("hello"));
-(aaaaae->nrefs) = 0;
-(aaaaae->isStr) = 1;
-aaaaae->len = sizeof("hello") - 1;
-mystrcpy(aaaaae->value, "hello");
-void * aaaaaf = NULL;
-aaaaaf = c;
-c = aaaaae;
-incRef(c);
-decRef(aaaaaf);
-=======
 void * v = NULL;
->>>>>>> c89f8f04e3a6bee5b3590fb15a6aa8f5757dbf6d
 
 
 
 
 
 
-<<<<<<< HEAD
-=======
 aaaaafS* aaaaaf;
 aaaaaf = (aaaaafS*) x3malloc(sizeof(aaaaafS));
 aaaaaf->nrefs = 1;
@@ -388,60 +312,12 @@ aaaaae->isEC =0;
 aaaaae->ifC = aaaaaf;
 aaaaae->next = &aaaaaeF;
 aaaaae->visited= 0;
->>>>>>> c89f8f04e3a6bee5b3590fb15a6aa8f5757dbf6d
 aaaaadS* aaaaad;
 aaaaad = (aaaaadS*) x3malloc(sizeof(aaaaadS));
 aaaaad->nrefs = 1;
 aaaaad->isIter = 0;
 aaaaad->isStr = 0;
 aaaaad->isEC = 1;
-<<<<<<< HEAD
-aaaaad->eC = NULL;
-aaaaad->next = &aaaaadF;
-aaaaad->visited= 0;
-aaaaad->c=c;
-incRef(c);
-aaaaaaS* aaaaaa;
-aaaaaa = (aaaaaaS*) x3malloc(sizeof(aaaaaaS));
-aaaaaa->nrefs = 1;
-aaaaaa->isIter = 0;
-aaaaaa->isStr = 0;
-aaaaaa->isEC =0;
-aaaaaa->ifC = aaaaad;
-aaaaaa->next = &aaaaaaF;
-aaaaaa->visited= 0;
-aaaaaa->c=c;
-incRef(c);
-Iterable* aaaaag;
-aaaaag = (Iterable*) x3malloc(sizeof(Iterable));
-aaaaag->isIter = 1;
-aaaaag->nrefs = 0;
-aaaaag->value = NULL;
-aaaaag->c = aaaaaa;
-aaaaag->additional = NULL;
-aaaaag->next = &aaaaaaIterNext;
-aaaaag->concat = NULL;
-
-void * aaaaaj = NULL;
-aaaaaj = b;
-b = aaaaag;
-incRef(b);
-decRef(aaaaaj);
-decRef(c);
-
-
-
-
-
-
-
-
-
-if (b!= NULL) {
-(*(int *)b)--;
-}
-return b;
-=======
 aaaaad->eC = aaaaae;
 aaaaad->next = &aaaaadF;
 aaaaad->visited= 0;
@@ -596,7 +472,6 @@ aaaabj->next = &aaaaahIterNext;
 aaaabj->concat = NULL;
 
 return aaaabj;
->>>>>>> c89f8f04e3a6bee5b3590fb15a6aa8f5757dbf6d
 }
 
 
