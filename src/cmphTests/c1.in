@@ -4,7 +4,7 @@ i:=5;
 d:=["hello",if (i>2) "world"];
 
 e:=["haha", "ahahha"];
-f:=["haha", "ahahha", for (v in ["a","b","c","d"]) v, "stopppp", if (i<=6) "stop"];
+f:=["haha", "ahahha", for (v in ["a","b","c","d"]) v, "stopppp", if (i<=6) v,"stop"];
 g:=[for (v in ["a","b"]) v,"stop"];
 h:=d++e++f++g;
 return h++f;

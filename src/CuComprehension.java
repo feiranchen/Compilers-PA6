@@ -80,6 +80,10 @@ class ExprLstCmph extends CuComprehension{
 	
 	@Override
 	public String toC(ArrayList<String> localVars) {
+		for (String s : forVar){
+			if (!c.forVar.contains(s))
+				c.forVar.add(s);
+		}
 		//update vars to reserve org value
 		//ArrayList<String> orgVarsE = e.getUse();
 		//ArrayList<String> orgVarsC = c.getUse();
@@ -128,6 +132,12 @@ class ExprLstCmph extends CuComprehension{
 				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
 		for (String tempv : getUse()){
 				nextFunString+="void*"+tempv+"=this->"+tempv+";\n";
+		}
+		if (!(c instanceof EmptyCmph)){
+			for (String tempv : forVar){
+				if (c.getUse().contains(tempv))
+					nextFunString+="(("+c.cmphName+"S*)this->eC)->"+tempv+"=this->"+tempv+";\n";
+			}
 		}
 		if (c instanceof EmptyCmph){
 			nextFunString+="if(this->visited){ \n" +
@@ -207,6 +217,10 @@ class IfCmph extends CuComprehension {
 
 	@Override
 	public String toC(ArrayList<String> localVars) {
+		for (String s : forVar){
+			if (!c.forVar.contains(s))
+				c.forVar.add(s);
+		}
 		//update vars to reserve org value
 		//ArrayList<String> orgVarsE = e.getUse();
 		//ArrayList<String> orgVarsC = c.getUse();
@@ -256,6 +270,13 @@ class IfCmph extends CuComprehension {
 		for (String tempv : getUse()){
 			nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
 		}
+		if (!(c instanceof EmptyCmph)){
+			for (String tempv : forVar){
+				if (c.getUse().contains(tempv))
+					nextFunString+="(("+c.cmphName+"S*)this->ifC)->"+tempv+"=this->"+tempv+";\n";
+			}
+		}
+		
 		String funContent=e.toC(new ArrayList<String>());
 		if (!(c instanceof EmptyCmph)){
 			nextFunString +=
@@ -353,6 +374,10 @@ class ForCmph extends CuComprehension {
 	
 	public String toC(ArrayList<String> localVars) {
 		c.forVar.add(v.text);
+		for (String s : forVar){
+			if (!c.forVar.contains(s))
+				c.forVar.add(s);
+		}
 		//update vars to reserve org value
 		//ArrayList<String> orgVarsE = e.getUse();
 		//ArrayList<String> orgVarsC = c.getUse();
@@ -413,10 +438,13 @@ class ForCmph extends CuComprehension {
 				if (!forVar.contains(tempv))
 					nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
 			}
-			
+			if (!(c instanceof EmptyCmph)){
+				for (String tempv : forVar){
+					if (c.getUse().contains(tempv))
+						nextFunString+="(("+c.cmphName+"S*)this->forC)->"+tempv+"=this->"+tempv+";\n";
+				}
+			}
 
-			
-			
 			nextFunString+="if (this->forC!=NULL&&this->visited==0){"+
 			    	"\t(("+c.cmphName+"S*)this->forC)->visited=0;}\n"+
 					"this->visited=1; \n" +
