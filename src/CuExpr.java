@@ -95,6 +95,9 @@ public abstract class CuExpr {
 	}
 	
 	public Pair<List<CuStat>, CuExpr> toHIR() {
+		//default is to return empty list and this expression itself,
+		//list compression will use this default toHIR
+		hir = new Pair<List<CuStat>, CuExpr>(new ArrayList<CuStat>(), this);
 		return hir;
 	}
 	
@@ -206,10 +209,20 @@ class AndExpr extends CuExpr{
 	}
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (left.isVariableExpression())
+		/*if (left.isVariableExpression())
 			use.add(left.getVal());
 		if (right.isVariableExpression())
-			use.add(right.getVal());
+			use.add(right.getVal()); */
+		for (String str : left.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
+		for (String str : right.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
 		return use;
 	}
 	@Override
@@ -570,10 +583,20 @@ Helper.P("common parent of types is " + type.toString());
 	
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (left.isVariableExpression())
+		/*if (left.isVariableExpression())
 			use.add(left.getVal());
 		if (right.isVariableExpression())
-			use.add(right.getVal());
+			use.add(right.getVal());*/
+		for (String str : left.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
+		for (String str : right.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
 		return use;
 	}
 	
@@ -850,8 +873,13 @@ class BrkExpr extends CuExpr {
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
 		for (CuExpr ce : val) {
-			if (ce.isVariableExpression())
-				use.add(ce.getVal());
+			/*if (ce.isVariableExpression())
+				use.add(ce.getVal());*/
+			for (String str : ce.getUse()) {
+				if (!use.contains(str)) {
+					use.add(str);
+				}
+			}
 		}
 		return use;
 	}
@@ -1340,10 +1368,20 @@ class DivideExpr extends CuExpr{
 	
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (left.isVariableExpression())
+		/*if (left.isVariableExpression())
 			use.add(left.getVal());
 		if (right.isVariableExpression())
-			use.add(right.getVal());
+			use.add(right.getVal());*/
+		for (String str : left.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
+		for (String str : right.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
 		return use;
 	}
 	
@@ -1700,10 +1738,20 @@ class EqualExpr extends CuExpr{
 	
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (left.isVariableExpression())
+		/*if (left.isVariableExpression())
 			use.add(left.getVal());
 		if (right.isVariableExpression())
-			use.add(right.getVal());
+			use.add(right.getVal());*/
+		for (String str : left.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
+		for (String str : right.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
 		return use;
 	}
 	
@@ -1879,10 +1927,20 @@ class GreaterThanExpr extends CuExpr{
 	
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (left.isVariableExpression())
+		/*if (left.isVariableExpression())
 			use.add(left.getVal());
 		if (right.isVariableExpression())
-			use.add(right.getVal());
+			use.add(right.getVal());*/
+		for (String str : left.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
+		for (String str : right.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
 		return use;
 	}
 	
@@ -2064,10 +2122,20 @@ class LessThanExpr extends CuExpr{
 	
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (left.isVariableExpression())
+		/*if (left.isVariableExpression())
 			use.add(left.getVal());
 		if (right.isVariableExpression())
-			use.add(right.getVal());
+			use.add(right.getVal());*/
+		for (String str : left.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
+		for (String str : right.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
 		return use;
 	}
 	
@@ -2231,10 +2299,20 @@ class MinusExpr extends CuExpr{
 	
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (left.isVariableExpression())
+		/*if (left.isVariableExpression())
 			use.add(left.getVal());
 		if (right.isVariableExpression())
-			use.add(right.getVal());
+			use.add(right.getVal());*/
+		for (String str : left.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
+		for (String str : right.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
 		return use;
 	}
 	
@@ -2408,10 +2486,20 @@ class ModuloExpr extends CuExpr{
 	
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (left.isVariableExpression())
+		/*if (left.isVariableExpression())
 			use.add(left.getVal());
 		if (right.isVariableExpression())
-			use.add(right.getVal());
+			use.add(right.getVal());*/
+		for (String str : left.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
+		for (String str : right.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
 		return use;
 	}
 	
@@ -2531,9 +2619,13 @@ class NegateExpr extends CuExpr{
 	
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (val.isVariableExpression())
-			use.add(val.getVal());
-
+		/*if (val.isVariableExpression())
+			use.add(val.getVal());*/
+		for (String str : val.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
 		return use;
 	}
 	
@@ -2657,8 +2749,13 @@ class NegativeExpr extends CuExpr{
 	
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (val.isVariableExpression())
-			use.add(val.getVal());
+		/*if (val.isVariableExpression())
+			use.add(val.getVal());*/
+		for (String str : val.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
 		return use;
 	}
 	
@@ -2876,8 +2973,14 @@ class OnwardsExpr extends CuExpr{
 	
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (val.isVariableExpression())
-			use.add(val.getVal());
+		/*if (val.isVariableExpression())
+			use.add(val.getVal());*/
+		for (String str : val.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
+
 		return use;
 	}
 	
@@ -3034,10 +3137,20 @@ class OrExpr extends CuExpr{
 	
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (left.isVariableExpression())
+		/*if (left.isVariableExpression())
 			use.add(left.getVal());
 		if (right.isVariableExpression())
-			use.add(right.getVal());
+			use.add(right.getVal());*/
+		for (String str : left.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
+		for (String str : right.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
 		return use;
 	}
 	
@@ -3202,10 +3315,20 @@ class PlusExpr extends CuExpr{
 	
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (left.isVariableExpression())
+		/*if (left.isVariableExpression())
 			use.add(left.getVal());
 		if (right.isVariableExpression())
-			use.add(right.getVal());
+			use.add(right.getVal());*/
+		for (String str : left.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
+		for (String str : right.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
 		return use;
 	}
 	
@@ -3583,10 +3706,20 @@ class ThroughExpr extends CuExpr{
 	
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (left.isVariableExpression())
+		/*if (left.isVariableExpression())
 			use.add(left.getVal());
 		if (right.isVariableExpression())
-			use.add(right.getVal());
+			use.add(right.getVal());*/
+		for (String str : left.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
+		for (String str : right.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
 		return use;
 	}
 	
@@ -3742,10 +3875,20 @@ class TimesExpr extends CuExpr{
 	
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
-		if (left.isVariableExpression())
+		/*if (left.isVariableExpression())
 			use.add(left.getVal());
 		if (right.isVariableExpression())
-			use.add(right.getVal());
+			use.add(right.getVal());*/
+		for (String str : left.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
+		for (String str : right.getUse()) {
+			if (!use.contains(str)) {
+				use.add(str);
+			}
+		}
 		return use;
 	}
 	
