@@ -188,6 +188,8 @@ class FullPrg extends CuProgr {
 				+ "Iterable* ourMain, *temp;\n"
 				+ "ourMain = (Iterable*) our_main();\n"
 				+ "temp = ourMain;\n"
+				+ "if (ourMain->c != NULL)\n\t"
+				+ "ourMain = iterGetNext(ourMain);\n"
 				+ "while(ourMain != NULL) {\n\t"
 				+ "print_line(((String*)ourMain->value)->value, ((String*)ourMain->value)->len);\n\t"
 				+ "ourMain = iterGetNext(ourMain);\n}\n"

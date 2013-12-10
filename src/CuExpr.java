@@ -631,15 +631,23 @@ class ComExpr extends CuExpr{
 		if (c.cText == "NULL")
 			iter = "NULL";
 		else {
+			String temp = Helper.getVarName();
 			CuComprehension.cmphEarlyPrint+="Iterable* "+c.cmphName+"IterNext(void* iter){ \n";
 			CuComprehension.cmphEarlyPrint+="Iterable* this=(Iterable*)iter;\n" +
-					"\tthis->value=(("+c.cmphName+"S*)this->c)->next(this->c);\n";
+					"if ((("+c.cmphName+"S*)this->c) != NULL) {\n" +
+					"\tvoid* " + temp + " = this->value;\n" + 
+					"\tthis->value=(("+c.cmphName+"S*)this->c)->next(this->c);\n\t" +
+					Helper.incrRefCount("this->value") + "\t" +
+					Helper.decRefCount(temp);
 			
 			if (c instanceof ExprLstCmph){
-				CuComprehension.cmphEarlyPrint+="\tthis->c=("+c.cmphName+"S*)(iter->c)->eC";
+				CuComprehension.cmphEarlyPrint+="\tthis->c=(("+c.cmphName+"S*)this->c)->eC;\n";
 			}
-			CuComprehension.cmphEarlyPrint+="Return this;\n" +
+			CuComprehension.cmphEarlyPrint+="\treturn this;\n\t}\n"
+					+ "else\n\t"
+					+ "return NULL;\n" +
 					"}\n";
+			
 			
 			name += "Iterable* " + iter + ";\n" 
 				+ iter + " = (Iterable*) x3malloc(sizeof(Iterable));\n"
