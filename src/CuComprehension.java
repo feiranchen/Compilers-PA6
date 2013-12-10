@@ -149,14 +149,15 @@ class ExprLstCmph extends CuComprehension{
 		nextFunString+="if("+thisName+"->visited){ \n" +
 					"\treturn (("+c.cmphName+"S*)"+thisName+"->eC)->next("+thisName+"->eC);\n"+
 					"}else {\n" +
-					"\t"+thisName+"->visited=1; \n"+
-					"(("+c.cmphName+"S*)"+thisName+"->eC)->visited=0;\n";
+						"\tif (this->eC!=NULL&&this->visited==0){"+
+						"\t\t(("+c.cmphName+"S*)this->eC)->visited=0;}\n"+
+						"\t\tthis->visited=1; \n" ;
 		}
-			
+
 		String funContent=e.toC(new ArrayList<String>());
 		nextFunString +=e.construct() +
-				"return "+ funContent +";\n"+
-				"}\n" +
+				"\treturn "+ funContent +";\n"+
+				"\t}\n" +
 				"}\n";
 		
 		cText=defString;
@@ -398,6 +399,7 @@ class ForCmph extends CuComprehension {
         		"\tint visited;\n"+
         		"\tvoid* forC;\n" +
         		"\tIterable* iter;\n" +
+        		"\tIterable* iterorg;\n" +
         		"\tvoid* (*next)(void*);\n";
         
         for (String tempv : getUse()){
@@ -411,8 +413,19 @@ class ForCmph extends CuComprehension {
         
         String eVarName=e.toC(new ArrayList<String>());
         defString +=e.construct();
-        
-        String nextC;
+        defString +="Iterable *" + eVarName + "Copy;\n" 
+        	  +"\t\t" + eVarName + "Copy = (Iterable *)x3malloc(sizeof(Iterable));\n"
+		      +"\t\t" + eVarName + "Copy->nrefs ="+ eVarName+"->nrefs;\n"
+		      +"\t\t" + eVarName + "Copy->isIter = "+ eVarName+"->isIter;\n"
+		      +"\t\t" + eVarName + "Copy->isStr = "+ eVarName+"->isStr;\n"
+		      +"\t\t" + eVarName + "Copy->value = "+ eVarName+"->value;\n"
+		      +"\t\t" + eVarName + "Copy->c = "+ eVarName+"->c;\n"
+		      +"\t\t" + eVarName + "Copy->additional = "+ eVarName+"->additional;\n"
+		      +"\t\t" + eVarName + "Copy->next = "+ eVarName+"->next;\n"
+		      +"\t\t" + eVarName + "Copy->concat = "+ eVarName+"->concat;\n\t\t";
+		//increase c's ref count
+        defString += Helper.incrRefCount("(((Iterable*)" + eVarName + "Copy)->c)");
+        		
 		defString += cmphName+"S* " + cmphName + ";\n" 
 				+ cmphName + " = ("+cmphName+"S*) x3malloc(sizeof("+cmphName+"S));\n"
 				+ cmphName + "->nrefs = 1;\n"
@@ -420,9 +433,24 @@ class ForCmph extends CuComprehension {
 				+ cmphName + "->isStr = 0;\n"
 				+ cmphName + "->isEC =0;\n"
 				+ cmphName + "->forC = "+c.cmphName + ";\n"
-		        + cmphName + "->iter = "+eVarName + ";\n"
+		        + cmphName + "->iter = "+eVarName + "Copy;\n"
+				 + cmphName + "->iterorg = "+eVarName + ";\n"
 				+ cmphName + "->next = &"+cmphName + "F;\n"
 				+ cmphName + "->visited= 0;\n";
+		
+		String copyIter= "Iterable *" + eVarName + "Copy;\n" 
+				  +"\t\tthis->iter= (Iterable *)x3malloc(sizeof(Iterable));\n"
+			      +"\t\tthis->iter->nrefs =this->iterorg->nrefs;\n"
+			      +"\t\tthis->iter->isIter =this->iterorg->isIter;\n"
+			      +"\t\tthis->iter->isStr =this->iterorg->isStr;\n"
+			      +"\t\tthis->iter->value =this->iterorg->value;\n"
+			      +"\t\tthis->iter->c =this->iterorg->c;\n"
+			      +"\t\tthis->iter->additional =this->iterorg->additional;\n"
+			      +"\t\tthis->iter->next =this->iterorg->next;\n"
+			      +"\t\tthis->iter->concat =this->iterorg->concat;\n\t\t"
+			      +"\t\t*((int*)this->iter->c+4)=0;\n"
+			      +Helper.incrRefCount("this->iterorg->c");
+		
 		for (String tempv : getUse()){
 			if (!forVar.contains(tempv)){
 				defString+=cmphName + "->"+tempv+"="+tempv+";\n";
@@ -440,31 +468,28 @@ class ForCmph extends CuComprehension {
 				if (!forVar.contains(tempv))
 					nextFunString+="void* "+tempv+"="+thisName+"->"+tempv+";\n";
 			}
-			if (!(c instanceof EmptyCmph)){
-				for (String tempv : forVar){
-					if (c.getUse().contains(tempv))
-						nextFunString+="(("+c.cmphName+"S*)"+thisName+"->forC)->"+tempv+"="+thisName+"->"+tempv+";\n";
-				}
+			for (String tempv : forVar){
+				if (c.getUse().contains(tempv))
+					nextFunString+="(("+c.cmphName+"S*)this->forC)->"+tempv+"=this->"+tempv+";\n";
 			}
 
-			nextFunString+="if ("+thisName+"->forC!=NULL&&"+thisName+"->visited==0){"+
-			    	"\t(("+c.cmphName+"S*)"+thisName+"->forC)->visited=0;}\n"+
-					""+thisName+"->visited=1; \n" +
-			    	"if ("+thisName+"->iter==NULL) {return NULL;}\n" +
-					"if ("+thisName+"->iter->value==NULL) {" +//handle beginning
-					""+thisName+"->iter=iterGetNext("+thisName+"->iter);}\n" +
-					"if ("+thisName+"->iter==NULL||"+thisName+"->iter->value==NULL) {return NULL;}\n" +
-					"void*"+v.text+"="+thisName+"->iter->value;\n" +
-					"\t (("+c.cmphName+"S*)"+thisName+"->forC)->"+v.text+"="+v.text+";\n" +
-					"\t"+thisName+"->visited=1; \n" +
-					"void* ret=(("+c.cmphName+"S*)"+thisName+"->forC)->next("+thisName+"->forC);\n" +
+			nextFunString+="if (this->forC!=NULL&&this->visited==0){"+
+			    	"\t(("+c.cmphName+"S*)this->forC)->visited=0;}\n"+
+					"this->visited=1; \n" +
+			    	"if (this->iter==NULL) {\n"+copyIter+"return NULL;}\n" +
+					"if (this->iter->value==NULL) {" +//handle beginning
+					"this->iter=iterGetNext(this->iter);}\n" +
+					"if (this->iter==NULL||this->iter->value==NULL) {\n"+copyIter+" return NULL;}\n" +
+					"void*"+v.text+"=this->iter->value;\n" +
+					"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n" +
+					"void* ret=(("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
 					"if (ret==NULL){\n" +
-						"\t "+thisName+"->iter=iterGetNext("+thisName+"->iter);\n" +
-						"if ("+thisName+"->iter==NULL) {return NULL;}\n" +
-						"(("+c.cmphName+"S*)"+thisName+"->forC)->visited=0;\n" +
-						"\t"+v.text+"="+thisName+"->iter->value;\n" +
-						"\t (("+c.cmphName+"S*)"+thisName+"->forC)->"+v.text+"="+v.text+";\n"+
-						"return (("+c.cmphName+"S*)"+thisName+"->forC)->next("+thisName+"->forC);\n" +
+						"\t(("+c.cmphName+"S*)this->forC)->visited=0;\n" +//end of loop, enable again
+						"\t this->iter=iterGetNext(this->iter);\n" +
+						"if (this->iter==NULL) {return NULL;}\n" +
+						"\t"+v.text+"=this->iter->value;\n" +
+						"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n"+
+						"return (("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
 					"}\n" +
 						
 					"return ret;\n" +
