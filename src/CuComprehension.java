@@ -93,8 +93,10 @@ class ExprLstCmph extends CuComprehension{
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
+        		"\tint isEC; \n" +
         		"\tvoid* eC;\n" +
-        		"\tvoid* (*next)(void*);\n";
+        		"\tvoid* (*next)(void*);\n" +
+        		"\tint visited;\n";
         
         for (String tempv : getUse()){
         	structString+="\tvoid* "+tempv+";\n";
@@ -103,14 +105,15 @@ class ExprLstCmph extends CuComprehension{
         		
 		//definition / declaration
         defString +=c.defString;
-        String nextC;
 		defString += cmphName+"S* " + cmphName + ";\n" 
 				+ cmphName + " = ("+cmphName+"S*) x3malloc(sizeof("+cmphName+"S));\n"
 				+ cmphName + "->nrefs = 1;\n"
 				+ cmphName + "->isIter = 0;\n"
 				+ cmphName + "->isStr = 0;\n"
+				+ cmphName + "->isEC = 1;\n"
 				+ cmphName + "->eC = "+c.cmphName + ";\n"
-				+ cmphName + "->next = &"+cmphName + "F;\n";
+				+ cmphName + "->next = &"+cmphName + "F;\n" 
+				+ cmphName + "->visited= 0;\n";
 		for (String tempv : getUse()){
 			if (!forVar.contains(tempv)){
 				defString+=cmphName + "->"+tempv+"="+tempv+";\n";
@@ -119,16 +122,25 @@ class ExprLstCmph extends CuComprehension{
 		}
 		
 		String nextFunString="";
-		nextFunString= "void* " +cmphName+ "F(void* c) {\n" +
+		nextFunString+= "void* " +cmphName+ "F(void* c) {\n" +
 				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
 		for (String tempv : getUse()){
 				nextFunString+="void*"+tempv+"=this->"+tempv+";\n";
 		}
-		
-		
+		if (c instanceof EmptyCmph){
+			nextFunString+="if(this->visited){ \n" +
+					"\treturn NULL;\n";
+		}else{
+		nextFunString+="if(this->visited){ \n" +
+					"\treturn (("+c.cmphName+"S*)this->eC)->next(this->eC);\n";
+					
+		}
+		nextFunString+="}else {\n" +
+				"\tthis->visited=1;";
 		String funContent=e.toC(new ArrayList<String>());
 		nextFunString +=e.construct() +
 				"return "+ funContent +";\n"+
+				"}\n" +
 				"}\n";
 		
 		cText=defString;
@@ -203,6 +215,7 @@ class IfCmph extends CuComprehension {
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
+        		"\tint isEC; \n" +
         		"\tvoid* ifC;\n" +
         		"\tvoid* (*next)(void*);\n";
         
@@ -217,7 +230,8 @@ class IfCmph extends CuComprehension {
 				+ cmphName + " = ("+cmphName+"S*) x3malloc(sizeof("+cmphName+"S));\n"
 				+ cmphName + "->nrefs = 1;\n"
 				+ cmphName + "->isIter = 0;\n"
-				+ cmphName + "->isStr = 0;\n"
+				+ cmphName + "->isStr = 0;\n" 
+				+ cmphName + "->isEC =0;\n"
 				+ cmphName + "->ifC = "+c.cmphName + ";\n"
 				+ cmphName + "->next = &"+cmphName + "F;\n";
 		for (String tempv : getUse()){
@@ -236,8 +250,10 @@ class IfCmph extends CuComprehension {
 		String funContent=e.toC(new ArrayList<String>());
 		nextFunString +=e.construct() +
 				"if( "+ funContent +"->value){\n" +
-				"\treturn (("+c.cmphName+"S*)this->ifC)->next(this->ifC);\n"+
-				"}\n" +
+				"\tvoid* ret= (("+c.cmphName+"S*)this->ifC)->next(this->ifC);\n" +
+				"\t \n" +
+				"\treturn ret; \n"+
+				"} \n" +
 				"else {\n" +
 				"\treturn NULL;\n" +
 				"}\n" +
@@ -333,6 +349,7 @@ class ForCmph extends CuComprehension {
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
+        		"\tint isEC; \n" +
         		"\tvoid* forC;\n" +
         		"\tIterable* iter;\n" +
         		"\tvoid* (*next)(void*);\n";
@@ -355,6 +372,7 @@ class ForCmph extends CuComprehension {
 				+ cmphName + "->nrefs = 1;\n"
 				+ cmphName + "->isIter = 0;\n"
 				+ cmphName + "->isStr = 0;\n"
+				+ cmphName + "->isEC =0;\n"
 				+ cmphName + "->forC = "+c.cmphName + ";\n"
 		        + cmphName + "->iter = "+eVarName + ";\n"
 				+ cmphName + "->next = &"+cmphName + "F;\n";
@@ -374,7 +392,7 @@ class ForCmph extends CuComprehension {
 				if (!forVar.contains(tempv))
 					nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
 			}
-			nextFunString+="if (this->iter->value==NULL) {" +
+			nextFunString+="if (this->iter->value==NULL) {" +//handle beginning
 					"this->iter=iterGetNext(this->iter);}\n" +
 					"if (this->iter->value==NULL) {return NULL;};\n" +
 					"\n" +

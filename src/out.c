@@ -7,12 +7,17 @@ typedef struct aaaaae_struct {
 	int nrefs; 
 	int isIter; 
 	int isStr; 
+	int isEC; 
 	void* eC;
 	void* (*next)(void*);
+	int visited;
 }aaaaaeS;
 void* aaaaaeF(void* c) {
 aaaaaeS* this= (aaaaaeS*) c;
-String* aaaaai;
+if(this->visited){ 
+	return NULL;
+}else {
+	this->visited=1;String* aaaaai;
 aaaaai = (String *) x3malloc(sizeof(String));
 (aaaaai->isIter) = 0;
 aaaaai->value = (char*) x3malloc(sizeof("world"));
@@ -22,10 +27,12 @@ aaaaai->len = sizeof("world") - 1;
 mystrcpy(aaaaai->value, "world");
 return aaaaai;
 }
+}
 typedef struct aaaaad_struct {
 	int nrefs; 
 	int isIter; 
 	int isStr; 
+	int isEC; 
 	void* ifC;
 	void* (*next)(void*);
 	void* i;
@@ -43,8 +50,10 @@ aaaaak->nrefs = 0;
 aaaaak->value = ((Integer*) i)->value > ((Integer*) aaaaaj)->value;
 x3free(aaaaaj);
 if( aaaaak->value){
-	return ((aaaaaeS*)this->ifC)->next(this->ifC);
-}
+	void* ret= ((aaaaaeS*)this->ifC)->next(this->ifC);
+	 
+	return ret; 
+} 
 else {
 	return NULL;
 }
@@ -53,14 +62,19 @@ typedef struct aaaaaa_struct {
 	int nrefs; 
 	int isIter; 
 	int isStr; 
+	int isEC; 
 	void* eC;
 	void* (*next)(void*);
+	int visited;
 	void* i;
 }aaaaaaS;
 void* aaaaaaF(void* c) {
 aaaaaaS* this= (aaaaaaS*) c;
 void*i=this->i;
-String* aaaaal;
+if(this->visited){ 
+	return ((aaaaadS*)this->eC)->next(this->eC);
+}else {
+	this->visited=1;String* aaaaal;
 aaaaal = (String *) x3malloc(sizeof(String));
 (aaaaal->isIter) = 0;
 aaaaal->value = (char*) x3malloc(sizeof("hello"));
@@ -69,6 +83,7 @@ aaaaal->value = (char*) x3malloc(sizeof("hello"));
 aaaaal->len = sizeof("hello") - 1;
 mystrcpy(aaaaal->value, "hello");
 return aaaaal;
+}
 }
 Iterable* aaaaaaIterNext(void* iter){ 
 Iterable* this=(Iterable*)iter;
@@ -88,7 +103,7 @@ else
 void* our_main()
 {
 void * i = NULL;
-void * c = NULL;
+void * d = NULL;
 
 
 
@@ -115,13 +130,16 @@ aaaaae = (aaaaaeS*) x3malloc(sizeof(aaaaaeS));
 aaaaae->nrefs = 1;
 aaaaae->isIter = 0;
 aaaaae->isStr = 0;
+aaaaae->isEC = 1;
 aaaaae->eC = NULL;
 aaaaae->next = &aaaaaeF;
+aaaaae->visited= 0;
 aaaaadS* aaaaad;
 aaaaad = (aaaaadS*) x3malloc(sizeof(aaaaadS));
 aaaaad->nrefs = 1;
 aaaaad->isIter = 0;
 aaaaad->isStr = 0;
+aaaaad->isEC =0;
 aaaaad->ifC = aaaaae;
 aaaaad->next = &aaaaadF;
 aaaaad->i=i;
@@ -131,8 +149,10 @@ aaaaaa = (aaaaaaS*) x3malloc(sizeof(aaaaaaS));
 aaaaaa->nrefs = 1;
 aaaaaa->isIter = 0;
 aaaaaa->isStr = 0;
+aaaaaa->isEC = 1;
 aaaaaa->eC = aaaaad;
 aaaaaa->next = &aaaaaaF;
+aaaaaa->visited= 0;
 aaaaaa->i=i;
 incRef(i);
 Iterable* aaaaah;
@@ -145,9 +165,9 @@ aaaaah->additional = NULL;
 aaaaah->next = &aaaaaaIterNext;
 aaaaah->concat = NULL;
 void * aaaaan = NULL;
-aaaaan = c;
-c = aaaaah;
-incRef(c);
+aaaaan = d;
+d = aaaaah;
+incRef(d);
 decRef(aaaaan);
 decRef(i);
 
@@ -156,10 +176,10 @@ decRef(i);
 
 
 
-if (c!= NULL) {
-(*(int *)c)--;
+if (d!= NULL) {
+(*(int *)d)--;
 }
-return c;
+return d;
 }
 
 
