@@ -235,7 +235,7 @@ class IfCmph extends CuComprehension {
 		}
 		String funContent=e.toC(new ArrayList<String>());
 		nextFunString +=e.construct() +
-				"if( "+ funContent +"){\n" +
+				"if( "+ funContent +"->value){\n" +
 				"\treturn (("+c.cmphName+"S*)this->ifC)->next(this->ifC);\n"+
 				"}\n" +
 				"else {\n" +
