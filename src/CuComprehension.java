@@ -30,9 +30,6 @@ public class CuComprehension {
 }
 
 class EmptyCmph extends CuComprehension{
-	EmptyCmph(){
-		cText="NULL";
-	}
 	@Override
 	public boolean equals(Object that){
 		if (that instanceof EmptyCmph)

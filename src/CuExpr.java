@@ -625,12 +625,12 @@ class ComExpr extends CuExpr{
 		
 		c.toC(localVars);
 		
-		
 		name += c.cText;
 		
-		if (c.cText == "NULL")
+		if (c.cText == "")
 			iter = "NULL";
 		else {
+			
 			String temp = Helper.getVarName();
 			CuComprehension.cmphEarlyPrint+="Iterable* "+c.cmphName+"IterNext(void* iter){ \n";
 			CuComprehension.cmphEarlyPrint+="Iterable* this=(Iterable*)iter;\n" +

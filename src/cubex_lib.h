@@ -452,6 +452,7 @@ Iterable* strToIter (char* input, int length){
   Iterable *curr;
   curr=(Iterable*) x3malloc(sizeof(Iterable));
   curr->isIter = 1;
+  curr->c = NULL;
   Iterable *result;
   result=curr;
   int i=0;
