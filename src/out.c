@@ -211,8 +211,8 @@ mystrcpy(aaaaax->value, "Me and Squidward are gonna stay on strike...");
 return aaaaax;
 }
 }
-Iterable* aaaaacIterNext(void* iter){ 
-Iterable* this=(Iterable*)iter;
+Iterable* aaaaacIterNext(void* aaaaaz){ 
+Iterable* this=(Iterable*)aaaaaz;
 if (((aaaaacS*)this->c) != NULL) {
 	void* aaaaay = this->value;
 	this->value=((aaaaacS*)this->c)->next(this->c);
@@ -236,13 +236,13 @@ if(this->visited){
 return v;
 }
 }
-Iterable* aaaaagIterNext(void* iter){ 
-Iterable* this=(Iterable*)iter;
+Iterable* aaaaagIterNext(void* aaaabh){ 
+Iterable* this=(Iterable*)aaaabh;
 if (((aaaaagS*)this->c) != NULL) {
-	void* aaaabf = this->value;
+	void* aaaabg = this->value;
 	this->value=((aaaaagS*)this->c)->next(this->c);
 	incRef(this->value);
-	decRef(aaaabf);
+	decRef(aaaabg);
 	if(this->value)
 		return this;
 	else
@@ -257,24 +257,24 @@ if(this->visited){
 	return NULL;
 }else {
 	this->visited=1; 
-String* aaaabk;
-aaaabk = (String *) x3malloc(sizeof(String));
-(aaaabk->isIter) = 0;
-aaaabk->value = (char*) x3malloc(sizeof("On strike with Spongebob... FOREVER?!?!"));
-(aaaabk->nrefs) = 0;
-(aaaabk->isStr) = 1;
-aaaabk->len = sizeof("On strike with Spongebob... FOREVER?!?!") - 1;
-mystrcpy(aaaabk->value, "On strike with Spongebob... FOREVER?!?!");
-return aaaabk;
+String* aaaabm;
+aaaabm = (String *) x3malloc(sizeof(String));
+(aaaabm->isIter) = 0;
+aaaabm->value = (char*) x3malloc(sizeof("On strike with Spongebob... FOREVER?!?!"));
+(aaaabm->nrefs) = 0;
+(aaaabm->isStr) = 1;
+aaaabm->len = sizeof("On strike with Spongebob... FOREVER?!?!") - 1;
+mystrcpy(aaaabm->value, "On strike with Spongebob... FOREVER?!?!");
+return aaaabm;
 }
 }
-Iterable* aaaaahIterNext(void* iter){ 
-Iterable* this=(Iterable*)iter;
+Iterable* aaaaahIterNext(void* aaaabo){ 
+Iterable* this=(Iterable*)aaaabo;
 if (((aaaaahS*)this->c) != NULL) {
-	void* aaaabl = this->value;
+	void* aaaabn = this->value;
 	this->value=((aaaaahS*)this->c)->next(this->c);
 	incRef(this->value);
-	decRef(aaaabl);
+	decRef(aaaabn);
 	if(this->value)
 		return this;
 	else
@@ -340,58 +340,58 @@ aaaaat->additional = NULL;
 aaaaat->next = &aaaaacIterNext;
 aaaaat->concat = NULL;
 
-void * aaaaaz = NULL;
-aaaaaz = c;
+void * aaaaba = NULL;
+aaaaba = c;
 c = aaaaat;
 incRef(c);
-decRef(aaaaaz);
+decRef(aaaaba);
 
 
 
 
 
 
-void * aaaaba = NULL;
-aaaaba = v;
+void * aaaabb = NULL;
+aaaabb = v;
 v = c;
 incRef(v);
-decRef(aaaaba);
+decRef(aaaabb);
 decRef(c);
 	if (v!=NULL) {
 		if ((*((int *)(v+1))) == 0) {
-void * aaaabb = NULL;
-aaaabb = v;
+void * aaaabc = NULL;
+aaaabc = v;
 			v = strToIter( ((String *)v)->value, ((String *)v)->len);
 incRef(v);
-decRef(aaaabb);
+decRef(aaaabc);
 		}
 	}
 if (v!=NULL) {
 	if (((Iterable*)v)->c!=NULL) {
-		Iterable *aaaabc = NULL;
-		aaaabc = (Iterable *)x3malloc(sizeof(Iterable));
-		((Iterable*)aaaabc)->nrefs = ((Iterable*)v)->nrefs;
-		((Iterable*)aaaabc)->isIter = ((Iterable*)v)->isIter;
-		((Iterable*)aaaabc)->isStr = ((Iterable*)v)->isStr;
-		((Iterable*)aaaabc)->value = ((Iterable*)v)->value;
-		((Iterable*)aaaabc)->c = ((Iterable*)v)->c;
-		((Iterable*)aaaabc)->additional = ((Iterable*)v)->additional;
-		((Iterable*)aaaabc)->next = ((Iterable*)v)->next;
-		((Iterable*)aaaabc)->concat = ((Iterable*)v)->concat;
-		incRef((((Iterable*)aaaabc)->c));
-		v = iterGetNext(aaaabc);
-		(*((int*)((Iterable*)aaaabc)->c+5)) = 0;
+		Iterable *aaaabd = NULL;
+		aaaabd = (Iterable *)x3malloc(sizeof(Iterable));
+		((Iterable*)aaaabd)->nrefs = ((Iterable*)v)->nrefs;
+		((Iterable*)aaaabd)->isIter = ((Iterable*)v)->isIter;
+		((Iterable*)aaaabd)->isStr = ((Iterable*)v)->isStr;
+		((Iterable*)aaaabd)->value = ((Iterable*)v)->value;
+		((Iterable*)aaaabd)->c = ((Iterable*)v)->c;
+		((Iterable*)aaaabd)->additional = ((Iterable*)v)->additional;
+		((Iterable*)aaaabd)->next = ((Iterable*)v)->next;
+		((Iterable*)aaaabd)->concat = ((Iterable*)v)->concat;
+		incRef((((Iterable*)aaaabd)->c));
+		v = iterGetNext(aaaabd);
+		(*((int*)((Iterable*)aaaabd)->c+5)) = 0;
 	}
 }
 	while (v!=NULL) {
 Iterable * aaaaaj = NULL;
 		aaaaaj = (Iterable *)v;
 		incRef(aaaaaj);
-void * aaaabd = NULL;
-aaaabd = v;
+void * aaaabe = NULL;
+aaaabe = v;
 		v = aaaaaj->value;
 		incRef(v);
-		decRef(aaaabd);
+		decRef(aaaabe);
 decRef(aaaaaj);
 		
 
@@ -411,38 +411,38 @@ aaaaag->next = &aaaaagF;
 aaaaag->visited= 0;
 aaaaag->v=v;
 incRef(v);
-Iterable* aaaabe;
-aaaabe = (Iterable*) x3malloc(sizeof(Iterable));
-aaaabe->isIter = 1;
-aaaabe->nrefs = 0;
-aaaabe->value = NULL;
-aaaabe->c = aaaaag;
-aaaabe->additional = NULL;
-aaaabe->next = &aaaaagIterNext;
-aaaabe->concat = NULL;
+Iterable* aaaabf;
+aaaabf = (Iterable*) x3malloc(sizeof(Iterable));
+aaaabf->isIter = 1;
+aaaabf->nrefs = 0;
+aaaabf->value = NULL;
+aaaabf->c = aaaaag;
+aaaabf->additional = NULL;
+aaaabf->next = &aaaaagIterNext;
+aaaabf->concat = NULL;
 
 decRef(v);
-return aaaabe;
+return aaaabf;
 
 
 
-void * aaaabg = NULL;
-aaaabg = aaaaak;
+void * aaaabi = NULL;
+aaaabi = aaaaak;
 aaaaak = aaaaaj;
 incRef(aaaaak);
-decRef(aaaabg);
+decRef(aaaabi);
 decRef(aaaaak);
 
 
 
 
-void* aaaabh;
-aaaabh = iterGetNext((void*) aaaaak);
-void * aaaabi = NULL;
-aaaabi = v;
-v = aaaabh;
+void* aaaabj;
+aaaabj = iterGetNext((void*) aaaaak);
+void * aaaabk = NULL;
+aaaabk = v;
+v = aaaabj;
 incRef(v);
-decRef(aaaabi);
+decRef(aaaabk);
 decRef(v);
 	}
 decRef(v);
@@ -461,17 +461,17 @@ aaaaah->isEC = 1;
 aaaaah->eC = NULL;
 aaaaah->next = &aaaaahF;
 aaaaah->visited= 0;
-Iterable* aaaabj;
-aaaabj = (Iterable*) x3malloc(sizeof(Iterable));
-aaaabj->isIter = 1;
-aaaabj->nrefs = 0;
-aaaabj->value = NULL;
-aaaabj->c = aaaaah;
-aaaabj->additional = NULL;
-aaaabj->next = &aaaaahIterNext;
-aaaabj->concat = NULL;
+Iterable* aaaabl;
+aaaabl = (Iterable*) x3malloc(sizeof(Iterable));
+aaaabl->isIter = 1;
+aaaabl->nrefs = 0;
+aaaabl->value = NULL;
+aaaabl->c = aaaaah;
+aaaabl->additional = NULL;
+aaaabl->next = &aaaaahIterNext;
+aaaabl->concat = NULL;
 
-return aaaabj;
+return aaaabl;
 }
 
 

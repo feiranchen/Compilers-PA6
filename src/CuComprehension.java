@@ -451,17 +451,29 @@ class ForCmph extends CuComprehension {
 			    	"if (this->iter==NULL) {return NULL;}\n" +
 					"if (this->iter->value==NULL) {" +//handle beginning
 					"this->iter=iterGetNext(this->iter);}\n" +
-					"if (this->iter==NULL||this->iter->value==NULL) {return NULL;}\n" +
-					"void*"+v.text+"=this->iter->value;\n" +
-					"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n" +
+					"if (this->iter==NULL||this->iter->value==NULL) {return NULL;}\n"; 
+			
+			//only add these two lines when c uses v.text
+			if (c.getUse().contains(v.text)){
+				nextFunString+="void*"+v.text+"=this->iter->value;\n" +
+					"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n";
+			}
+				nextFunString+=		
 					"\tthis->visited=1; \n" +
 					"void* ret=(("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
 					"if (ret==NULL){\n" +
 						"\t this->iter=iterGetNext(this->iter);\n" +
 						"if (this->iter==NULL) {return NULL;}\n" +
-						"(("+c.cmphName+"S*)this->forC)->visited=0;\n" +
+						"(("+c.cmphName+"S*)this->forC)->visited=0;\n";
+				
+				//only add these two lines when c uses v.text
+				if (c.getUse().contains(v.text)){
+					nextFunString+=
 						"\t"+v.text+"=this->iter->value;\n" +
-						"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n"+
+						"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n";
+				}
+				
+				nextFunString+=		
 						"return (("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
 					"}\n" +
 						
