@@ -509,6 +509,8 @@ Helper.P("common parent of types is " + type.toString());
 		super.name += "if (" + "(*((int *)" + leftToC +"+1)) == 0) {\n";		//checking if isIter is false 
 		super.name += Helper.decRefCount(iter_name1);
 		super.name += iter_name1+ " = strToIter( ((String *)" + leftToC + ")->value, ((String *)" + leftToC + ")->len);\n";
+		//added by Yinglei, strToIter the first element has zero ref count
+		super.name += Helper.incrRefCount(iter_name1);
 		super.name += "}\n}\n";
 		
 		String iter_name2 = Helper.getVarName();
@@ -519,6 +521,8 @@ Helper.P("common parent of types is " + type.toString());
 		super.name += "if (" + "(*((int *)" + rightToC +"+1)) == 0) {\n";		//checking if isIter is false
 		super.name += Helper.decRefCount(iter_name2);
 		super.name += iter_name2+ " = strToIter( ((String *)" + rightToC + ")->value, ((String *)" + rightToC + ")->len);\n";
+		//added by Yinglei, strToIter the first element has zero ref count
+		super.name += Helper.incrRefCount(iter_name2);
 		super.name += "}\n}\n";
 
 		String leftIterType = Helper.iterType.get(left.toString());
@@ -4644,6 +4648,27 @@ Helper.P(" 1mapping is " + mapping.toString());
 				expToC = exp.toC(localVars);
 				tempName = exp.construct();
 				name += tempName;
+				
+				//added by Yinglei, expToC (should be a variable name
+				name += "\t" + "if ("+ expToC +"!=NULL) {\n";
+				name += "\t\t" + "if (" + "(*((int *)(" + expToC +"+1))) == 0) {\n";
+				String temp_name = Helper.getVarName();
+				name += Helper.refAcquire(temp_name, expToC);
+				name += "\t\t\t" + expToC + " = strToIter( ((String *)" + expToC + ")->value, ((String *)" + expToC + ")->len);\n";
+				//added specifically for pa6, because we may not have toHIR in list comprehension
+				//if we don't have toHIR, this expToC will be a temp variable in C and has ref count 0
+				name += "if ( (*(int *)(" + temp_name +")) != 0) {\n";
+				name += Helper.incrRefCount(expToC);
+				name += Helper.decRefCount(temp_name);
+				name += "}\n";
+				//otherwise (if this is a temp C variable), we use incre and decr to deallocate this variable
+				name += "else {\n";
+				name += Helper.incrRefCount(temp_name);
+				name += Helper.decRefCount(temp_name);
+				name += "}\n";
+				name += "\t\t}\n\t}\n";
+				//end of what added by Yinglei
+				 
 				if (!tempName.equals("")) {
 					Helper.cVarType.put(expToC, "Iterable");
 				}
