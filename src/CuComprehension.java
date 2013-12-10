@@ -388,6 +388,7 @@ class ForCmph extends CuComprehension {
 					"void* ret=("+c.cmphName+"S*)(this->forC)->next(this->forC);\n" +
 					"if (ret==NULL){\n" +
 						"\t this->iter=this->iter->next(this->iter);\n" +
+						v.text+"=this->iter->value;\n" +
 						"\t ("+c.cmphName+"S*)(this->forC)->"+v.text+"="+v.text+";\n" +
 						"return ("+c.cmphName+"S*)(this->forC)->next(this->forC);\n" +
 					"}\n" +
@@ -398,7 +399,6 @@ class ForCmph extends CuComprehension {
 			nextFunString+="return NULL;\n" +
 					"}\n";
 		}
-			
 		
 		cText=defString;
 		CuComprehension.cmphEarlyPrint+=structString+nextFunString;
