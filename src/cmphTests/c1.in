@@ -1,9 +1,10 @@
 
 i:=5;
 #c:=[6+i,if (i>2) i];
-#d:=["hello",if (i>2) "world"];
+d:=["hello",if (i>2) "world"];
 
-#d:=["haha", "ahahha"];
-d:=["haha", "ahahha", for (v in ["a","b","c","d"]) v,"stop"];
-#d:=[for (v in ["a","b"]) v,"stop"];
-return d;
+e:=["haha", "ahahha"];
+f:=["haha", "ahahha", for (v in ["a","b","c","d"]) v, "stopppp", if (i<=6) "stop"];
+g:=[for (v in ["a","b"]) v,"stop"];
+h:=d++e++f++g;
+return h++f;
