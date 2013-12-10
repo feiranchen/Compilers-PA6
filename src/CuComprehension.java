@@ -128,25 +128,26 @@ class ExprLstCmph extends CuComprehension{
 		
 		CuComprehension.structStringGlobal += "void* " +cmphName+ "F(void*);\n";
 		String nextFunString="";
-		nextFunString+= "void* " +cmphName+ "F(void* c) {\n" +
-				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
+		String argName = Helper.getVarName(), thisName = Helper.getVarName();
+		nextFunString+= "void* " +cmphName+ "F(void* c_" + argName + ") {\n" +
+				cmphName+"S* " + thisName + "= ("+cmphName+"S*) c_" + argName + ";\n"; 
 		for (String tempv : getUse()){
-				nextFunString+="void*"+tempv+"=this->"+tempv+";\n";
+				nextFunString+="void*"+tempv+"="+thisName+"->"+tempv+";\n";
 		}
 		if (!(c instanceof EmptyCmph)){
 			for (String tempv : forVar){
 				if (c.getUse().contains(tempv))
-					nextFunString+="(("+c.cmphName+"S*)this->eC)->"+tempv+"=this->"+tempv+";\n";
+					nextFunString+="(("+c.cmphName+"S*)"+thisName+"->eC)->"+tempv+"="+thisName+"->"+tempv+";\n";
 			}
 		}
 		if (c instanceof EmptyCmph){
-			nextFunString+="if(this->visited){ \n" +
+			nextFunString+="if("+thisName+"->visited){ \n" +
 					"\treturn NULL;\n" +
 					"}else {\n"+
-					"\tthis->visited=1; \n";
+					"\t"+thisName+"->visited=1; \n";
 		}else{
-		nextFunString+="if(this->visited){ \n" +
-					"\treturn (("+c.cmphName+"S*)this->eC)->next(this->eC);\n"+
+		nextFunString+="if("+thisName+"->visited){ \n" +
+					"\treturn (("+c.cmphName+"S*)"+thisName+"->eC)->next("+thisName+"->eC);\n"+
 					"}else {\n" +
 						"\tif (this->eC!=NULL&&this->visited==0){"+
 						"\t\t(("+c.cmphName+"S*)this->eC)->visited=0;}\n"+
@@ -266,28 +267,29 @@ class IfCmph extends CuComprehension {
 
 		CuComprehension.structStringGlobal += "void* " +cmphName+ "F(void*);\n";
 		String nextFunString="";
-		nextFunString= "void* " +cmphName+ "F(void* c) {\n" +
-				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
+		String argName = Helper.getVarName(), thisName = Helper.getVarName();
+		nextFunString= "void* " +cmphName+ "F(void* c_"+argName+") {\n" +
+				cmphName+"S* "+thisName+"= ("+cmphName+"S*) c_"+argName+";\n"; 
 		for (String tempv : getUse()){
-			nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
+			nextFunString+="void* "+tempv+"="+thisName+"->"+tempv+";\n";
 		}
 		if (!(c instanceof EmptyCmph)){
 			for (String tempv : forVar){
 				if (c.getUse().contains(tempv))
-					nextFunString+="(("+c.cmphName+"S*)this->ifC)->"+tempv+"=this->"+tempv+";\n";
+					nextFunString+="(("+c.cmphName+"S*)"+thisName+"->ifC)->"+tempv+"="+thisName+"->"+tempv+";\n";
 			}
 		}
 		
 		String funContent=e.toC(new ArrayList<String>());
 		if (!(c instanceof EmptyCmph)){
 			nextFunString +=
-					"if (this->ifC!=NULL&&this->visited==0){"+
-				    	"\t(("+c.cmphName+"S*)this->ifC)->visited=0;}\n"+
-					"this->visited=1; \n" +
+					"if ("+thisName+"->ifC!=NULL&&"+thisName+"->visited==0){"+
+				    	"\t(("+c.cmphName+"S*)"+thisName+"->ifC)->visited=0;}\n"+
+					""+thisName+"->visited=1; \n" +
 				    	
 					e.construct() +
-					"if( "+ funContent +"->value){\n" +
-					"\treturn (("+c.cmphName+"S*)this->ifC)->next(this->ifC);\n" +
+					"if( ((Boolean *)"+ funContent +")->value){\n" +
+					"\treturn (("+c.cmphName+"S*)"+thisName+"->ifC)->next("+thisName+"->ifC);\n" +
 					"} \n" +
 					"else {\n" +
 					"\treturn NULL;\n" +
@@ -457,14 +459,14 @@ class ForCmph extends CuComprehension {
 		}
 
 		CuComprehension.structStringGlobal += "void* " +cmphName+ "F(void*);\n";
-		String nextFunString="";
-		nextFunString+= "void* " +cmphName+ "F(void* c) {\n" +
-				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
+		String nextFunString="", thisName = Helper.getVarName(), argName = Helper.getVarName();
+		nextFunString+= "void* " +cmphName+ "F(void* c_"+argName+") {\n" +
+				cmphName+"S* "+thisName+"= ("+cmphName+"S*) c_"+argName+";\n"; 
 
 		if (!(c instanceof EmptyCmph)){
 			for (String tempv : getUse()){
 				if (!forVar.contains(tempv))
-					nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
+					nextFunString+="void* "+tempv+"="+thisName+"->"+tempv+";\n";
 			}
 			for (String tempv : forVar){
 				if (c.getUse().contains(tempv))
