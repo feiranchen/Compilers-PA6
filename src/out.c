@@ -1283,8 +1283,10 @@ Iterable* ourMain, *temp;
 ourMain = (Iterable*) our_main();
 temp = ourMain;
 if (ourMain != NULL)
-	if (ourMain->c != NULL)
+	if (ourMain->c != NULL) {
 		ourMain = iterGetNext(ourMain);
+		(*((int*)ourMain->c+5)) = 0;
+	}
 while(ourMain != NULL) {
 	print_line(((String*)ourMain->value)->value, ((String*)ourMain->value)->len);
 	ourMain = iterGetNext(ourMain);
