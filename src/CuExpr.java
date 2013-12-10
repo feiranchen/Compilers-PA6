@@ -639,10 +639,6 @@ class ComExpr extends CuExpr{
 					"\tthis->value=(("+c.cmphName+"S*)this->c)->next(this->c);\n\t" +
 					Helper.incrRefCount("this->value") + "\t" +
 					Helper.decRefCount(temp);
-			
-			if (c instanceof ExprLstCmph){
-				CuComprehension.cmphEarlyPrint+="\tthis->c=(("+c.cmphName+"S*)this->c)->eC;\n";
-			}
 			CuComprehension.cmphEarlyPrint+="\tif(this->value)\n\t\treturn this;\n\t"
 					+ "else\n\t\treturn NULL;\n}\n"
 					+ "else\n\t"

@@ -164,7 +164,6 @@ if (((aaaaacS*)this->c) != NULL) {
 	this->value=((aaaaacS*)this->c)->next(this->c);
 	incRef(this->value);
 	decRef(aaaaas);
-	this->c=((aaaaacS*)this->c)->eC;
 	if(this->value)
 		return this;
 	else
@@ -262,7 +261,6 @@ if (((aaaaaaS*)this->c) != NULL) {
 	this->value=((aaaaaaS*)this->c)->next(this->c);
 	incRef(this->value);
 	decRef(aaaaav);
-	this->c=((aaaaaaS*)this->c)->eC;
 	if(this->value)
 		return this;
 	else
