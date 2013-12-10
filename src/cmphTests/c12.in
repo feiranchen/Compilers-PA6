@@ -1,0 +1,4 @@
+i:=1;
+d:=["hello",if (i>2) "world"];
+
+return d; 

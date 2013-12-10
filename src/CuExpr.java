@@ -509,6 +509,8 @@ Helper.P("common parent of types is " + type.toString());
 		super.name += "if (" + "(*((int *)" + leftToC +"+1)) == 0) {\n";		//checking if isIter is false 
 		super.name += Helper.decRefCount(iter_name1);
 		super.name += iter_name1+ " = strToIter( ((String *)" + leftToC + ")->value, ((String *)" + leftToC + ")->len);\n";
+		//added by Yinglei, strToIter the first element has zero ref count
+		super.name += Helper.incrRefCount(iter_name1);
 		super.name += "}\n}\n";
 		
 		String iter_name2 = Helper.getVarName();
@@ -519,6 +521,8 @@ Helper.P("common parent of types is " + type.toString());
 		super.name += "if (" + "(*((int *)" + rightToC +"+1)) == 0) {\n";		//checking if isIter is false
 		super.name += Helper.decRefCount(iter_name2);
 		super.name += iter_name2+ " = strToIter( ((String *)" + rightToC + ")->value, ((String *)" + rightToC + ")->len);\n";
+		//added by Yinglei, strToIter the first element has zero ref count
+		super.name += Helper.incrRefCount(iter_name2);
 		super.name += "}\n}\n";
 
 		String leftIterType = Helper.iterType.get(left.toString());
@@ -2592,7 +2596,8 @@ class NegateExpr extends CuExpr{
 	public String toC(ArrayList<String> localVars) {
 		String temp = Helper.getVarName();
 		
-		super.cText = temp+".val";
+		//super.cText = temp+".val";
+		super.cText = temp;
 		super.castType = "Boolean";
 		String valToC = val.toC(localVars);
 		String eC = val.construct();		
@@ -2964,10 +2969,14 @@ class OnwardsExpr extends CuExpr{
 			else {
 				String temp = Helper.getVarName();
 				String iter = Helper.getVarName();
+				
+				//int i = (Integer.parseInt(val.toString())) + 1;
+				          name += "Integer* " + temp + ";\n" +temp + " = (Integer*) x3malloc(sizeof(Integer));\n"
+				            + temp + "->value = " 
+				             //+ i 
+				             + "((Integer *)" + val.toString() + ")->value + 1"
+				             + ";\n"
 												
-				int i = (Integer.parseInt(val.toString())) + 1;
-				name += "Integer* " + temp + ";\n" +temp + " = (Integer*) x3malloc(sizeof(Integer));\n"
-						+ temp + "->value = " + i + ";\n"
 						+ temp + "->nrefs = 1;\n";					
 					
 				
@@ -3088,7 +3097,9 @@ class OrExpr extends CuExpr{
 
 		String temp = Helper.getVarName();
 		
-		super.cText = temp+".value";
+		//super.cText = temp+".value";
+		super.cText = temp;
+		
 		super.castType = "Boolean";
 		String leftToC = left.toC(localVars);
 		String rightToC = right.toC(localVars);
@@ -3444,7 +3455,6 @@ class ThroughExpr extends CuExpr{
 		return temp;		
 	}
 	
-	
 	@Override
 	public String toC(ArrayList<String> localVars) {
 		castType = "Iterable";
@@ -3603,12 +3613,17 @@ class ThroughExpr extends CuExpr{
 			
 			else {
 				String temp = Helper.getVarName();
-				int i = (Integer.parseInt(left.toString())) + 1;
+				//int i = (Integer.parseInt(left.toString())) + 1;
 				name += "Integer* " + temp + ";\n" + temp +  " = (Integer*) x3malloc(sizeof(Integer));\n"
-						+ temp + "->value = " + i + ";\n"
-						+ temp + "->nrefs = 1;\n";							
+						+ temp + "->value = " 
+						//+ i 
+						+ "((Integer *)" + left.toString() + ")->value + 1"
+						+ ";\n"
+						+ temp + "->nrefs = 1;\n";	
+				
+				String rightC = right.construct();
 					
-				name += right.construct();
+				name += rightC;
 				
 				name +=  "Iterable* " + iter + ";\n" + iter +  " = (Iterable*) x3malloc(sizeof(Iterable));\n"
 						+ iter + "->isIter = 1;\n"
@@ -3617,6 +3632,10 @@ class ThroughExpr extends CuExpr{
 						+ iter + "->additional = " + rightToC + ";\n"
 						+ iter + "->next = &" + left.getCastType() + "_through;\n"
 						+ iter + "->concat = NULL;\n";
+				
+				//added by Yinglei
+				if(rightC.equals(""))
+					name += Helper.incrRefCount(rightToC);
 				
 				cText = "checkIter(" + iter + ")";
 			}
@@ -3658,11 +3677,17 @@ class ThroughExpr extends CuExpr{
 			else {
 				iterType = "Integer";
 				String temp = Helper.getVarName();
-				name += left.construct();
+				
+				String leftC = left.construct();
+				
+				name += leftC;
 								
-				int i = (Integer.parseInt(left.toString())) - 1;
+				//int i = (Integer.parseInt(right.toString())) - 1;
 				name += "Integer* " + temp + ";\n" + temp +  " = (Integer*) x3malloc(sizeof(Integer));\n"
-						+ temp + "->value = " + i + ";\n"
+						+ temp + "->value = " 
+						//+ i 
+						+ "((Integer *)" + right.toString() + ")->value - 1"
+						+ ";\n"
 						+ temp + "->nrefs = 1;\n";							
 					
 				
@@ -3673,6 +3698,10 @@ class ThroughExpr extends CuExpr{
 						+ iter + "->additional = " + temp + ";\n"
 						+ iter + "->next = &" + left.getCastType() + "_through;\n"
 						+ iter + "->concat = NULL;\n";
+				
+				//added by Yinglei
+				if(leftC.equals(""))
+					name += Helper.incrRefCount(leftToC);
 				
 				cText = iter;
 			}					
@@ -3690,14 +3719,22 @@ class ThroughExpr extends CuExpr{
 				String temp1 = Helper.getVarName(), temp2 = Helper.getVarName(), iterTemp = Helper.getVarName();
 				//name += left.construct();
 								
-				int i = (Integer.parseInt(left.toString())) + 1;
+				//int i = (Integer.parseInt(left.toString())) + 1;
 				name += "Integer* " + temp1 + ";\n" + temp1 +  " = (Integer*) x3malloc(sizeof(Integer));\n"
-						+ temp1 + "->value = " + i + ";\n"
+						+ temp1 + "->value = " 
+						//+ i 
+						+ "((Integer *)" + left.toString() + ")->value + 1"
+						+ ";\n"
 						+ temp1 + "->nrefs = 1;\n";							
 				
-				i = (Integer.parseInt(left.toString())) - 1;
+				//commented out by Yinglei
+				//i = (Integer.parseInt(right.toString())) - 1;
 				name += "Integer* " + temp2 + ";\n" + temp2 +  " = (Integer*) x3malloc(sizeof(Integer));\n"
-						+ temp2 + "->value = " + i + ";\n"
+						+ temp2 + "->value = "
+						//+ i 
+						//added by Yinglei
+						+ "((Integer *)" + right.toString() + ")->value - 1"
+						+ ";\n"
 						+ temp2 + "->nrefs = 1;\n";							
 					
 				name +=  "Iterable* " + iterTemp + ";\n" + iterTemp +  " = (Iterable*) x3malloc(sizeof(Iterable));\n"
@@ -3720,8 +3757,8 @@ class ThroughExpr extends CuExpr{
 			}
 		}
 		return super.toC(localVars);
-	}
-	
+	}	
+
 	@Override public ArrayList<String> getUse(){
 		use = new ArrayList<String>();
 		/*if (left.isVariableExpression())
@@ -4315,6 +4352,13 @@ class VvExp extends CuExpr{//varname or function call
 						use.add(str);
 				}
 			}
+		      if (Helper.fun_gvars.keySet().contains(val)) {
+		          for (String str : Helper.fun_gvars.get(val)) {
+		            if (!use.contains(str))
+		              use.add(str);
+		          }
+		        }
+
 		}
 		return use;
 	}
@@ -4471,6 +4515,9 @@ Helper.P(" 1mapping is " + mapping.toString());
 			exp.add(types, newEs);
 			exp.use = use;
 			
+			//should have a clone mythod,for now, simply copying -- Yinglei
+			((VvExp)exp).retype = this.retype;
+			
 			exp.boxed = this.boxed;
 			exp.expType = this.expType;
 			
@@ -4508,7 +4555,8 @@ Helper.P(" 1mapping is " + mapping.toString());
 					iter = "input";
 				
 					name += "int " + len + ";\n"
-						+ "Iterable* " + iter + "= NULL;\n"
+						//commented out by Yinglei because input is a global variable
+						//+ "Iterable* " + iter + "= NULL;\n"
 						+ "String* " + temp + "= NULL;\n" 
 						+ len + " = next_line_len();\n"
 						+ "if(" + len + " == 0) {\n\t"
@@ -4603,6 +4651,27 @@ Helper.P(" 1mapping is " + mapping.toString());
 				expToC = exp.toC(localVars);
 				tempName = exp.construct();
 				name += tempName;
+				
+				//added by Yinglei, expToC (should be a variable name
+				name += "\t" + "if ("+ expToC +"!=NULL) {\n";
+				name += "\t\t" + "if (" + "(*((int *)(" + expToC +"+1))) == 0) {\n";
+				String temp_name = Helper.getVarName();
+				name += Helper.refAcquire(temp_name, expToC);
+				name += "\t\t\t" + expToC + " = strToIter( ((String *)" + expToC + ")->value, ((String *)" + expToC + ")->len);\n";
+				//added specifically for pa6, because we may not have toHIR in list comprehension
+				//if we don't have toHIR, this expToC will be a temp variable in C and has ref count 0
+				name += "if ( (*(int *)(" + temp_name +")) != 0) {\n";
+				name += Helper.incrRefCount(expToC);
+				name += Helper.decRefCount(temp_name);
+				name += "}\n";
+				//otherwise (if this is a temp C variable), we use incre and decr to deallocate this variable
+				name += "else {\n";
+				name += Helper.incrRefCount(temp_name);
+				name += Helper.decRefCount(temp_name);
+				name += "}\n";
+				name += "\t\t}\n\t}\n";
+				//end of what added by Yinglei
+				 
 				if (!tempName.equals("")) {
 					Helper.cVarType.put(expToC, "Iterable");
 				}

@@ -3,6 +3,7 @@
 #include "cubex_external_functions.h"
 #include "cubex_lib.h"
 
+Iterable* input= NULL;
 void* aaaaaeF(void*);
 typedef struct aaaaae_struct {
 	int nrefs; 
@@ -1076,6 +1077,7 @@ if (aaaact!=NULL) {
 if ((*((int *)aaaabb+1)) == 0) {
 decRef(aaaact);
 aaaact = strToIter( ((String *)aaaabb)->value, ((String *)aaaabb)->len);
+incRef(aaaact);
 }
 }
 void *aaaacu;
@@ -1085,6 +1087,7 @@ if (aaaacu!=NULL) {
 if ((*((int *)aaaabc+1)) == 0) {
 decRef(aaaacu);
 aaaacu = strToIter( ((String *)aaaabc)->value, ((String *)aaaabc)->len);
+incRef(aaaacu);
 }
 }
 Iterable* aaaacs;
@@ -1116,6 +1119,7 @@ if (aaaacy!=NULL) {
 if ((*((int *)aaaaaz+1)) == 0) {
 decRef(aaaacy);
 aaaacy = strToIter( ((String *)aaaaaz)->value, ((String *)aaaaaz)->len);
+incRef(aaaacy);
 }
 }
 void *aaaacz;
@@ -1125,6 +1129,7 @@ if (aaaacz!=NULL) {
 if ((*((int *)aaaaba+1)) == 0) {
 decRef(aaaacz);
 aaaacz = strToIter( ((String *)aaaaba)->value, ((String *)aaaaba)->len);
+incRef(aaaacz);
 }
 }
 Iterable* aaaacx;
@@ -1157,6 +1162,7 @@ if (aaaadd!=NULL) {
 if ((*((int *)aaaaax+1)) == 0) {
 decRef(aaaadd);
 aaaadd = strToIter( ((String *)aaaaax)->value, ((String *)aaaaax)->len);
+incRef(aaaadd);
 }
 }
 void *aaaade;
@@ -1166,6 +1172,7 @@ if (aaaade!=NULL) {
 if ((*((int *)aaaaay+1)) == 0) {
 decRef(aaaade);
 aaaade = strToIter( ((String *)aaaaay)->value, ((String *)aaaaay)->len);
+incRef(aaaade);
 }
 }
 Iterable* aaaadc;
@@ -1210,6 +1217,7 @@ if (aaaadj!=NULL) {
 if ((*((int *)aaaabd+1)) == 0) {
 decRef(aaaadj);
 aaaadj = strToIter( ((String *)aaaabd)->value, ((String *)aaaabd)->len);
+incRef(aaaadj);
 }
 }
 void *aaaadk;
@@ -1219,6 +1227,7 @@ if (aaaadk!=NULL) {
 if ((*((int *)aaaabe+1)) == 0) {
 decRef(aaaadk);
 aaaadk = strToIter( ((String *)aaaabe)->value, ((String *)aaaabe)->len);
+incRef(aaaadk);
 }
 }
 Iterable* aaaadi;

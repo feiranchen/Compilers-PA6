@@ -1,6 +1,25 @@
 #include "cubex_external_functions.h"
 #define NULL ((void*)0)
 
+#define decRef(VAR) \
+if (VAR!= NULL) {\
+	(*(int *)(VAR))--;\
+	if ((*(int *)(VAR)) == 0) {\
+		if ((*((int*)(VAR)+2)) == 1)\
+			freeStr(VAR);\
+		else if ((*((int*)(VAR)+1)) == 1)\
+			freeIter((VAR));\
+		else\
+			x3free((VAR));\
+	}\
+	VAR = NULL;\
+}
+
+#define incRef(VAR) \
+if (VAR != NULL) {\
+	(*(int *)(VAR))++;\
+}
+
 typedef struct top {
 	int value;
 } Thing;
@@ -66,12 +85,18 @@ Iterable* Integer_through(void* head){
 		Iterable* this=x3malloc(sizeof(Iterable));
 		this->isIter = 1;
 		this->nrefs=0;
-		(((Integer*)(last->value))->value)++; 
-		this->value = last->value; 
-		(((Integer*)(last->value))->nrefs)++;
+		 
+		this->value = (Integer*)x3malloc(sizeof(Integer));
+		((Integer*)this->value)->nrefs = 1;
+		((Integer*)this->value)->isIter = 0;
+		((Integer*)this->value)->isStr = 0;
+		((Integer*)this->value)->value = (((Integer*)(last->value))->value) + 1;
+		
 		this->additional = last->additional;
+		incRef(this->additional);
 		this->next = last->next;	
 		this->concat = last->concat;
+		incRef(this->concat);
 		return this;
 	}
 }
@@ -235,25 +260,6 @@ Iterable* cmph_onwards(void* head){
 		return this;
 	else
 		return NULL;
-}
-
-#define decRef(VAR) \
-if (VAR!= NULL) {\
-	(*(int *)(VAR))--;\
-	if ((*(int *)(VAR)) == 0) {\
-		if ((*((int*)(VAR)+2)) == 1)\
-			freeStr(VAR);\
-		else if ((*((int*)(VAR)+1)) == 1)\
-			freeIter((VAR));\
-		else\
-			x3free((VAR));\
-	}\
-	VAR = NULL;\
-}
-
-#define incRef(VAR) \
-if (VAR != NULL) {\
-	(*(int *)(VAR))++;\
 }
 
 Iterable* concatenate(Iterable* fst, Iterable* snd){
@@ -477,6 +483,8 @@ void mystrcpy(char *dst, const char *src) {
 String* concatChars(Iterable *charIter){
 	char* combined = NULL;
 	int count=0;
+	if (charIter != NULL && charIter->c != NULL)
+		charIter = iterGetNext(charIter);
 	while (charIter!=NULL){
 		const char* prev=(const char* )combined;
 		combined = x3malloc((count+1)*sizeof(char)); 
@@ -494,6 +502,7 @@ String* concatChars(Iterable *charIter){
 	x3free((char*)prev);
 	combined[count]='\0';
 	String* new = (String*) x3malloc(sizeof(String));
+	new->nrefs = 0;
 	new->isIter = 0;
 	new->value = (char*) x3malloc(sizeof(char)*count);
 	mystrcpy(new->value, combined);
