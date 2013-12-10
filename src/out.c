@@ -9,9 +9,9 @@ typedef struct aaaaae_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 }aaaaaeS;
 void* aaaaadF(void*);
 typedef struct aaaaad_struct {
@@ -19,9 +19,9 @@ typedef struct aaaaad_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* ifC;
 	void* (*next)(void*);
-	int visited;
 	void* i;
 }aaaaadS;
 void* aaaaaaF(void*);
@@ -30,9 +30,9 @@ typedef struct aaaaaa_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 	void* i;
 }aaaaaaS;
 Iterable* aaaaaaIterNext(void*);
@@ -42,9 +42,9 @@ typedef struct aaaaag_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 }aaaaagS;
 void* aaaaafF(void*);
 typedef struct aaaaaf_struct {
@@ -52,9 +52,9 @@ typedef struct aaaaaf_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 }aaaaafS;
 Iterable* aaaaafIterNext(void*);
 void* aaaaarF(void*);
@@ -63,9 +63,9 @@ typedef struct aaaaar_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 }aaaaarS;
 void* aaaaaqF(void*);
 typedef struct aaaaaq_struct {
@@ -73,9 +73,9 @@ typedef struct aaaaaq_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* ifC;
 	void* (*next)(void*);
-	int visited;
 	void* i;
 }aaaaaqS;
 void* aaaaapF(void*);
@@ -84,9 +84,9 @@ typedef struct aaaaap_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 	void* i;
 }aaaaapS;
 void* aaaaaoF(void*);
@@ -95,9 +95,9 @@ typedef struct aaaaao_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 	void* v;
 	void* i;
 }aaaaaoS;
@@ -107,9 +107,9 @@ typedef struct aaaaam_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 }aaaaamS;
 void* aaaaalF(void*);
 typedef struct aaaaal_struct {
@@ -117,9 +117,9 @@ typedef struct aaaaal_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 }aaaaalS;
 void* aaaaakF(void*);
 typedef struct aaaaak_struct {
@@ -127,9 +127,9 @@ typedef struct aaaaak_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 }aaaaakS;
 void* aaaaajF(void*);
 typedef struct aaaaaj_struct {
@@ -137,9 +137,9 @@ typedef struct aaaaaj_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 }aaaaajS;
 Iterable* aaaaajIterNext(void*);
 void* aaaaanF(void*);
@@ -148,10 +148,10 @@ typedef struct aaaaan_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* forC;
 	Iterable* iter;
 	void* (*next)(void*);
-	int visited;
 	void* i;
 	void* v;
 }aaaaanS;
@@ -161,9 +161,9 @@ typedef struct aaaaai_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 	void* i;
 }aaaaaiS;
 void* aaaaahF(void*);
@@ -172,9 +172,9 @@ typedef struct aaaaah_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 	void* i;
 }aaaaahS;
 Iterable* aaaaahIterNext(void*);
@@ -184,9 +184,9 @@ typedef struct aaaaaw_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 }aaaaawS;
 void* aaaaavF(void*);
 typedef struct aaaaav_struct {
@@ -194,9 +194,9 @@ typedef struct aaaaav_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 	void* v;
 }aaaaavS;
 void* aaaaatF(void*);
@@ -205,9 +205,9 @@ typedef struct aaaaat_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 }aaaaatS;
 void* aaaaasF(void*);
 typedef struct aaaaas_struct {
@@ -215,9 +215,9 @@ typedef struct aaaaas_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* eC;
 	void* (*next)(void*);
-	int visited;
 }aaaaasS;
 Iterable* aaaaasIterNext(void*);
 void* aaaaauF(void*);
@@ -226,10 +226,10 @@ typedef struct aaaaau_struct {
 	int isIter; 
 	int isStr; 
 	int isEC; 
+	int visited;
 	void* forC;
 	Iterable* iter;
 	void* (*next)(void*);
-	int visited;
 	void* v;
 }aaaaauS;
 Iterable* aaaaauIterNext(void*);
@@ -241,7 +241,6 @@ if(this->visited){
 	return NULL;
 }else {
 	this->visited=1; 
-((NULLS*)this->eC)->visited=0;
 String* aaaabi;
 aaaabi = (String *) x3malloc(sizeof(String));
 (aaaabi->isIter) = 0;
@@ -256,6 +255,8 @@ return aaaabi;
 void* aaaaadF(void* c) {
 aaaaadS* this= (aaaaadS*) c;
 void* i=this->i;
+if (this->ifC!=NULL&&this->visited==0){	((aaaaaeS*)this->ifC)->visited=0;}
+this->visited=1; 
 
 Integer* aaaabj;
 aaaabj = (Integer*) x3malloc(sizeof(Integer));
@@ -266,11 +267,7 @@ aaaabk->nrefs = 0;
 aaaabk->value = ((Integer*) i)->value > ((Integer*) aaaabj)->value;
 x3free(aaaabj);
 if( aaaabk->value){
-	void* ret= ((aaaaaeS*)this->ifC)->next(this->ifC);
-	if (ret==NULL){ 
-	this->visited=1;} 
-if (this->ifC!=NULL){	((aaaaaeS*)this->ifC)->visited=0;}
-	return ret; 
+	return ((aaaaaeS*)this->ifC)->next(this->ifC);
 } 
 else {
 	return NULL;
@@ -316,7 +313,6 @@ if(this->visited){
 	return NULL;
 }else {
 	this->visited=1; 
-((NULLS*)this->eC)->visited=0;
 String* aaaabp;
 aaaabp = (String *) x3malloc(sizeof(String));
 (aaaabp->isIter) = 0;
@@ -367,7 +363,6 @@ if(this->visited){
 	return NULL;
 }else {
 	this->visited=1; 
-((NULLS*)this->eC)->visited=0;
 String* aaaabu;
 aaaabu = (String *) x3malloc(sizeof(String));
 (aaaabu->isIter) = 0;
@@ -382,6 +377,8 @@ return aaaabu;
 void* aaaaaqF(void* c) {
 aaaaaqS* this= (aaaaaqS*) c;
 void* i=this->i;
+if (this->ifC!=NULL&&this->visited==0){	((aaaaarS*)this->ifC)->visited=0;}
+this->visited=1; 
 
 Integer* aaaabv;
 aaaabv = (Integer*) x3malloc(sizeof(Integer));
@@ -392,11 +389,7 @@ aaaabw->nrefs = 0;
 aaaabw->value = ((Integer*) i)->value <= ((Integer*) aaaabv)->value;
 x3free(aaaabv);
 if( aaaabw->value){
-	void* ret= ((aaaaarS*)this->ifC)->next(this->ifC);
-	if (ret==NULL){ 
-	this->visited=1;} 
-if (this->ifC!=NULL){	((aaaaarS*)this->ifC)->visited=0;}
-	return ret; 
+	return ((aaaaarS*)this->ifC)->next(this->ifC);
 } 
 else {
 	return NULL;
@@ -439,7 +432,6 @@ if(this->visited){
 	return NULL;
 }else {
 	this->visited=1; 
-((NULLS*)this->eC)->visited=0;
 String* aaaabz;
 aaaabz = (String *) x3malloc(sizeof(String));
 (aaaabz->isIter) = 0;
@@ -523,21 +515,20 @@ else
 void* aaaaanF(void* c) {
 aaaaanS* this= (aaaaanS*) c;
 void* i=this->i;
+if (this->forC!=NULL&&this->visited==0){	((aaaaaoS*)this->forC)->visited=0;}
+this->visited=1; 
 if (this->iter==NULL) {return NULL;}
 if (this->iter->value==NULL) {this->iter=iterGetNext(this->iter);}
-if (this->iter->value==NULL) {return NULL;}
-if (this->iter==NULL) {return NULL;}
+if (this->iter==NULL||this->iter->value==NULL) {return NULL;}
 void*v=this->iter->value;
 	 ((aaaaaoS*)this->forC)->v=v;
+	this->visited=1; 
 void* ret=((aaaaaoS*)this->forC)->next(this->forC);
 if (ret==NULL){
 	 this->iter=iterGetNext(this->iter);
-if (this->iter==NULL) {
-	this->visited=1; 
+if (this->iter==NULL) {return NULL;}
 ((aaaaaoS*)this->forC)->visited=0;
-	return NULL;}
 	v=this->iter->value;
-if (this->ifC!=NULL){	((aaaaaoS*)this->forC)->visited=0;}
 	 ((aaaaaoS*)this->forC)->v=v;
 return ((aaaaaoS*)this->forC)->next(this->forC);
 }
@@ -602,7 +593,6 @@ if(this->visited){
 	return NULL;
 }else {
 	this->visited=1; 
-((NULLS*)this->eC)->visited=0;
 String* aaaacj;
 aaaacj = (String *) x3malloc(sizeof(String));
 (aaaacj->isIter) = 0;
@@ -631,7 +621,6 @@ if(this->visited){
 	return NULL;
 }else {
 	this->visited=1; 
-((NULLS*)this->eC)->visited=0;
 String* aaaacl;
 aaaacl = (String *) x3malloc(sizeof(String));
 (aaaacl->isIter) = 0;
@@ -678,21 +667,20 @@ else
 }
 void* aaaaauF(void* c) {
 aaaaauS* this= (aaaaauS*) c;
+if (this->forC!=NULL&&this->visited==0){	((aaaaavS*)this->forC)->visited=0;}
+this->visited=1; 
 if (this->iter==NULL) {return NULL;}
 if (this->iter->value==NULL) {this->iter=iterGetNext(this->iter);}
-if (this->iter->value==NULL) {return NULL;}
-if (this->iter==NULL) {return NULL;}
+if (this->iter==NULL||this->iter->value==NULL) {return NULL;}
 void*v=this->iter->value;
 	 ((aaaaavS*)this->forC)->v=v;
+	this->visited=1; 
 void* ret=((aaaaavS*)this->forC)->next(this->forC);
 if (ret==NULL){
 	 this->iter=iterGetNext(this->iter);
-if (this->iter==NULL) {
-	this->visited=1; 
+if (this->iter==NULL) {return NULL;}
 ((aaaaavS*)this->forC)->visited=0;
-	return NULL;}
 	v=this->iter->value;
-if (this->ifC!=NULL){	((aaaaavS*)this->forC)->visited=0;}
 	 ((aaaaavS*)this->forC)->v=v;
 return ((aaaaavS*)this->forC)->next(this->forC);
 }

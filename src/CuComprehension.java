@@ -94,10 +94,10 @@ class ExprLstCmph extends CuComprehension{
         		"\tint nrefs; \n" +
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
-        		"\tint isEC; \n" +
+        		"\tint isEC; \n"+
+        		"\tint visited;\n" +
         		"\tvoid* eC;\n" +
-        		"\tvoid* (*next)(void*);\n" +
-        		"\tint visited;\n";
+        		"\tvoid* (*next)(void*);\n" ;
         
         for (String tempv : getUse()){
         	structString+="\tvoid* "+tempv+";\n";
@@ -131,16 +131,17 @@ class ExprLstCmph extends CuComprehension{
 		}
 		if (c instanceof EmptyCmph){
 			nextFunString+="if(this->visited){ \n" +
-					"\treturn NULL;\n";
+					"\treturn NULL;\n" +
+					"}else {\n"+
+					"\tthis->visited=1; \n";
 		}else{
 		nextFunString+="if(this->visited){ \n" +
-					"\treturn (("+c.cmphName+"S*)this->eC)->next(this->eC);\n";
-					
+					"\treturn (("+c.cmphName+"S*)this->eC)->next(this->eC);\n"+
+					"}else {\n" +
+					"\tthis->visited=1; \n"+
+					"(("+c.cmphName+"S*)this->eC)->visited=0;\n";
 		}
-		nextFunString+="}else {\n" +
-				"\tthis->visited=1; \n";
-			nextFunString+="(("+c.cmphName+"S*)this->eC)->visited=0;\n";
-		
+			
 		String funContent=e.toC(new ArrayList<String>());
 		nextFunString +=e.construct() +
 				"return "+ funContent +";\n"+
@@ -221,9 +222,9 @@ class IfCmph extends CuComprehension {
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
         		"\tint isEC; \n" +
+        		"\tint visited;\n"+
         		"\tvoid* ifC;\n" +
-        		"\tvoid* (*next)(void*);\n"+
-        		"\tint visited;\n";
+        		"\tvoid* (*next)(void*);\n";
         
         for (String tempv : getUse()){
         	structString+="\tvoid* "+tempv+";\n";
@@ -257,14 +258,14 @@ class IfCmph extends CuComprehension {
 		}
 		String funContent=e.toC(new ArrayList<String>());
 		if (!(c instanceof EmptyCmph)){
-			nextFunString +=e.construct() +
+			nextFunString +=
+					"if (this->ifC!=NULL&&this->visited==0){"+
+				    	"\t(("+c.cmphName+"S*)this->ifC)->visited=0;}\n"+
+					"this->visited=1; \n" +
+				    	
+					e.construct() +
 					"if( "+ funContent +"->value){\n" +
-					"\tvoid* ret= (("+c.cmphName+"S*)this->ifC)->next(this->ifC);\n" +
-					"\tif (ret==NULL){ \n" +
-					"\tthis->visited=1;} \n" +
-					"if (this->ifC!=NULL){"+
-				    "\t(("+c.cmphName+"S*)this->ifC)->visited=0;}\n"+
-					"\treturn ret; \n"+
+					"\treturn (("+c.cmphName+"S*)this->ifC)->next(this->ifC);\n" +
 					"} \n" +
 					"else {\n" +
 					"\treturn NULL;\n" +
@@ -367,10 +368,10 @@ class ForCmph extends CuComprehension {
         		"\tint isIter; \n" +
         		"\tint isStr; \n" +
         		"\tint isEC; \n" +
+        		"\tint visited;\n"+
         		"\tvoid* forC;\n" +
         		"\tIterable* iter;\n" +
-        		"\tvoid* (*next)(void*);\n"+
-        		"\tint visited;\n";
+        		"\tvoid* (*next)(void*);\n";
         
         for (String tempv : getUse()){
         	structString+="\tvoid* "+tempv+";\n";
@@ -412,23 +413,26 @@ class ForCmph extends CuComprehension {
 				if (!forVar.contains(tempv))
 					nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
 			}
-			nextFunString+="if (this->iter==NULL) {return NULL;}\n" +
+			
+
+			
+			
+			nextFunString+="if (this->forC!=NULL&&this->visited==0){"+
+			    	"\t(("+c.cmphName+"S*)this->forC)->visited=0;}\n"+
+					"this->visited=1; \n" +
+			    	"if (this->iter==NULL) {return NULL;}\n" +
 					"if (this->iter->value==NULL) {" +//handle beginning
 					"this->iter=iterGetNext(this->iter);}\n" +
-					"if (this->iter->value==NULL) {return NULL;}\n" +
-					"if (this->iter==NULL) {return NULL;}\n" +
+					"if (this->iter==NULL||this->iter->value==NULL) {return NULL;}\n" +
 					"void*"+v.text+"=this->iter->value;\n" +
 					"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n" +
+					"\tthis->visited=1; \n" +
 					"void* ret=(("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
 					"if (ret==NULL){\n" +
 						"\t this->iter=iterGetNext(this->iter);\n" +
-						"if (this->iter==NULL) {\n" +
-							"\tthis->visited=1; \n" +
-							"(("+c.cmphName+"S*)this->forC)->visited=0;\n" +
-							"\treturn NULL;}\n" +
+						"if (this->iter==NULL) {return NULL;}\n" +
+						"(("+c.cmphName+"S*)this->forC)->visited=0;\n" +
 						"\t"+v.text+"=this->iter->value;\n" +
-						"if (this->ifC!=NULL){"+
-					    	"\t(("+c.cmphName+"S*)this->forC)->visited=0;}\n"+
 						"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n"+
 						"return (("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
 					"}\n" +
