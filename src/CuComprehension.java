@@ -149,9 +149,9 @@ class ExprLstCmph extends CuComprehension{
 		nextFunString+="if("+thisName+"->visited){ \n" +
 					"\treturn (("+c.cmphName+"S*)"+thisName+"->eC)->next("+thisName+"->eC);\n"+
 					"}else {\n" +
-						"\tif (this->eC!=NULL&&this->visited==0){"+
-						"\t\t(("+c.cmphName+"S*)this->eC)->visited=0;}\n"+
-						"\t\tthis->visited=1; \n" ;
+						"\tif ("+thisName+"->eC!=NULL&&"+thisName+"->visited==0){"+
+						"\t\t(("+c.cmphName+"S*)"+thisName+"->eC)->visited=0;}\n"+
+						"\t\t"+thisName+"->visited=1; \n" ;
 		}
 
 		String funContent=e.toC(new ArrayList<String>());
@@ -470,26 +470,26 @@ class ForCmph extends CuComprehension {
 			}
 			for (String tempv : forVar){
 				if (c.getUse().contains(tempv))
-					nextFunString+="(("+c.cmphName+"S*)this->forC)->"+tempv+"=this->"+tempv+";\n";
+					nextFunString+="(("+c.cmphName+"S*)"+thisName+"->forC)->"+tempv+"="+thisName+"->"+tempv+";\n";
 			}
 
-			nextFunString+="if (this->forC!=NULL&&this->visited==0){"+
-			    	"\t(("+c.cmphName+"S*)this->forC)->visited=0;}\n"+
-					"this->visited=1; \n" +
-			    	"if (this->iter==NULL) {\n"+copyIter+"return NULL;}\n" +
-					"if (this->iter->value==NULL) {" +//handle beginning
-					"this->iter=iterGetNext(this->iter);}\n" +
-					"if (this->iter==NULL||this->iter->value==NULL) {\n"+copyIter+" return NULL;}\n" +
-					"void*"+v.text+"=this->iter->value;\n" +
-					"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n" +
-					"void* ret=(("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
+			nextFunString+="if ("+thisName+"->forC!=NULL&&"+thisName+"->visited==0){"+
+			    	"\t(("+c.cmphName+"S*)"+thisName+"->forC)->visited=0;}\n"+
+					""+thisName+"->visited=1; \n" +
+			    	"if ("+thisName+"->iter==NULL) {\n"+copyIter+"return NULL;}\n" +
+					"if ("+thisName+"->iter->value==NULL) {" +//handle beginning
+					""+thisName+"->iter=iterGetNext("+thisName+"->iter);}\n" +
+					"if ("+thisName+"->iter==NULL||"+thisName+"->iter->value==NULL) {\n"+copyIter+" return NULL;}\n" +
+					"void*"+v.text+"="+thisName+"->iter->value;\n" +
+					"\t (("+c.cmphName+"S*)"+thisName+"->forC)->"+v.text+"="+v.text+";\n" +
+					"void* ret=(("+c.cmphName+"S*)"+thisName+"->forC)->next("+thisName+"->forC);\n" +
 					"if (ret==NULL){\n" +
-						"\t(("+c.cmphName+"S*)this->forC)->visited=0;\n" +//end of loop, enable again
-						"\t this->iter=iterGetNext(this->iter);\n" +
-						"if (this->iter==NULL) {return NULL;}\n" +
-						"\t"+v.text+"=this->iter->value;\n" +
-						"\t (("+c.cmphName+"S*)this->forC)->"+v.text+"="+v.text+";\n"+
-						"return (("+c.cmphName+"S*)this->forC)->next(this->forC);\n" +
+						"\t(("+c.cmphName+"S*)"+thisName+"->forC)->visited=0;\n" +//end of loop, enable again
+						"\t "+thisName+"->iter=iterGetNext("+thisName+"->iter);\n" +
+						"if ("+thisName+"->iter==NULL) {return NULL;}\n" +
+						"\t"+v.text+"="+thisName+"->iter->value;\n" +
+						"\t (("+c.cmphName+"S*)"+thisName+"->forC)->"+v.text+"="+v.text+";\n"+
+						"return (("+c.cmphName+"S*)"+thisName+"->forC)->next("+thisName+"->forC);\n" +
 					"}\n" +
 						
 					"return ret;\n" +
