@@ -2,5 +2,4 @@
 i:=1;
 c:=[6+i,7];
 
-
-return ["faehi"];
+return ["faehi","out"];

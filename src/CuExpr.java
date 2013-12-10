@@ -615,7 +615,7 @@ class ComExpr extends CuExpr{
 				+ iter + "->value = NULL;\n"
 				+ iter + "->c = " + c.cmphName + ";\n"
 				+ iter + "->additional = NULL;\n"
-				+ iter + "->next = &cmph_onwards;\n" 
+				+ iter + "->next = &"+c.cmphName+"F;\n" 
 				+ iter + "->concat = NULL;\n";
 		}
 		
