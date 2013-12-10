@@ -621,7 +621,7 @@ class ComExpr extends CuExpr{
 	
 	@Override
 	public String toC(ArrayList<String> localVars) {
-		String iter = Helper.getVarName();
+		String iter = "";//Helper.getVarName();
 		
 		c.toC(localVars);
 		
@@ -643,12 +643,12 @@ class ComExpr extends CuExpr{
 			if (c instanceof ExprLstCmph){
 				CuComprehension.cmphEarlyPrint+="\tthis->c=(("+c.cmphName+"S*)this->c)->eC;\n";
 			}
-			CuComprehension.cmphEarlyPrint+="\treturn this;\n\t}\n"
+			CuComprehension.cmphEarlyPrint+="\tif(this->value)\n\t\treturn this;\n\t"
+					+ "else\n\t\treturn NULL;\n}\n"
 					+ "else\n\t"
 					+ "return NULL;\n" +
 					"}\n";
-			
-			
+			iter = c.cmphName+"I";
 			name += "Iterable* " + iter + ";\n" 
 				+ iter + " = (Iterable*) x3malloc(sizeof(Iterable));\n"
 				+ iter + "->isIter = 1;\n"
@@ -657,7 +657,9 @@ class ComExpr extends CuExpr{
 				+ iter + "->c = " + c.cmphName + ";\n"
 				+ iter + "->additional = NULL;\n"
 				+ iter + "->next = &"+c.cmphName+"IterNext;\n" 
-				+ iter + "->concat = NULL;\n";
+				+ iter + "->concat = NULL;\n\n";
+				
+			name += c.cmphName + "->parent = " + iter + ";\n";
 		}
 		
 		cText = iter;
