@@ -247,8 +247,7 @@ class IfCmph extends CuComprehension {
 				"}\n" +
 				"}\n";
 
-		if (c instanceof EmptyCmph)
-			nextFunString="";
+		
 		
 		
 		cText=defString;
@@ -380,18 +379,19 @@ class ForCmph extends CuComprehension {
 				cmphName+"S* this= ("+cmphName+"S*) c;\n"; 
 
 		if (!(c instanceof EmptyCmph)){
-		for (String tempv : getUse()){
-			if (!forVar.contains(tempv))
-				nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
-		}
-		nextFunString+="void*"+v.text+"=this->iter->value;\n" +
-				"void* ret=("+c.cmphName+"S*)(this->forC)->next(this->forC);\n" +
-				"if (ret==NULL){\n" +
-				"\t ("+c.cmphName+"S*)(this->forC)->"+v.text+"="+v.text+";\n" +
-				"\t this->iter=this->iter->next(this->iter);\n" +
-				"}\n" +
-				"return ("+c.cmphName+"S*)(this->forC)->next(this->forC);\n" +
-				"}\n";
+			for (String tempv : getUse()){
+				if (!forVar.contains(tempv))
+					nextFunString+="void* "+tempv+"=this->"+tempv+";\n";
+			}
+			nextFunString+="void*"+v.text+"=this->iter->value;\n" +
+					"void* ret=("+c.cmphName+"S*)(this->forC)->next(this->forC);\n" +
+					"if (ret==NULL){\n" +
+					"\t ("+c.cmphName+"S*)(this->forC)->"+v.text+"="+v.text+";\n" +
+					"\t this->iter=this->iter->next(this->iter);\n" +
+					"return ("+c.cmphName+"S*)(this->forC)->next(this->forC);\n" +
+					"}\n" +
+					"return ret;\n" +
+					"}\n";
 		}else{
 			nextFunString+="return NULL;\n" +
 					"}\n";
