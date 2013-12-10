@@ -237,8 +237,8 @@ Iterable* iterGetNext(Iterable* last){
 	else if (this==NULL){
 		this=last->concat;
 		if (this->c != NULL) {
+			(*((int*)((Iterable*)this)->c+4)) = 0;
 			this = iterGetNext(this);
-			(*((int*)((Iterable*)this)->c+5)) = 0;
 		}
 	}
 	
