@@ -641,9 +641,6 @@ class ComExpr extends CuExpr{
 					Helper.incrRefCount("this->value") + "\t" +
 					Helper.decRefCount(temp);
 			
-			if (c instanceof ExprLstCmph){
-				CuComprehension.nextFunStringGlobal+="\tthis->c=(("+c.cmphName+"S*)this->c)->eC;\n";
-			}
 			CuComprehension.nextFunStringGlobal+="\tif(this->value)\n\t\treturn this;\n\t"
 					+ "else\n\t\treturn NULL;\n}\n"
 					+ "else\n\t"
