@@ -3,47 +3,21 @@
 #include "cubex_external_functions.h"
 #include "cubex_lib.h"
 
-typedef struct aaaaae_struct {
+typedef struct aaaaad_struct {
 	int nrefs; 
 	int isIter; 
 	int isStr; 
 	int isEC; 
 	void* eC;
 	void* (*next)(void*);
-	void* i;
-}aaaaaeS;
-void* aaaaaeF(void* c) {
-aaaaaeS* this= (aaaaaeS*) c;
-void*i=this->i;
-return i;
-}
-typedef struct aaaaad_struct {
-	int nrefs; 
-	int isIter; 
-	int isStr; 
-	int isEC; 
-	void* ifC;
-	void* (*next)(void*);
-	void* i;
 }aaaaadS;
 void* aaaaadF(void* c) {
 aaaaadS* this= (aaaaadS*) c;
-void* i=this->i;
-
-Integer* aaaaak;
-aaaaak = (Integer*) x3malloc(sizeof(Integer));
-(aaaaak->nrefs) = 0;
-aaaaak->value = 2;
-Boolean* aaaaal = (Boolean*) x3malloc(sizeof(Boolean));
-aaaaal->nrefs = 0;
-aaaaal->value = ((Integer*) i)->value > ((Integer*) aaaaak)->value;
-x3free(aaaaak);
-if( aaaaal){
-	return (aaaaaeS*)(this->ifC)->next(this->ifC);
-}
-else {
-	return NULL;
-}
+Integer* aaaaai;
+aaaaai = (Integer*) x3malloc(sizeof(Integer));
+(aaaaai->nrefs) = 0;
+aaaaai->value = 7;
+return aaaaai;
 }
 typedef struct aaaaac_struct {
 	int nrefs; 
@@ -58,66 +32,29 @@ void* aaaaacF(void* c) {
 aaaaacS* this= (aaaaacS*) c;
 void*i=this->i;
 
-Integer* aaaaan;
-aaaaan = (Integer*) x3malloc(sizeof(Integer));
-(aaaaan->nrefs) = 0;
-aaaaan->value = 6;
-Integer* aaaaam;
-aaaaam  = (Integer*) x3malloc(sizeof(Integer));
-aaaaam->nrefs = 0;
-aaaaam->value=((Integer*)aaaaan)->value + ((Integer*)i)->value;
-x3free(aaaaan);
-return aaaaam;
+Integer* aaaaak;
+aaaaak = (Integer*) x3malloc(sizeof(Integer));
+(aaaaak->nrefs) = 0;
+aaaaak->value = 6;
+Integer* aaaaaj;
+aaaaaj  = (Integer*) x3malloc(sizeof(Integer));
+aaaaaj->nrefs = 0;
+aaaaaj->value=((Integer*)aaaaak)->value + ((Integer*)i)->value;
+x3free(aaaaak);
+return aaaaaj;
 }
 Iterable* aaaaacIterNext(void* iter){ 
 Iterable* this=(Iterable*)iter;
+if (((aaaaacS*)this->c) != NULL) {
+	void* aaaaal = this->value;
 	this->value=((aaaaacS*)this->c)->next(this->c);
-	this->c=(aaaaacS*)(iter->c)->eCReturn this;
-}
-typedef struct aaaaag_struct {
-	int nrefs; 
-	int isIter; 
-	int isStr; 
-	int isEC; 
-	void* eC;
-	void* (*next)(void*);
-}aaaaagS;
-void* aaaaagF(void* c) {
-aaaaagS* this= (aaaaagS*) c;
-String* aaaaaq;
-aaaaaq = (String *) x3malloc(sizeof(String));
-(aaaaaq->isIter) = 0;
-aaaaaq->value = (char*) x3malloc(sizeof("out"));
-(aaaaaq->nrefs) = 0;
-(aaaaaq->isStr) = 1;
-aaaaaq->len = sizeof("out") - 1;
-mystrcpy(aaaaaq->value, "out");
-return aaaaaq;
-}
-typedef struct aaaaaf_struct {
-	int nrefs; 
-	int isIter; 
-	int isStr; 
-	int isEC; 
-	void* eC;
-	void* (*next)(void*);
-}aaaaafS;
-void* aaaaafF(void* c) {
-aaaaafS* this= (aaaaafS*) c;
-String* aaaaar;
-aaaaar = (String *) x3malloc(sizeof(String));
-(aaaaar->isIter) = 0;
-aaaaar->value = (char*) x3malloc(sizeof("faehi"));
-(aaaaar->nrefs) = 0;
-(aaaaar->isStr) = 1;
-aaaaar->len = sizeof("faehi") - 1;
-mystrcpy(aaaaar->value, "faehi");
-return aaaaar;
-}
-Iterable* aaaaafIterNext(void* iter){ 
-Iterable* this=(Iterable*)iter;
-	this->value=((aaaaafS*)this->c)->next(this->c);
-	this->c=(aaaaafS*)(iter->c)->eCReturn this;
+	incRef(this->value);
+	decRef(aaaaal);
+	this->c=((aaaaacS*)this->c)->eC;
+	return this;
+	}
+else
+	return NULL;
 }
 
 
@@ -125,41 +62,30 @@ void* our_main()
 {
 void * i = NULL;
 void * c = NULL;
+void * ret = NULL;
 
 
 
-Integer* aaaaah;
-aaaaah = (Integer*) x3malloc(sizeof(Integer));
-(aaaaah->nrefs) = 0;
-aaaaah->value = 1;
-void * aaaaai = NULL;
-aaaaai = i;
-i = aaaaah;
+Integer* aaaaaf;
+aaaaaf = (Integer*) x3malloc(sizeof(Integer));
+(aaaaaf->nrefs) = 0;
+aaaaaf->value = 1;
+void * aaaaag = NULL;
+aaaaag = i;
+i = aaaaaf;
 incRef(i);
-decRef(aaaaai);
+decRef(aaaaag);
 
 
 
-aaaaaeS* aaaaae;
-aaaaae = (aaaaaeS*) x3malloc(sizeof(aaaaaeS));
-aaaaae->nrefs = 1;
-aaaaae->isIter = 0;
-aaaaae->isStr = 0;
-aaaaae->isEC = 1;
-aaaaae->eC = NULL;
-aaaaae->next = &aaaaaeF;
-aaaaae->i=i;
-incRef(i);
 aaaaadS* aaaaad;
 aaaaad = (aaaaadS*) x3malloc(sizeof(aaaaadS));
 aaaaad->nrefs = 1;
 aaaaad->isIter = 0;
 aaaaad->isStr = 0;
 aaaaad->isEC = 1;
-aaaaad->ifC = aaaaae;
+aaaaad->eC = NULL;
 aaaaad->next = &aaaaadF;
-aaaaad->i=i;
-incRef(i);
 aaaaacS* aaaaac;
 aaaaac = (aaaaacS*) x3malloc(sizeof(aaaaacS));
 aaaaac->nrefs = 1;
@@ -170,49 +96,35 @@ aaaaac->eC = aaaaad;
 aaaaac->next = &aaaaacF;
 aaaaac->i=i;
 incRef(i);
-Iterable* aaaaaj;
-aaaaaj = (Iterable*) x3malloc(sizeof(Iterable));
-aaaaaj->isIter = 1;
-aaaaaj->nrefs = 0;
-aaaaaj->value = NULL;
-aaaaaj->c = aaaaac;
-aaaaaj->additional = NULL;
-aaaaaj->next = &aaaaacIterNext;
-aaaaaj->concat = NULL;
-void * aaaaao = NULL;
-aaaaao = c;
-c = aaaaaj;
+Iterable* aaaaah;
+aaaaah = (Iterable*) x3malloc(sizeof(Iterable));
+aaaaah->isIter = 1;
+aaaaah->nrefs = 0;
+aaaaah->value = NULL;
+aaaaah->c = aaaaac;
+aaaaah->additional = NULL;
+aaaaah->next = &aaaaacIterNext;
+aaaaah->concat = NULL;
+void * aaaaam = NULL;
+aaaaam = c;
+c = aaaaah;
 incRef(c);
+decRef(aaaaam);
+
+
+
+NULLvoid * aaaaao = NULL;
+aaaaao = ret;
+ret = NULL;
+incRef(ret);
 decRef(aaaaao);
 
 
 
-aaaaagS* aaaaag;
-aaaaag = (aaaaagS*) x3malloc(sizeof(aaaaagS));
-aaaaag->nrefs = 1;
-aaaaag->isIter = 0;
-aaaaag->isStr = 0;
-aaaaag->isEC = 1;
-aaaaag->eC = NULL;
-aaaaag->next = &aaaaagF;
-aaaaafS* aaaaaf;
-aaaaaf = (aaaaafS*) x3malloc(sizeof(aaaaafS));
-aaaaaf->nrefs = 1;
-aaaaaf->isIter = 0;
-aaaaaf->isStr = 0;
-aaaaaf->isEC = 1;
-aaaaaf->eC = aaaaag;
-aaaaaf->next = &aaaaafF;
-Iterable* aaaaap;
-aaaaap = (Iterable*) x3malloc(sizeof(Iterable));
-aaaaap->isIter = 1;
-aaaaap->nrefs = 0;
-aaaaap->value = NULL;
-aaaaap->c = aaaaaf;
-aaaaap->additional = NULL;
-aaaaap->next = &aaaaafIterNext;
-aaaaap->concat = NULL;
-return aaaaap;
+if (ret!= NULL) {
+(*(int *)ret)--;
+}
+return ret;
 }
 
 
@@ -220,6 +132,8 @@ void cubex_main() {
 Iterable* ourMain, *temp;
 ourMain = (Iterable*) our_main();
 temp = ourMain;
+if (ourMain->c != NULL)
+	ourMain = iterGetNext(ourMain);
 while(ourMain != NULL) {
 	print_line(((String*)ourMain->value)->value, ((String*)ourMain->value)->len);
 	ourMain = iterGetNext(ourMain);

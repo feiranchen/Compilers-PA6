@@ -388,7 +388,28 @@ class ForToWhileStat extends CuStat {
 		return super.HIR;
 	}
 	
-	@Override public String toC(ArrayList<String> localVars) {		
+	@Override public String toC(ArrayList<String> localVars) {
+		//this part is added for pa6, list comprehension
+		super.ctext = "if (" + var.toString() + "!=NULL) {\n";
+		super.ctext += "\t" + "if (((Iterable*)"+var.toString()+")->c!=NULL) {\n";
+		String rrName = Helper.getVarName();
+		super.ctext += "\t\t" + "Iterable *" + rrName + " = NULL;\n";
+		super.ctext += "\t\t" + rrName + " = (Iterable *)x3malloc(sizeof(Iterable));\n"
+				      +"\t\t((Iterable*)" + rrName + ")->nrefs = ((Iterable*)" + var.toString() + ")->nrefs;\n"
+				      +"\t\t((Iterable*)" + rrName + ")->isIter = ((Iterable*)" + var.toString() + ")->isIter;\n"
+				      +"\t\t((Iterable*)" + rrName + ")->isStr = ((Iterable*)" + var.toString() + ")->isStr;\n"
+				      +"\t\t((Iterable*)" + rrName + ")->value = ((Iterable*)" + var.toString() + ")->value;\n"
+				      +"\t\t((Iterable*)" + rrName + ")->c = ((Iterable*)" + var.toString() + ")->c;\n"
+				      +"\t\t((Iterable*)" + rrName + ")->additional = ((Iterable*)" + var.toString() + ")->additional;\n"
+				      +"\t\t((Iterable*)" + rrName + ")->next = ((Iterable*)" + var.toString() + ")->next;\n"
+				      +"\t\t((Iterable*)" + rrName + ")->concat = ((Iterable*)" + var.toString() + ")->concat;\n";
+		//increase c's ref count
+		super.ctext += Helper.incrRefCount("(((Iterable*)" + rrName + ")->c)");
+		super.ctext += "\t\t" + var.toString() + " = iterGetNext(" + rrName + ");\n";
+		super.ctext += "\t"+"}\n";
+		super.ctext += "}\n";
+		//end of what is added for list comprehension
+		
 		super.ctext += "\twhile (" + var.toString() + "!=NULL) {\n";
 		
 		//String temp_name = Helper.getVarName();
