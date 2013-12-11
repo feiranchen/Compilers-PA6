@@ -2970,12 +2970,19 @@ class OnwardsExpr extends CuExpr{
 				String temp = Helper.getVarName();
 				String iter = Helper.getVarName();
 				
-				//int i = (Integer.parseInt(val.toString())) + 1;
-				          name += "Integer* " + temp + ";\n" +temp + " = (Integer*) x3malloc(sizeof(Integer));\n"
-				            + temp + "->value = " 
-				             //+ i 
-				             + "((Integer *)" + val.toString() + ")->value + 1"
-				             + ";\n"
+				
+			    name += "Integer* " + temp + ";\n" +temp + " = (Integer*) x3malloc(sizeof(Integer));\n"
+				            + temp + "->value = ";
+				            
+				if (val instanceof CInteger) {
+					int i = (Integer.parseInt(val.toString())) + 1;
+					name += i;
+				}
+				else {
+					name += "((Integer *)" + val.toString() + ")->value + 1";
+				}
+				           
+				name  += ";\n"
 												
 						+ temp + "->nrefs = 1;\n";					
 					
@@ -3574,7 +3581,9 @@ class ThroughExpr extends CuExpr{
 				if(rightC.equals(""))
 					name += Helper.incrRefCount(rightToC);
 				
-				cText = "checkIter(" + iter + ")";
+				String ttName = Helper.getVarName();
+				name += ttName + "=" + "checkIter(" + iter + ")";
+				cText = ttName;
 			}
 		}
 		else if (bUp){
@@ -3613,12 +3622,19 @@ class ThroughExpr extends CuExpr{
 			
 			else {
 				String temp = Helper.getVarName();
-				//int i = (Integer.parseInt(left.toString())) + 1;
 				name += "Integer* " + temp + ";\n" + temp +  " = (Integer*) x3malloc(sizeof(Integer));\n"
-						+ temp + "->value = " 
-						//+ i 
-						+ "((Integer *)" + left.toString() + ")->value + 1"
-						+ ";\n"
+						+ temp + "->value = ";
+				
+				if (left instanceof CInteger) {
+					int i = (Integer.parseInt(left.toString())) + 1;
+					name += i;
+				}
+				else {
+					name += "((Integer *)" + left.toString() + ")->value + 1";
+				}
+						
+					
+					name	+= ";\n"
 						+ temp + "->nrefs = 1;\n";	
 				
 				String rightC = right.construct();
@@ -3637,7 +3653,9 @@ class ThroughExpr extends CuExpr{
 				if(rightC.equals(""))
 					name += Helper.incrRefCount(rightToC);
 				
-				cText = "checkIter(" + iter + ")";
+				String ttName = Helper.getVarName();
+				name += ttName + "=" + "checkIter(" + iter + ")";
+				cText = ttName;
 			}
 		}
 		else if (bLow) {
@@ -3682,12 +3700,19 @@ class ThroughExpr extends CuExpr{
 				
 				name += leftC;
 								
-				//int i = (Integer.parseInt(right.toString())) - 1;
 				name += "Integer* " + temp + ";\n" + temp +  " = (Integer*) x3malloc(sizeof(Integer));\n"
-						+ temp + "->value = " 
-						//+ i 
-						+ "((Integer *)" + right.toString() + ")->value - 1"
-						+ ";\n"
+						+ temp + "->value = ";
+						
+				if (right instanceof CInteger) {
+					int i = (Integer.parseInt(right.toString())) - 1;
+					name += i;
+				}
+				else {
+					name += "((Integer *)" + right.toString() + ")->value - 1";
+				}
+					
+						
+				 name += ";\n"
 						+ temp + "->nrefs = 1;\n";							
 					
 				
@@ -3719,22 +3744,32 @@ class ThroughExpr extends CuExpr{
 				String temp1 = Helper.getVarName(), temp2 = Helper.getVarName(), iterTemp = Helper.getVarName();
 				//name += left.construct();
 								
-				//int i = (Integer.parseInt(left.toString())) + 1;
 				name += "Integer* " + temp1 + ";\n" + temp1 +  " = (Integer*) x3malloc(sizeof(Integer));\n"
-						+ temp1 + "->value = " 
-						//+ i 
-						+ "((Integer *)" + left.toString() + ")->value + 1"
-						+ ";\n"
+						+ temp1 + "->value = ";
+				
+				if (left instanceof CInteger) {
+					int i = (Integer.parseInt(left.toString())) + 1;
+					name += i;
+				}
+				else {
+					name += "((Integer *)" + left.toString() + ")->value + 1";
+				}
+					
+				name += ";\n"
 						+ temp1 + "->nrefs = 1;\n";							
 				
-				//commented out by Yinglei
-				//i = (Integer.parseInt(right.toString())) - 1;
 				name += "Integer* " + temp2 + ";\n" + temp2 +  " = (Integer*) x3malloc(sizeof(Integer));\n"
-						+ temp2 + "->value = "
-						//+ i 
-						//added by Yinglei
-						+ "((Integer *)" + right.toString() + ")->value - 1"
-						+ ";\n"
+						+ temp2 + "->value = ";
+						
+				if (right instanceof CInteger) {
+					int i = (Integer.parseInt(right.toString())) + 1;
+					name += i;
+				}
+				else {
+					name += "((Integer *)" + right.toString() + ")->value - 1";
+				}
+
+				name += ";\n"
 						+ temp2 + "->nrefs = 1;\n";							
 					
 				name +=  "Iterable* " + iterTemp + ";\n" + iterTemp +  " = (Iterable*) x3malloc(sizeof(Iterable));\n"
@@ -3753,7 +3788,9 @@ class ThroughExpr extends CuExpr{
 						+ iter + "->next = &" + left.getCastType() + "_through;\n"
 						+ iter + "->concat = NULL;\n";
 				
-				cText = "checkIter(" + iter + ")";
+				String ttName = Helper.getVarName();
+				name += ttName + "=" + "checkIter(" + iter + ")";
+				cText = ttName;
 			}
 		}
 		return super.toC(localVars);
