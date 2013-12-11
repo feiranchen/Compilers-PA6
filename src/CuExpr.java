@@ -1543,7 +1543,7 @@ class EqualExpr extends CuExpr{
 		}
 		
 		//added for quick fix
-		if (left instanceof VvExp) {
+		if ((left instanceof VvExp) && (((VvExp)left).retype!=null)) {
 			leftCastType = "(" + ((VvExp)left).retype.id  + "*)";
 			rightCastType = leftCastType;
 		}
