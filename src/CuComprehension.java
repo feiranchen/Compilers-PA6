@@ -176,6 +176,7 @@ class ExprLstCmph extends CuComprehension{
 			if (!use.contains(s))
 				use.add(s);
 		}
+		use.remove("input");
 		
 		return use;
 	}
@@ -317,7 +318,8 @@ class IfCmph extends CuComprehension {
 			if (!use.contains(s))
 				use.add(s);
 		}
-		
+
+		use.remove("input");
 		return use;
 	}
 
@@ -440,8 +442,8 @@ class ForCmph extends CuComprehension {
 		
 		String nextFunString="", thisName = "this_" + Helper.getVarName(), argName = Helper.getVarName();
 		
-		String copyIter= "Iterable *" + eVarName + "Copy;\n" 
-				  +"\t\t" + thisName + "->iter= (Iterable *)x3malloc(sizeof(Iterable));\n"
+		String copyIter=
+				   "\t\t" + thisName + "->iter= (Iterable *)x3malloc(sizeof(Iterable));\n"
 			      +"\t\t" + thisName + "->iter->nrefs =" + thisName + "->iterorg->nrefs;\n"
 			      +"\t\t" + thisName + "->iter->isIter =" + thisName + "->iterorg->isIter;\n"
 			      +"\t\t" + thisName + "->iter->isStr =" + thisName + "->iterorg->isStr;\n"
@@ -528,7 +530,7 @@ class ForCmph extends CuComprehension {
 				use.add(s);
 		}
 		use.remove(v.text);
-		
+		use.remove("input");
 		return use;
 	}
 
