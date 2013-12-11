@@ -415,14 +415,14 @@ class ForCmph extends CuComprehension {
         defString +=e.construct();
         defString +="Iterable *" + eVarName + "Copy;\n" 
         	  +"\t\t" + eVarName + "Copy = (Iterable *)x3malloc(sizeof(Iterable));\n"
-		      +"\t\t" + eVarName + "Copy->nrefs ="+ eVarName+"->nrefs;\n"
-		      +"\t\t" + eVarName + "Copy->isIter = "+ eVarName+"->isIter;\n"
-		      +"\t\t" + eVarName + "Copy->isStr = "+ eVarName+"->isStr;\n"
-		      +"\t\t" + eVarName + "Copy->value = "+ eVarName+"->value;\n"
-		      +"\t\t" + eVarName + "Copy->c = "+ eVarName+"->c;\n"
-		      +"\t\t" + eVarName + "Copy->additional = "+ eVarName+"->additional;\n"
-		      +"\t\t" + eVarName + "Copy->next = "+ eVarName+"->next;\n"
-		      +"\t\t" + eVarName + "Copy->concat = "+ eVarName+"->concat;\n\t\t";
+		      +"\t\t" + eVarName + "Copy->nrefs = ((Iterable *)"+ eVarName+")->nrefs;\n"
+		      +"\t\t" + eVarName + "Copy->isIter = ((Iterable *)"+ eVarName+")->isIter;\n"
+		      +"\t\t" + eVarName + "Copy->isStr = ((Iterable *)"+ eVarName+")->isStr;\n"
+		      +"\t\t" + eVarName + "Copy->value = ((Iterable *)"+ eVarName+")->value;\n"
+		      +"\t\t" + eVarName + "Copy->c = ((Iterable *)"+ eVarName+")->c;\n"
+		      +"\t\t" + eVarName + "Copy->additional = ((Iterable *)"+ eVarName+")->additional;\n"
+		      +"\t\t" + eVarName + "Copy->next = ((Iterable *)"+ eVarName+")->next;\n"
+		      +"\t\t" + eVarName + "Copy->concat = ((Iterable *)"+ eVarName+")->concat;\n\t\t";
 		//increase c's ref count
         defString += Helper.incrRefCount("(((Iterable*)" + eVarName + "Copy)->c)");
         		
@@ -480,16 +480,26 @@ class ForCmph extends CuComprehension {
 			    	"if ("+thisName+"->iter==NULL) {\n"+copyIter+"return NULL;}\n" +
 					"if ("+thisName+"->iter->value==NULL) {" +//handle beginning
 					""+thisName+"->iter=iterGetNext("+thisName+"->iter);}\n" +
-					"if ("+thisName+"->iter==NULL||"+thisName+"->iter->value==NULL) {\n"+copyIter+" return NULL;}\n" +
+					"if ("+thisName+"->iter==NULL||"+thisName+"->iter->value==NULL) {\n"+copyIter+" return NULL;}\n";
+			//only add these two lines when c uses v.text
+            if (c.getUse().contains(v.text)){
+            	nextFunString+= 
 					"void*"+v.text+"="+thisName+"->iter->value;\n" +
-					"\t (("+c.cmphName+"S*)"+thisName+"->forC)->"+v.text+"="+v.text+";\n" +
-					"void* ret=(("+c.cmphName+"S*)"+thisName+"->forC)->next("+thisName+"->forC);\n" +
+					"\t (("+c.cmphName+"S*)"+thisName+"->forC)->"+v.text+"="+v.text+";\n";
+            }
+            nextFunString+= 
+            		"void* ret=(("+c.cmphName+"S*)"+thisName+"->forC)->next("+thisName+"->forC);\n" +
 					"if (ret==NULL){\n" +
 						"\t(("+c.cmphName+"S*)"+thisName+"->forC)->visited=0;\n" +//end of loop, enable again
 						"\t "+thisName+"->iter=iterGetNext("+thisName+"->iter);\n" +
-						"if ("+thisName+"->iter==NULL) {return NULL;}\n" +
-						"\t"+v.text+"="+thisName+"->iter->value;\n" +
-						"\t (("+c.cmphName+"S*)"+thisName+"->forC)->"+v.text+"="+v.text+";\n"+
+						"if ("+thisName+"->iter==NULL) {return NULL;}\n";
+          //only add these two lines when c uses v.text
+            if (c.getUse().contains(v.text)){
+            	 nextFunString+= 
+            	"\t"+v.text+"="+thisName+"->iter->value;\n" +
+						"\t (("+c.cmphName+"S*)"+thisName+"->forC)->"+v.text+"="+v.text+";\n";
+            }
+            nextFunString+= 		
 						"return (("+c.cmphName+"S*)"+thisName+"->forC)->next("+thisName+"->forC);\n" +
 					"}\n" +
 						
