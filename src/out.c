@@ -4,6 +4,7 @@
 #include "cubex_lib.h"
 
 Iterable* input_= NULL;
+int initialized_pqr = 0;
 void* aaaaaeF(void*);
 typedef struct aaaaae_struct {
 	int nrefs; 
