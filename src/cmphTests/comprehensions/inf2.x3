@@ -1,0 +1,6 @@
+output := [];
+for (i in (0...)){
+	return ["Lazy!"];
+}
+
+return output;

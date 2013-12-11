@@ -1,0 +1,9 @@
+fun imaNumber(i:Integer): Boolean {
+    return true;
+}
+
+for (i in [if (imaNumber(1)) "I am a Number"]){
+    return ["Numbers"];
+}
+
+return ["This is unfortunate"];

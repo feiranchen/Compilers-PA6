@@ -1,0 +1,2 @@
+c := [["a", "b"], ["c", "d"], ["e", "f"]];
+return [for (elem in c) for (char in elem) char];

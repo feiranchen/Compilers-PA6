@@ -1,0 +1,8 @@
+class StringFunction() {
+	fun apply(s : String) : String = string(s ++ s);
+}
+
+fun map(i : Iterable<String>, f : StringFunction) : Iterable<String> = 
+	[for (x in i) f.apply(x)];
+
+return map(["hi", "andrew"], StringFunction());

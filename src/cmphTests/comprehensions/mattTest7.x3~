@@ -1,0 +1,8 @@
+lst := [for (x in [for (z in 1..10) z]) for (y in [for (z in 1..20) z]) if (x != y) x];
+
+
+output := [];
+for (number in lst){
+    output := output ++ [stringOfInt(number)];
+}
+return output;

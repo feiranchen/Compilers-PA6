@@ -1,0 +1,11 @@
+class BB() {
+    b := "BB";
+    fun bar() : Boolean = True;
+}
+
+
+for (i in ["jk", if (BB().bar()) "I am a Number"]){
+    return [i];
+}
+
+return ["This is unfortunate"];

@@ -1,0 +1,7 @@
+lst := 0...;
+
+for (i in lst){
+    return ["Lazy!"];
+}
+
+return ["hmmmmmmm"];

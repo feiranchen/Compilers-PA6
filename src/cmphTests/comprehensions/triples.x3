@@ -1,0 +1,30 @@
+baseChar := 48;
+fun stringOfInt(n : Integer) : String {
+    if (n == 0) {
+        return string([character(baseChar)]);
+    }
+
+    digit := n % 10;
+    for (i in digit) {
+        divide := n / 10;
+        for (j in divide) {
+            if (j == 0) {
+                return string([character(baseChar + i)]);
+            }
+            return string(stringOfInt(j) ++ [character(baseChar + i)]);
+        }
+    }
+    return "error";
+}
+
+fun intOfString(s : String) : Integer {
+    ret := 0;
+
+    for (c in s) {
+        ret := ret * 10;
+        ret := ret + c.unicode() - baseChar;
+    }
+
+    return ret;
+}
+return [for (i in 1..50) for (j in 1..i) for (k in 1..(i+j)) if (i*i + j*j == k*k) stringOfInt(i), stringOfInt(j), stringOfInt(k), "---"];

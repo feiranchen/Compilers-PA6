@@ -1,0 +1,5 @@
+for (i in (0...)){
+	output := output ++ ["Lazy! "];
+}
+
+return output;
