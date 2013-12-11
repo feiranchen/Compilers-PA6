@@ -452,7 +452,7 @@ class ForCmph extends CuComprehension {
 			      +"\t\t" + thisName + "->iter->additional =" + thisName + "->iterorg->additional;\n"
 			      +"\t\t" + thisName + "->iter->next =" + thisName + "->iterorg->next;\n"
 			      +"\t\t" + thisName + "->iter->concat =" + thisName + "->iterorg->concat;\n\t\t"
-			      +"\t\t*((int*)" + thisName + "->iter->c+4)=0;\n"
+			      +"\t\tif ("+thisName+"->iter->c) *((int*)" + thisName + "->iter->c+4)=0;\n"
 			      +Helper.incrRefCount("" + thisName + "->iterorg->c");
 		
 		for (String tempv : getUse()){
