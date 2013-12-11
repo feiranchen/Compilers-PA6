@@ -1,4 +1,0 @@
-c := "hello";
-b := [if (true) c];
-c := "world";
-return b; 

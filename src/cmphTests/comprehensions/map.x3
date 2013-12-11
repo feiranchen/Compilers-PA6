@@ -1,6 +1,0 @@
-fun apply(s : String) : String = string(s ++ s);
-
-fun map(i : Iterable<String>) : Iterable<String> = 
-	[for (x in i) apply(x)];
-
-return map(["hi", "andrew"]);

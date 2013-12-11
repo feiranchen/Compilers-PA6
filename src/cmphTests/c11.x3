@@ -1,4 +1,0 @@
-i:=5;
-d:=["hello",if (i>2) "world"];
-
-return d;

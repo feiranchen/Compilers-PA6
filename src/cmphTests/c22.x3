@@ -1,3 +1,0 @@
-iter := [for (v in ["hello", "word"]) "hello"];
-
-return iter;

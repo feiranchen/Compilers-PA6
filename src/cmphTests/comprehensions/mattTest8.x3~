@@ -1,3 +1,0 @@
-lst := [for (x in [for (z in 1..999) z]) for (y in [for (z in 1..10) z]) if (x != y) z];
-
-return ["Should error"];

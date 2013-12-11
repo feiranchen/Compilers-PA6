@@ -1,6 +1,0 @@
-output := [];
-for (i in (0...)){
-	output := output ++ ["Hello"];
-}
-
-return output;

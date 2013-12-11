@@ -1,1 +1,0 @@
-return [for (i in ["Hello", "World"]) i];
