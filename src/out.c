@@ -4,8 +4,8 @@
 #include "cubex_lib.h"
 
 Iterable* input= NULL;
-void* aaaaacF(void*);
-typedef struct aaaaac_struct {
+void* aaaaagF(void*);
+typedef struct aaaaag_struct {
 	int nrefs; 
 	int isIter; 
 	int isStr; 
@@ -13,38 +13,97 @@ typedef struct aaaaac_struct {
 	int visited;
 	void* eC;
 	void* (*next)(void*);
+}aaaaagS;
+void* aaaaaeF(void*);
+typedef struct aaaaae_struct {
+	int nrefs; 
+	int isIter; 
+	int isStr; 
+	int isEC; 
+	int visited;
+	void* eC;
+	void* (*next)(void*);
+}aaaaaeS;
+void* aaaaadF(void*);
+typedef struct aaaaad_struct {
+	int nrefs; 
+	int isIter; 
+	int isStr; 
+	int isEC; 
+	int visited;
+	void* eC;
+	void* (*next)(void*);
+}aaaaadS;
+Iterable* aaaaadIterNext(void*);
+void* aaaaafF(void*);
+typedef struct aaaaaf_struct {
+	int nrefs; 
+	int isIter; 
+	int isStr; 
+	int isEC; 
+	int visited;
+	void* forC;
+	Iterable* iter;
+	Iterable* iterorg;
+	void* (*next)(void*);
+	void* m;
+}aaaaafS;
+void* aaaaabF(void*);
+typedef struct aaaaab_struct {
+	int nrefs; 
+	int isIter; 
+	int isStr; 
+	int isEC; 
+	int visited;
+	void* eC;
+	void* (*next)(void*);
+}aaaaabS;
+void* aaaaaaF(void*);
+typedef struct aaaaaa_struct {
+	int nrefs; 
+	int isIter; 
+	int isStr; 
+	int isEC; 
+	int visited;
+	void* eC;
+	void* (*next)(void*);
+}aaaaaaS;
+Iterable* aaaaaaIterNext(void*);
+void* aaaaacF(void*);
+typedef struct aaaaac_struct {
+	int nrefs; 
+	int isIter; 
+	int isStr; 
+	int isEC; 
+	int visited;
+	void* forC;
+	Iterable* iter;
+	Iterable* iterorg;
+	void* (*next)(void*);
+	void* v;
 }aaaaacS;
 Iterable* aaaaacIterNext(void*);
 
 
-<<<<<<< HEAD
-void* aaaaacF(void* c_aaaaax) {
-aaaaacS* this_aaaaay= (aaaaacS*) c_aaaaax;
-if(this_aaaaay->visited){ 
+void* aaaaagF(void* c_aaaaak) {
+aaaaagS* this_aaaaal= (aaaaagS*) c_aaaaak;
+if(this_aaaaal->visited){ 
 	return NULL;
 }else {
-	this_aaaaay->visited=1; 
-String* aaaaaz;
-aaaaaz = (String *) x3malloc(sizeof(String));
-(aaaaaz->isIter) = 0;
-aaaaaz->value = (char*) x3malloc(sizeof("Compiler"));
-(aaaaaz->nrefs) = 0;
-(aaaaaz->isStr) = 1;
-aaaaaz->len = sizeof("Compiler") - 1;
-mystrcpy(aaaaaz->value, "Compiler");
-	return aaaaaz;
+	this_aaaaal->visited=1; 
+String* aaaaam;
+aaaaam = (String *) x3malloc(sizeof(String));
+(aaaaam->isIter) = 0;
+aaaaam->value = (char*) x3malloc(sizeof("lala"));
+(aaaaam->nrefs) = 0;
+(aaaaam->isStr) = 1;
+aaaaam->len = sizeof("lala") - 1;
+mystrcpy(aaaaam->value, "lala");
+	return aaaaam;
 	}
 }
-Iterable* aaaaacIterNext(void* aaaabb){ 
-Iterable* this=(Iterable*)aaaabb;
-if (((aaaaacS*)this->c) != NULL) {
-	void* aaaaba = this->value;
-	this->value=((aaaaacS*)this->c)->next(this->c);
-	incRef(this->value);
-	decRef(aaaaba);
-=======
-void* aaaaamF(void* c_aaaaao) {
-aaaaamS* this_aaaaap= (aaaaamS*) c_aaaaao;
+void* aaaaaeF(void* c_aaaaao) {
+aaaaaeS* this_aaaaap= (aaaaaeS*) c_aaaaao;
 if(this_aaaaap->visited){ 
 	return NULL;
 }else {
@@ -52,207 +111,129 @@ if(this_aaaaap->visited){
 String* aaaaaq;
 aaaaaq = (String *) x3malloc(sizeof(String));
 (aaaaaq->isIter) = 0;
-aaaaaq->value = (char*) x3malloc(sizeof("lala"));
+aaaaaq->value = (char*) x3malloc(sizeof("bb"));
 (aaaaaq->nrefs) = 0;
 (aaaaaq->isStr) = 1;
-aaaaaq->len = sizeof("lala") - 1;
-mystrcpy(aaaaaq->value, "lala");
+aaaaaq->len = sizeof("bb") - 1;
+mystrcpy(aaaaaq->value, "bb");
 	return aaaaaq;
 	}
 }
-void* aaaaalF(void* c_aaaaar) {
-aaaaalS* this_aaaaas= (aaaaalS*) c_aaaaar;
-void*m=this_aaaaas->m;
+void* aaaaadF(void* c_aaaaar) {
+aaaaadS* this_aaaaas= (aaaaadS*) c_aaaaar;
 if(this_aaaaas->visited){ 
-	return ((aaaaamS*)this_aaaaas->eC)->next(this_aaaaas->eC);
+	return ((aaaaaeS*)this_aaaaas->eC)->next(this_aaaaas->eC);
 }else {
-	if (this_aaaaas->eC!=NULL&&this_aaaaas->visited==0){		((aaaaamS*)this_aaaaas->eC)->visited=0;}
+	if (this_aaaaas->eC!=NULL&&this_aaaaas->visited==0){		((aaaaaeS*)this_aaaaas->eC)->visited=0;}
 		this_aaaaas->visited=1; 
-	return m;
+String* aaaaat;
+aaaaat = (String *) x3malloc(sizeof(String));
+(aaaaat->isIter) = 0;
+aaaaat->value = (char*) x3malloc(sizeof("aa"));
+(aaaaat->nrefs) = 0;
+(aaaaat->isStr) = 1;
+aaaaat->len = sizeof("aa") - 1;
+mystrcpy(aaaaat->value, "aa");
+	return aaaaat;
 	}
 }
-void* aaaaakF(void* c_aaaaat) {
-aaaaakS* this_aaaaau= (aaaaakS*) c_aaaaat;
-void*v=this_aaaaau->v;
-void*m=this_aaaaau->m;
-((aaaaalS*)this_aaaaau->eC)->m=this_aaaaau->m;
-if(this_aaaaau->visited){ 
-	return ((aaaaalS*)this_aaaaau->eC)->next(this_aaaaau->eC);
-}else {
-	if (this_aaaaau->eC!=NULL&&this_aaaaau->visited==0){		((aaaaalS*)this_aaaaau->eC)->visited=0;}
-		this_aaaaau->visited=1; 
-	return v;
-	}
+Iterable* aaaaadIterNext(void* aaaaav){ 
+Iterable* this=(Iterable*)aaaaav;
+if (((aaaaadS*)this->c) != NULL) {
+	void* aaaaau = this->value;
+	this->value=((aaaaadS*)this->c)->next(this->c);
+	incRef(this->value);
+	decRef(aaaaau);
+	if(this->value)
+		return this;
+	else
+		return NULL;
 }
-void* aaaaaiF(void* c_aaaaaw) {
-aaaaaiS* this_aaaaax= (aaaaaiS*) c_aaaaaw;
-if(this_aaaaax->visited){ 
+else
+	return NULL;
+}
+void* aaaaafF(void* c_aaaaax) {
+aaaaafS* this_aaaaaw= (aaaaafS*) c_aaaaax;
+if (this_aaaaaw->forC!=NULL&&this_aaaaaw->visited==0){	((aaaaagS*)this_aaaaaw->forC)->visited=0;}
+this_aaaaaw->visited=1; 
+if (this_aaaaaw->iter==NULL) {
+		this_aaaaaw->iter= (Iterable *)x3malloc(sizeof(Iterable));
+		this_aaaaaw->iter->nrefs =this_aaaaaw->iterorg->nrefs;
+		this_aaaaaw->iter->isIter =this_aaaaaw->iterorg->isIter;
+		this_aaaaaw->iter->isStr =this_aaaaaw->iterorg->isStr;
+		this_aaaaaw->iter->value =this_aaaaaw->iterorg->value;
+		this_aaaaaw->iter->c =this_aaaaaw->iterorg->c;
+		this_aaaaaw->iter->additional =this_aaaaaw->iterorg->additional;
+		this_aaaaaw->iter->next =this_aaaaaw->iterorg->next;
+		this_aaaaaw->iter->concat =this_aaaaaw->iterorg->concat;
+				*((int*)this_aaaaaw->iter->c+4)=0;
+incRef(this_aaaaaw->iterorg->c);
+return NULL;}
+if (this_aaaaaw->iter->value==NULL) {this_aaaaaw->iter=iterGetNext(this_aaaaaw->iter);}
+if (this_aaaaaw->iter==NULL||this_aaaaaw->iter->value==NULL) {
+		this_aaaaaw->iter= (Iterable *)x3malloc(sizeof(Iterable));
+		this_aaaaaw->iter->nrefs =this_aaaaaw->iterorg->nrefs;
+		this_aaaaaw->iter->isIter =this_aaaaaw->iterorg->isIter;
+		this_aaaaaw->iter->isStr =this_aaaaaw->iterorg->isStr;
+		this_aaaaaw->iter->value =this_aaaaaw->iterorg->value;
+		this_aaaaaw->iter->c =this_aaaaaw->iterorg->c;
+		this_aaaaaw->iter->additional =this_aaaaaw->iterorg->additional;
+		this_aaaaaw->iter->next =this_aaaaaw->iterorg->next;
+		this_aaaaaw->iter->concat =this_aaaaaw->iterorg->concat;
+				*((int*)this_aaaaaw->iter->c+4)=0;
+incRef(this_aaaaaw->iterorg->c);
+ return NULL;}
+void* ret=((aaaaagS*)this_aaaaaw->forC)->next(this_aaaaaw->forC);
+if (ret==NULL){
+	((aaaaagS*)this_aaaaaw->forC)->visited=0;
+	 this_aaaaaw->iter=iterGetNext(this_aaaaaw->iter);
+if (this_aaaaaw->iter==NULL) {return NULL;}
+return ((aaaaagS*)this_aaaaaw->forC)->next(this_aaaaaw->forC);
+}
+return ret;
+}
+void* aaaaabF(void* c_aaaaaz) {
+aaaaabS* this_aaaaba= (aaaaabS*) c_aaaaaz;
+if(this_aaaaba->visited){ 
 	return NULL;
 }else {
-	this_aaaaax->visited=1; 
-String* aaaaay;
-aaaaay = (String *) x3malloc(sizeof(String));
-(aaaaay->isIter) = 0;
-aaaaay->value = (char*) x3malloc(sizeof("bb"));
-(aaaaay->nrefs) = 0;
-(aaaaay->isStr) = 1;
-aaaaay->len = sizeof("bb") - 1;
-mystrcpy(aaaaay->value, "bb");
-	return aaaaay;
-	}
-}
-void* aaaaahF(void* c_aaaaaz) {
-aaaaahS* this_aaaaba= (aaaaahS*) c_aaaaaz;
-if(this_aaaaba->visited){ 
-	return ((aaaaaiS*)this_aaaaba->eC)->next(this_aaaaba->eC);
-}else {
-	if (this_aaaaba->eC!=NULL&&this_aaaaba->visited==0){		((aaaaaiS*)this_aaaaba->eC)->visited=0;}
-		this_aaaaba->visited=1; 
+	this_aaaaba->visited=1; 
 String* aaaabb;
 aaaabb = (String *) x3malloc(sizeof(String));
 (aaaabb->isIter) = 0;
-aaaabb->value = (char*) x3malloc(sizeof("aa"));
+aaaabb->value = (char*) x3malloc(sizeof("y"));
 (aaaabb->nrefs) = 0;
 (aaaabb->isStr) = 1;
-aaaabb->len = sizeof("aa") - 1;
-mystrcpy(aaaabb->value, "aa");
+aaaabb->len = sizeof("y") - 1;
+mystrcpy(aaaabb->value, "y");
 	return aaaabb;
 	}
 }
-Iterable* aaaaahIterNext(void* aaaabd){ 
-Iterable* this=(Iterable*)aaaabd;
-if (((aaaaahS*)this->c) != NULL) {
-	void* aaaabc = this->value;
-	this->value=((aaaaahS*)this->c)->next(this->c);
-	incRef(this->value);
-	decRef(aaaabc);
-	if(this->value)
-		return this;
-	else
-		return NULL;
-}
-else
-	return NULL;
-}
-void* aaaaajF(void* c_aaaabf) {
-aaaaajS* this_aaaabe= (aaaaajS*) c_aaaabf;
-((aaaaakS*)this_aaaabe->forC)->v=this_aaaabe->v;
-if (this_aaaabe->forC!=NULL&&this_aaaabe->visited==0){	((aaaaakS*)this_aaaabe->forC)->visited=0;}
-this_aaaabe->visited=1; 
-if (this_aaaabe->iter==NULL) {
-		this_aaaabe->iter= (Iterable *)x3malloc(sizeof(Iterable));
-		this_aaaabe->iter->nrefs =this_aaaabe->iterorg->nrefs;
-		this_aaaabe->iter->isIter =this_aaaabe->iterorg->isIter;
-		this_aaaabe->iter->isStr =this_aaaabe->iterorg->isStr;
-		this_aaaabe->iter->value =this_aaaabe->iterorg->value;
-		this_aaaabe->iter->c =this_aaaabe->iterorg->c;
-		this_aaaabe->iter->additional =this_aaaabe->iterorg->additional;
-		this_aaaabe->iter->next =this_aaaabe->iterorg->next;
-		this_aaaabe->iter->concat =this_aaaabe->iterorg->concat;
-				*((int*)this_aaaabe->iter->c+4)=0;
-incRef(this_aaaabe->iterorg->c);
-return NULL;}
-if (this_aaaabe->iter->value==NULL) {this_aaaabe->iter=iterGetNext(this_aaaabe->iter);}
-if (this_aaaabe->iter==NULL||this_aaaabe->iter->value==NULL) {
-		this_aaaabe->iter= (Iterable *)x3malloc(sizeof(Iterable));
-		this_aaaabe->iter->nrefs =this_aaaabe->iterorg->nrefs;
-		this_aaaabe->iter->isIter =this_aaaabe->iterorg->isIter;
-		this_aaaabe->iter->isStr =this_aaaabe->iterorg->isStr;
-		this_aaaabe->iter->value =this_aaaabe->iterorg->value;
-		this_aaaabe->iter->c =this_aaaabe->iterorg->c;
-		this_aaaabe->iter->additional =this_aaaabe->iterorg->additional;
-		this_aaaabe->iter->next =this_aaaabe->iterorg->next;
-		this_aaaabe->iter->concat =this_aaaabe->iterorg->concat;
-				*((int*)this_aaaabe->iter->c+4)=0;
-incRef(this_aaaabe->iterorg->c);
- return NULL;}
-void*m=this_aaaabe->iter->value;
-	 ((aaaaakS*)this_aaaabe->forC)->m=m;
-void* ret=((aaaaakS*)this_aaaabe->forC)->next(this_aaaabe->forC);
-if (ret==NULL){
-	((aaaaakS*)this_aaaabe->forC)->visited=0;
-	 this_aaaabe->iter=iterGetNext(this_aaaabe->iter);
-if (this_aaaabe->iter==NULL) {return NULL;}
-	m=this_aaaabe->iter->value;
-	 ((aaaaakS*)this_aaaabe->forC)->m=m;
-return ((aaaaakS*)this_aaaabe->forC)->next(this_aaaabe->forC);
-}
-return ret;
-}
-void* aaaaagF(void* c_aaaabg) {
-aaaaagS* this_aaaabh= (aaaaagS*) c_aaaabg;
-void*v=this_aaaabh->v;
-((aaaaajS*)this_aaaabh->eC)->v=this_aaaabh->v;
-if(this_aaaabh->visited){ 
-	return ((aaaaajS*)this_aaaabh->eC)->next(this_aaaabh->eC);
+void* aaaaaaF(void* c_aaaabc) {
+aaaaaaS* this_aaaabd= (aaaaaaS*) c_aaaabc;
+if(this_aaaabd->visited){ 
+	return ((aaaaabS*)this_aaaabd->eC)->next(this_aaaabd->eC);
 }else {
-	if (this_aaaabh->eC!=NULL&&this_aaaabh->visited==0){		((aaaaajS*)this_aaaabh->eC)->visited=0;}
-		this_aaaabh->visited=1; 
-String* aaaabi;
-aaaabi = (String *) x3malloc(sizeof(String));
-(aaaabi->isIter) = 0;
-aaaabi->value = (char*) x3malloc(sizeof("testing"));
-(aaaabi->nrefs) = 0;
-(aaaabi->isStr) = 1;
-aaaabi->len = sizeof("testing") - 1;
-mystrcpy(aaaabi->value, "testing");
-	return aaaabi;
+	if (this_aaaabd->eC!=NULL&&this_aaaabd->visited==0){		((aaaaabS*)this_aaaabd->eC)->visited=0;}
+		this_aaaabd->visited=1; 
+String* aaaabe;
+aaaabe = (String *) x3malloc(sizeof(String));
+(aaaabe->isIter) = 0;
+aaaabe->value = (char*) x3malloc(sizeof("x"));
+(aaaabe->nrefs) = 0;
+(aaaabe->isStr) = 1;
+aaaabe->len = sizeof("x") - 1;
+mystrcpy(aaaabe->value, "x");
+	return aaaabe;
 	}
 }
-void* aaaaafF(void* c_aaaabj) {
-aaaaafS* this_aaaabk= (aaaaafS*) c_aaaabj;
-void*v=this_aaaabk->v;
-((aaaaagS*)this_aaaabk->eC)->v=this_aaaabk->v;
-if(this_aaaabk->visited){ 
-	return ((aaaaagS*)this_aaaabk->eC)->next(this_aaaabk->eC);
-}else {
-	if (this_aaaabk->eC!=NULL&&this_aaaabk->visited==0){		((aaaaagS*)this_aaaabk->eC)->visited=0;}
-		this_aaaabk->visited=1; 
-	return v;
-	}
-}
-void* aaaaabF(void* c_aaaabm) {
-aaaaabS* this_aaaabn= (aaaaabS*) c_aaaabm;
-if(this_aaaabn->visited){ 
-	return NULL;
-}else {
-	this_aaaabn->visited=1; 
-String* aaaabo;
-aaaabo = (String *) x3malloc(sizeof(String));
-(aaaabo->isIter) = 0;
-aaaabo->value = (char*) x3malloc(sizeof("y"));
-(aaaabo->nrefs) = 0;
-(aaaabo->isStr) = 1;
-aaaabo->len = sizeof("y") - 1;
-mystrcpy(aaaabo->value, "y");
-	return aaaabo;
-	}
-}
-void* aaaaaaF(void* c_aaaabp) {
-aaaaaaS* this_aaaabq= (aaaaaaS*) c_aaaabp;
-if(this_aaaabq->visited){ 
-	return ((aaaaabS*)this_aaaabq->eC)->next(this_aaaabq->eC);
-}else {
-	if (this_aaaabq->eC!=NULL&&this_aaaabq->visited==0){		((aaaaabS*)this_aaaabq->eC)->visited=0;}
-		this_aaaabq->visited=1; 
-String* aaaabr;
-aaaabr = (String *) x3malloc(sizeof(String));
-(aaaabr->isIter) = 0;
-aaaabr->value = (char*) x3malloc(sizeof("x"));
-(aaaabr->nrefs) = 0;
-(aaaabr->isStr) = 1;
-aaaabr->len = sizeof("x") - 1;
-mystrcpy(aaaabr->value, "x");
-	return aaaabr;
-	}
-}
-Iterable* aaaaaaIterNext(void* aaaabt){ 
-Iterable* this=(Iterable*)aaaabt;
+Iterable* aaaaaaIterNext(void* aaaabg){ 
+Iterable* this=(Iterable*)aaaabg;
 if (((aaaaaaS*)this->c) != NULL) {
-	void* aaaabs = this->value;
+	void* aaaabf = this->value;
 	this->value=((aaaaaaS*)this->c)->next(this->c);
 	incRef(this->value);
-	decRef(aaaabs);
+	decRef(aaaabf);
 	if(this->value)
 		return this;
 	else
@@ -261,58 +242,53 @@ if (((aaaaaaS*)this->c) != NULL) {
 else
 	return NULL;
 }
-void* aaaaacF(void* c_aaaabv) {
-aaaaacS* this_aaaabu= (aaaaacS*) c_aaaabv;
-if (this_aaaabu->forC!=NULL&&this_aaaabu->visited==0){	((aaaaafS*)this_aaaabu->forC)->visited=0;}
-this_aaaabu->visited=1; 
-if (this_aaaabu->iter==NULL) {
-		this_aaaabu->iter= (Iterable *)x3malloc(sizeof(Iterable));
-		this_aaaabu->iter->nrefs =this_aaaabu->iterorg->nrefs;
-		this_aaaabu->iter->isIter =this_aaaabu->iterorg->isIter;
-		this_aaaabu->iter->isStr =this_aaaabu->iterorg->isStr;
-		this_aaaabu->iter->value =this_aaaabu->iterorg->value;
-		this_aaaabu->iter->c =this_aaaabu->iterorg->c;
-		this_aaaabu->iter->additional =this_aaaabu->iterorg->additional;
-		this_aaaabu->iter->next =this_aaaabu->iterorg->next;
-		this_aaaabu->iter->concat =this_aaaabu->iterorg->concat;
-				*((int*)this_aaaabu->iter->c+4)=0;
-incRef(this_aaaabu->iterorg->c);
+void* aaaaacF(void* c_aaaabi) {
+aaaaacS* this_aaaabh= (aaaaacS*) c_aaaabi;
+if (this_aaaabh->forC!=NULL&&this_aaaabh->visited==0){	((aaaaafS*)this_aaaabh->forC)->visited=0;}
+this_aaaabh->visited=1; 
+if (this_aaaabh->iter==NULL) {
+		this_aaaabh->iter= (Iterable *)x3malloc(sizeof(Iterable));
+		this_aaaabh->iter->nrefs =this_aaaabh->iterorg->nrefs;
+		this_aaaabh->iter->isIter =this_aaaabh->iterorg->isIter;
+		this_aaaabh->iter->isStr =this_aaaabh->iterorg->isStr;
+		this_aaaabh->iter->value =this_aaaabh->iterorg->value;
+		this_aaaabh->iter->c =this_aaaabh->iterorg->c;
+		this_aaaabh->iter->additional =this_aaaabh->iterorg->additional;
+		this_aaaabh->iter->next =this_aaaabh->iterorg->next;
+		this_aaaabh->iter->concat =this_aaaabh->iterorg->concat;
+				*((int*)this_aaaabh->iter->c+4)=0;
+incRef(this_aaaabh->iterorg->c);
 return NULL;}
-if (this_aaaabu->iter->value==NULL) {this_aaaabu->iter=iterGetNext(this_aaaabu->iter);}
-if (this_aaaabu->iter==NULL||this_aaaabu->iter->value==NULL) {
-		this_aaaabu->iter= (Iterable *)x3malloc(sizeof(Iterable));
-		this_aaaabu->iter->nrefs =this_aaaabu->iterorg->nrefs;
-		this_aaaabu->iter->isIter =this_aaaabu->iterorg->isIter;
-		this_aaaabu->iter->isStr =this_aaaabu->iterorg->isStr;
-		this_aaaabu->iter->value =this_aaaabu->iterorg->value;
-		this_aaaabu->iter->c =this_aaaabu->iterorg->c;
-		this_aaaabu->iter->additional =this_aaaabu->iterorg->additional;
-		this_aaaabu->iter->next =this_aaaabu->iterorg->next;
-		this_aaaabu->iter->concat =this_aaaabu->iterorg->concat;
-				*((int*)this_aaaabu->iter->c+4)=0;
-incRef(this_aaaabu->iterorg->c);
+if (this_aaaabh->iter->value==NULL) {this_aaaabh->iter=iterGetNext(this_aaaabh->iter);}
+if (this_aaaabh->iter==NULL||this_aaaabh->iter->value==NULL) {
+		this_aaaabh->iter= (Iterable *)x3malloc(sizeof(Iterable));
+		this_aaaabh->iter->nrefs =this_aaaabh->iterorg->nrefs;
+		this_aaaabh->iter->isIter =this_aaaabh->iterorg->isIter;
+		this_aaaabh->iter->isStr =this_aaaabh->iterorg->isStr;
+		this_aaaabh->iter->value =this_aaaabh->iterorg->value;
+		this_aaaabh->iter->c =this_aaaabh->iterorg->c;
+		this_aaaabh->iter->additional =this_aaaabh->iterorg->additional;
+		this_aaaabh->iter->next =this_aaaabh->iterorg->next;
+		this_aaaabh->iter->concat =this_aaaabh->iterorg->concat;
+				*((int*)this_aaaabh->iter->c+4)=0;
+incRef(this_aaaabh->iterorg->c);
  return NULL;}
-void*v=this_aaaabu->iter->value;
-	 ((aaaaafS*)this_aaaabu->forC)->v=v;
-void* ret=((aaaaafS*)this_aaaabu->forC)->next(this_aaaabu->forC);
+void* ret=((aaaaafS*)this_aaaabh->forC)->next(this_aaaabh->forC);
 if (ret==NULL){
-	((aaaaafS*)this_aaaabu->forC)->visited=0;
-	 this_aaaabu->iter=iterGetNext(this_aaaabu->iter);
-if (this_aaaabu->iter==NULL) {return NULL;}
-	v=this_aaaabu->iter->value;
-	 ((aaaaafS*)this_aaaabu->forC)->v=v;
-return ((aaaaafS*)this_aaaabu->forC)->next(this_aaaabu->forC);
+	((aaaaafS*)this_aaaabh->forC)->visited=0;
+	 this_aaaabh->iter=iterGetNext(this_aaaabh->iter);
+if (this_aaaabh->iter==NULL) {return NULL;}
+return ((aaaaafS*)this_aaaabh->forC)->next(this_aaaabh->forC);
 }
 return ret;
 }
-Iterable* aaaaacIterNext(void* aaaabx){ 
-Iterable* this=(Iterable*)aaaabx;
+Iterable* aaaaacIterNext(void* aaaabk){ 
+Iterable* this=(Iterable*)aaaabk;
 if (((aaaaacS*)this->c) != NULL) {
-	void* aaaabw = this->value;
+	void* aaaabj = this->value;
 	this->value=((aaaaacS*)this->c)->next(this->c);
 	incRef(this->value);
-	decRef(aaaabw);
->>>>>>> c442a05405fc2ca23da1fc2764d721b9f8bf9221
+	decRef(aaaabj);
 	if(this->value)
 		return this;
 	else
@@ -324,147 +300,70 @@ else
 
 void* our_main()
 {
-<<<<<<< HEAD
-void * aaaaad = NULL;
-void * aaaaae = NULL;
-void * x = NULL;
-void * re = NULL;
-void * z = NULL;
-
-
-
-
-
-
-Integer* aaaaaj;
-aaaaaj = (Integer*) x3malloc(sizeof(Integer));
-(aaaaaj->nrefs) = 0;
-aaaaaj->value = 3;
-void * aaaaak = NULL;
-aaaaak = aaaaad;
-aaaaad = aaaaaj;
-incRef(aaaaad);
-decRef(aaaaak);
-
-
-
-Integer* aaaaal;
-aaaaal = (Integer*) x3malloc(sizeof(Integer));
-(aaaaal->nrefs) = 0;
-aaaaal->value = 5;
-void * aaaaam = NULL;
-aaaaam = aaaaae;
-aaaaae = aaaaal;
-incRef(aaaaae);
-decRef(aaaaam);
-
-
-
-=======
 void * d = NULL;
 
 
 
-void * i = NULL;
 
 
 
-
-
-
-aaaaamS* aaaaam;
-aaaaam = (aaaaamS*) x3malloc(sizeof(aaaaamS));
-aaaaam->nrefs = 1;
-aaaaam->isIter = 0;
-aaaaam->isStr = 0;
-aaaaam->isEC = 1;
-aaaaam->eC = NULL;
-aaaaam->next = &aaaaamF;
-aaaaam->visited= 0;
-aaaaalS* aaaaal;
-aaaaal = (aaaaalS*) x3malloc(sizeof(aaaaalS));
-aaaaal->nrefs = 1;
-aaaaal->isIter = 0;
-aaaaal->isStr = 0;
-aaaaal->isEC = 1;
-aaaaal->eC = aaaaam;
-aaaaal->next = &aaaaalF;
-aaaaal->visited= 0;
-aaaaakS* aaaaak;
-aaaaak = (aaaaakS*) x3malloc(sizeof(aaaaakS));
-aaaaak->nrefs = 1;
-aaaaak->isIter = 0;
-aaaaak->isStr = 0;
-aaaaak->isEC = 1;
-aaaaak->eC = aaaaal;
-aaaaak->next = &aaaaakF;
-aaaaak->visited= 0;
-aaaaaiS* aaaaai;
-aaaaai = (aaaaaiS*) x3malloc(sizeof(aaaaaiS));
-aaaaai->nrefs = 1;
-aaaaai->isIter = 0;
-aaaaai->isStr = 0;
-aaaaai->isEC = 1;
-aaaaai->eC = NULL;
-aaaaai->next = &aaaaaiF;
-aaaaai->visited= 0;
-aaaaahS* aaaaah;
-aaaaah = (aaaaahS*) x3malloc(sizeof(aaaaahS));
-aaaaah->nrefs = 1;
-aaaaah->isIter = 0;
-aaaaah->isStr = 0;
-aaaaah->isEC = 1;
-aaaaah->eC = aaaaai;
-aaaaah->next = &aaaaahF;
-aaaaah->visited= 0;
-Iterable* aaaaav;
-aaaaav = (Iterable*) x3malloc(sizeof(Iterable));
-aaaaav->isIter = 1;
-aaaaav->nrefs = 0;
-aaaaav->value = NULL;
-aaaaav->c = aaaaah;
-aaaaav->additional = NULL;
-aaaaav->next = &aaaaahIterNext;
-aaaaav->concat = NULL;
-
-Iterable *aaaaavCopy;
-		aaaaavCopy = (Iterable *)x3malloc(sizeof(Iterable));
-		aaaaavCopy->nrefs =aaaaav->nrefs;
-		aaaaavCopy->isIter = aaaaav->isIter;
-		aaaaavCopy->isStr = aaaaav->isStr;
-		aaaaavCopy->value = aaaaav->value;
-		aaaaavCopy->c = aaaaav->c;
-		aaaaavCopy->additional = aaaaav->additional;
-		aaaaavCopy->next = aaaaav->next;
-		aaaaavCopy->concat = aaaaav->concat;
-		incRef((((Iterable*)aaaaavCopy)->c));
-aaaaajS* aaaaaj;
-aaaaaj = (aaaaajS*) x3malloc(sizeof(aaaaajS));
-aaaaaj->nrefs = 1;
-aaaaaj->isIter = 0;
-aaaaaj->isStr = 0;
-aaaaaj->isEC =0;
-aaaaaj->forC = aaaaak;
-aaaaaj->iter = aaaaavCopy;
-aaaaaj->iterorg = aaaaav;
-aaaaaj->next = &aaaaajF;
-aaaaaj->visited= 0;
 aaaaagS* aaaaag;
 aaaaag = (aaaaagS*) x3malloc(sizeof(aaaaagS));
 aaaaag->nrefs = 1;
 aaaaag->isIter = 0;
 aaaaag->isStr = 0;
 aaaaag->isEC = 1;
-aaaaag->eC = aaaaaj;
+aaaaag->eC = NULL;
 aaaaag->next = &aaaaagF;
 aaaaag->visited= 0;
+aaaaaeS* aaaaae;
+aaaaae = (aaaaaeS*) x3malloc(sizeof(aaaaaeS));
+aaaaae->nrefs = 1;
+aaaaae->isIter = 0;
+aaaaae->isStr = 0;
+aaaaae->isEC = 1;
+aaaaae->eC = NULL;
+aaaaae->next = &aaaaaeF;
+aaaaae->visited= 0;
+aaaaadS* aaaaad;
+aaaaad = (aaaaadS*) x3malloc(sizeof(aaaaadS));
+aaaaad->nrefs = 1;
+aaaaad->isIter = 0;
+aaaaad->isStr = 0;
+aaaaad->isEC = 1;
+aaaaad->eC = aaaaae;
+aaaaad->next = &aaaaadF;
+aaaaad->visited= 0;
+Iterable* aaaaan;
+aaaaan = (Iterable*) x3malloc(sizeof(Iterable));
+aaaaan->isIter = 1;
+aaaaan->nrefs = 0;
+aaaaan->value = NULL;
+aaaaan->c = aaaaad;
+aaaaan->additional = NULL;
+aaaaan->next = &aaaaadIterNext;
+aaaaan->concat = NULL;
+
+Iterable *aaaaanCopy;
+		aaaaanCopy = (Iterable *)x3malloc(sizeof(Iterable));
+		aaaaanCopy->nrefs = ((Iterable *)aaaaan)->nrefs;
+		aaaaanCopy->isIter = ((Iterable *)aaaaan)->isIter;
+		aaaaanCopy->isStr = ((Iterable *)aaaaan)->isStr;
+		aaaaanCopy->value = ((Iterable *)aaaaan)->value;
+		aaaaanCopy->c = ((Iterable *)aaaaan)->c;
+		aaaaanCopy->additional = ((Iterable *)aaaaan)->additional;
+		aaaaanCopy->next = ((Iterable *)aaaaan)->next;
+		aaaaanCopy->concat = ((Iterable *)aaaaan)->concat;
+		incRef((((Iterable*)aaaaanCopy)->c));
 aaaaafS* aaaaaf;
 aaaaaf = (aaaaafS*) x3malloc(sizeof(aaaaafS));
 aaaaaf->nrefs = 1;
 aaaaaf->isIter = 0;
 aaaaaf->isStr = 0;
-aaaaaf->isEC = 1;
-aaaaaf->eC = aaaaag;
+aaaaaf->isEC =0;
+aaaaaf->forC = aaaaag;
+aaaaaf->iter = aaaaanCopy;
+aaaaaf->iterorg = aaaaan;
 aaaaaf->next = &aaaaafF;
 aaaaaf->visited= 0;
 aaaaabS* aaaaab;
@@ -485,27 +384,27 @@ aaaaaa->isEC = 1;
 aaaaaa->eC = aaaaab;
 aaaaaa->next = &aaaaaaF;
 aaaaaa->visited= 0;
-Iterable* aaaabl;
-aaaabl = (Iterable*) x3malloc(sizeof(Iterable));
-aaaabl->isIter = 1;
-aaaabl->nrefs = 0;
-aaaabl->value = NULL;
-aaaabl->c = aaaaaa;
-aaaabl->additional = NULL;
-aaaabl->next = &aaaaaaIterNext;
-aaaabl->concat = NULL;
+Iterable* aaaaay;
+aaaaay = (Iterable*) x3malloc(sizeof(Iterable));
+aaaaay->isIter = 1;
+aaaaay->nrefs = 0;
+aaaaay->value = NULL;
+aaaaay->c = aaaaaa;
+aaaaay->additional = NULL;
+aaaaay->next = &aaaaaaIterNext;
+aaaaay->concat = NULL;
 
-Iterable *aaaablCopy;
-		aaaablCopy = (Iterable *)x3malloc(sizeof(Iterable));
-		aaaablCopy->nrefs =aaaabl->nrefs;
-		aaaablCopy->isIter = aaaabl->isIter;
-		aaaablCopy->isStr = aaaabl->isStr;
-		aaaablCopy->value = aaaabl->value;
-		aaaablCopy->c = aaaabl->c;
-		aaaablCopy->additional = aaaabl->additional;
-		aaaablCopy->next = aaaabl->next;
-		aaaablCopy->concat = aaaabl->concat;
-		incRef((((Iterable*)aaaablCopy)->c));
+Iterable *aaaaayCopy;
+		aaaaayCopy = (Iterable *)x3malloc(sizeof(Iterable));
+		aaaaayCopy->nrefs = ((Iterable *)aaaaay)->nrefs;
+		aaaaayCopy->isIter = ((Iterable *)aaaaay)->isIter;
+		aaaaayCopy->isStr = ((Iterable *)aaaaay)->isStr;
+		aaaaayCopy->value = ((Iterable *)aaaaay)->value;
+		aaaaayCopy->c = ((Iterable *)aaaaay)->c;
+		aaaaayCopy->additional = ((Iterable *)aaaaay)->additional;
+		aaaaayCopy->next = ((Iterable *)aaaaay)->next;
+		aaaaayCopy->concat = ((Iterable *)aaaaay)->concat;
+		incRef((((Iterable*)aaaaayCopy)->c));
 aaaaacS* aaaaac;
 aaaaac = (aaaaacS*) x3malloc(sizeof(aaaaacS));
 aaaaac->nrefs = 1;
@@ -513,211 +412,35 @@ aaaaac->isIter = 0;
 aaaaac->isStr = 0;
 aaaaac->isEC =0;
 aaaaac->forC = aaaaaf;
-aaaaac->iter = aaaablCopy;
-aaaaac->iterorg = aaaabl;
+aaaaac->iter = aaaaayCopy;
+aaaaac->iterorg = aaaaay;
 aaaaac->next = &aaaaacF;
 aaaaac->visited= 0;
->>>>>>> c442a05405fc2ca23da1fc2764d721b9f8bf9221
-Iterable* aaaaan;
-aaaaan = (Iterable*) x3malloc(sizeof(Iterable));
-aaaaan->isIter = 1;
-aaaaan->nrefs = 0;
-aaaaan->value = aaaaad;
-aaaaan->additional = aaaaae;
-aaaaan->next = &Integer_through;
-aaaaan->concat = NULL;
-incRef(aaaaad);
-incRef(aaaaae);
-void * aaaaao = NULL;
-aaaaao = x;
-x = checkIter(aaaaan);
-incRef(x);
-decRef(aaaaao);
-decRef(aaaaad);
-decRef(aaaaae);
+Iterable* aaaaaj;
+aaaaaj = (Iterable*) x3malloc(sizeof(Iterable));
+aaaaaj->isIter = 1;
+aaaaaj->nrefs = 0;
+aaaaaj->value = NULL;
+aaaaaj->c = aaaaac;
+aaaaaj->additional = NULL;
+aaaaaj->next = &aaaaacIterNext;
+aaaaaj->concat = NULL;
 
-<<<<<<< HEAD
-=======
-void * aaaaby = NULL;
-aaaaby = d;
-d = aaaaan;
+void * aaaabl = NULL;
+aaaabl = d;
+d = aaaaaj;
 incRef(d);
-decRef(aaaaby);
->>>>>>> c442a05405fc2ca23da1fc2764d721b9f8bf9221
-
-
-
-
-
-void * aaaaaq = NULL;
-aaaaaq = re;
-re = NULL;
-incRef(re);
-decRef(aaaaaq);
-
-<<<<<<< HEAD
-
-
-
-
-
-void * aaaaar = NULL;
-aaaaar = z;
-z = x;
-incRef(z);
-decRef(aaaaar);
-decRef(x);
-	if (z!=NULL) {
-		if ((*((int *)(z+1))) == 0) {
-void * aaaaas = NULL;
-aaaaas = z;
-			z = strToIter( ((String *)z)->value, ((String *)z)->len);
-incRef(z);
-decRef(aaaaas);
-		}
-	}
-if (z!=NULL) {
-	if (((Iterable*)z)->c!=NULL) {
-		Iterable *aaaaat = NULL;
-		aaaaat = (Iterable *)x3malloc(sizeof(Iterable));
-		((Iterable*)aaaaat)->nrefs = ((Iterable*)z)->nrefs;
-		((Iterable*)aaaaat)->isIter = ((Iterable*)z)->isIter;
-		((Iterable*)aaaaat)->isStr = ((Iterable*)z)->isStr;
-		((Iterable*)aaaaat)->value = ((Iterable*)z)->value;
-		((Iterable*)aaaaat)->c = ((Iterable*)z)->c;
-		((Iterable*)aaaaat)->additional = ((Iterable*)z)->additional;
-		((Iterable*)aaaaat)->next = ((Iterable*)z)->next;
-		((Iterable*)aaaaat)->concat = ((Iterable*)z)->concat;
-		incRef((((Iterable*)aaaaat)->c));
-		z = iterGetNext(aaaaat);
-		(*((int*)((Iterable*)aaaaat)->c+5)) = 0;
-	}
-}
-	while (z!=NULL) {
-Iterable * aaaaaf = NULL;
-		aaaaaf = (Iterable *)z;
-		incRef(aaaaaf);
-void * aaaaau = NULL;
-aaaaau = z;
-		z = aaaaaf->value;
-		incRef(z);
-		decRef(aaaaau);
-decRef(z);
-		
-
-
-void * aaaaah = NULL;
-void * aaaaai = NULL;
-void * aaaaag = NULL;
-
-
-
-void * aaaaav = NULL;
-aaaaav = aaaaah;
-aaaaah = re;
-incRef(aaaaah);
-decRef(aaaaav);
-decRef(re);
-
-
-
-aaaaacS* aaaaac;
-aaaaac = (aaaaacS*) x3malloc(sizeof(aaaaacS));
-aaaaac->nrefs = 1;
-aaaaac->isIter = 0;
-aaaaac->isStr = 0;
-aaaaac->isEC = 1;
-aaaaac->eC = NULL;
-aaaaac->next = &aaaaacF;
-aaaaac->visited= 0;
-Iterable* aaaaaw;
-aaaaaw = (Iterable*) x3malloc(sizeof(Iterable));
-aaaaaw->isIter = 1;
-aaaaaw->nrefs = 0;
-aaaaaw->value = NULL;
-aaaaaw->c = aaaaac;
-aaaaaw->additional = NULL;
-aaaaaw->next = &aaaaacIterNext;
-aaaaaw->concat = NULL;
-
-void * aaaabc = NULL;
-aaaabc = aaaaai;
-aaaaai = aaaaaw;
-incRef(aaaaai);
-decRef(aaaabc);
-
-
-
-void *aaaabe;
-aaaabe = aaaaah;
-if (aaaabe!=NULL) {
-(*((int *)aaaabe))++;
-if ((*((int *)aaaaah+1)) == 0) {
-decRef(aaaabe);
-aaaabe = strToIter( ((String *)aaaaah)->value, ((String *)aaaaah)->len);
-incRef(aaaabe);
-}
-}
-void *aaaabf;
-aaaabf = aaaaai;
-if (aaaabf!=NULL) {
-(*((int *)aaaabf))++;
-if ((*((int *)aaaaai+1)) == 0) {
-decRef(aaaabf);
-aaaabf = strToIter( ((String *)aaaaai)->value, ((String *)aaaaai)->len);
-incRef(aaaabf);
-}
-}
-Iterable* aaaabd;
-aaaabd = concatenate((Iterable*)aaaabe, (Iterable*) aaaabf);
-decRef(aaaabe);
-decRef(aaaabf);
-void * aaaabg = NULL;
-aaaabg = re;
-re = aaaabd;
-incRef(re);
-decRef(aaaabg);
-decRef(aaaaah);
-decRef(aaaaai);
-
-
-
-void * aaaabh = NULL;
-aaaabh = aaaaag;
-aaaaag = aaaaaf;
-incRef(aaaaag);
-decRef(aaaabh);
-decRef(aaaaaf);
-
-
-
-
-void* aaaabi;
-aaaabi = iterGetNext((void*) aaaaag);
-void * aaaabj = NULL;
-aaaabj = z;
-z = aaaabi;
-incRef(z);
-decRef(aaaabj);
-decRef(aaaaag);
-	}
-decRef(z);
+decRef(aaaabl);
 
 
 
 
 
 
-if (re!= NULL) {
-(*(int *)re)--;
-}
-return re;
-=======
 if (d!= NULL) {
 (*(int *)d)--;
 }
 return d;
->>>>>>> c442a05405fc2ca23da1fc2764d721b9f8bf9221
 }
 
 
