@@ -476,13 +476,13 @@ class ForCmph extends CuComprehension {
 					nextFunString+="(("+c.cmphName+"S*)"+thisName+"->forC)->"+tempv+"="+thisName+"->"+tempv+";\n";
 			}
 
-			nextFunString+="if ("+thisName+"->forC!=NULL&&"+thisName+"->visited==0){"+
+			nextFunString+="if ("+thisName+"->forC!=NULL&&"+thisName+"->visited==0){\n"+
 			    	"\t(("+c.cmphName+"S*)"+thisName+"->forC)->visited=0;}\n"+
 					""+thisName+"->visited=1; \n" +
-			    	"if ("+thisName+"->iter==NULL) {\n"+copyIter+"return NULL;}\n" +
+			    	"if ("+thisName+"->iter==NULL) {\n return NULL;}\n" +
 					"if ("+thisName+"->iter->value==NULL) {" +//handle beginning
 					""+thisName+"->iter=iterGetNext("+thisName+"->iter);}\n" +
-					"if ("+thisName+"->iter==NULL||"+thisName+"->iter->value==NULL) {\n"+copyIter+" return NULL;}\n";
+					"if ("+thisName+"->iter==NULL||"+thisName+"->iter->value==NULL) {\n return NULL;}\n";
 			//only add these two lines when c uses v.text
             if (c.getUse().contains(v.text)){
             	nextFunString+= 
@@ -494,11 +494,10 @@ class ForCmph extends CuComprehension {
 					"if (ret==NULL){\n" +
 						"\t(("+c.cmphName+"S*)"+thisName+"->forC)->visited=0;\n" +//end of loop, enable again
 						"\t "+thisName+"->iter=iterGetNext("+thisName+"->iter);\n" +
-						"if ("+thisName+"->iter==NULL) {return NULL;}\n";
+						"if ("+thisName+"->iter==NULL) {\n"+copyIter+"\treturn NULL;}\n";
           //only add these two lines when c uses v.text
             if (c.getUse().contains(v.text)){
-            	 nextFunString+= 
-            	"\t"+v.text+"="+thisName+"->iter->value;\n" +
+            	 nextFunString+="\t"+v.text+"="+thisName+"->iter->value;\n" +
 						"\t (("+c.cmphName+"S*)"+thisName+"->forC)->"+v.text+"="+v.text+";\n";
             }
             nextFunString+= 		
