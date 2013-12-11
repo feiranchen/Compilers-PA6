@@ -1542,6 +1542,13 @@ class EqualExpr extends CuExpr{
 			rightCastType = "(" + right.getCastType() + "*)";
 		}
 		
+		//added for quick fix
+		if (left instanceof VvExp) {
+			leftCastType = "(" + ((VvExp)left).retype.id  + "*)";
+			rightCastType = leftCastType;
+		}
+		
+		
 		String temp = Helper.getVarName();
 		
 		name += "Boolean* " + temp + " = (Boolean*) x3malloc(sizeof(Boolean));\n" +

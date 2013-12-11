@@ -1,7 +1,0 @@
-i:=5;
-d:=["haha", "ahahha"];
-d:=["haha", "ahahha", for (v in ["a","b","c","d"]) v,"stop"];
-
-d:=[for (v in ["a","b"]) v,"stop"];
-
-return d;
