@@ -176,7 +176,7 @@ class ExprLstCmph extends CuComprehension{
 			if (!use.contains(s))
 				use.add(s);
 		}
-		use.remove("input");
+		use.remove("input_");
 		
 		return use;
 	}
@@ -319,7 +319,7 @@ class IfCmph extends CuComprehension {
 				use.add(s);
 		}
 
-		use.remove("input");
+		use.remove("input_");
 		return use;
 	}
 
@@ -530,7 +530,7 @@ class ForCmph extends CuComprehension {
 				use.add(s);
 		}
 		use.remove(v.text);
-		use.remove("input");
+		use.remove("input_");
 		return use;
 	}
 
