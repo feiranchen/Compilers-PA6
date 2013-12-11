@@ -3582,7 +3582,8 @@ class ThroughExpr extends CuExpr{
 					name += Helper.incrRefCount(rightToC);
 				
 				String ttName = Helper.getVarName();
-				name += ttName + "=" + "checkIter(" + iter + ")";
+				name += "void * " + ttName + " = NULL;\n";
+				name += ttName + "=" + "checkIter(" + iter + ");\n";
 				cText = ttName;
 			}
 		}
@@ -3654,7 +3655,8 @@ class ThroughExpr extends CuExpr{
 					name += Helper.incrRefCount(rightToC);
 				
 				String ttName = Helper.getVarName();
-				name += ttName + "=" + "checkIter(" + iter + ")";
+				name += "void * " + ttName + " = NULL;\n";
+				name += ttName + "=" + "checkIter(" + iter + ");\n";
 				cText = ttName;
 			}
 		}
@@ -3762,7 +3764,7 @@ class ThroughExpr extends CuExpr{
 						+ temp2 + "->value = ";
 						
 				if (right instanceof CInteger) {
-					int i = (Integer.parseInt(right.toString())) + 1;
+					int i = (Integer.parseInt(right.toString())) - 1;
 					name += i;
 				}
 				else {
@@ -3772,24 +3774,25 @@ class ThroughExpr extends CuExpr{
 				name += ";\n"
 						+ temp2 + "->nrefs = 1;\n";							
 					
-				name +=  "Iterable* " + iterTemp + ";\n" + iterTemp +  " = (Iterable*) x3malloc(sizeof(Iterable));\n"
+				/*name +=  "Iterable* " + iterTemp + ";\n" + iterTemp +  " = (Iterable*) x3malloc(sizeof(Iterable));\n"
 						+ iterTemp + "->isIter = 1;\n"
 						+ iterTemp + "->nrefs = 1;\n"					//because first iter points to this
 						+ iterTemp + "->value = " + temp2 + ";\n"
 						+ iterTemp + "->additional = NULL;\n"
 						+ iterTemp + "->next = NULL;\n"
-						+ iterTemp + "->concat = NULL;\n";
+						+ iterTemp + "->concat = NULL;\n";*/
 				
 				name +=  "Iterable* " + iter + ";\n" + iter +  " = (Iterable*) x3malloc(sizeof(Iterable));\n"
 						+ iter + "->isIter = 1;\n"
 						+ iter + "->nrefs = 0;\n"
 						+ iter + "->value = " + temp1 + ";\n"
-						+ iter + "->additional = " + iterTemp + ";\n"
+						+ iter + "->additional = " + temp2 + ";\n"
 						+ iter + "->next = &" + left.getCastType() + "_through;\n"
 						+ iter + "->concat = NULL;\n";
 				
 				String ttName = Helper.getVarName();
-				name += ttName + "=" + "checkIter(" + iter + ")";
+				name += "void * " + ttName + " = NULL;\n";
+				name += ttName + "=" + "checkIter(" + iter + ");\n";
 				cText = ttName;
 			}
 		}
@@ -4580,16 +4583,16 @@ Helper.P(" 1mapping is " + mapping.toString());
 			
 			//use.add(val);
 			
-			if(val.equals("input"))
+			if(val.equals("input_"))
 			{
 				iterType = "String";				
 				castType = "Iterable";
 				String len = Helper.getVarName();
 				//String iterNew = Helper.getVarName();
-				iter = "input";
+				iter = "input_";
 								
 				if(!initialized) {
-					iter = "input";
+					iter = "input_";
 				
 					name += "int " + len + ";\n"
 						//commented out by Yinglei because input is a global variable
@@ -4650,7 +4653,7 @@ Helper.P(" 1mapping is " + mapping.toString());
 			String temp = "", tempName = "", expToC = "";
 			String tempCastType = "", varName = Helper.getVarName();
 			
-			if(val.equals("character")) {
+			if(val.equals("character_")) {
 				super.castType = "Character";
 				super.name += "\n";
 				
@@ -4681,7 +4684,7 @@ Helper.P(" 1mapping is " + mapping.toString());
 				return super.toC(localVars);
 			}
 			
-			if(val.equals("string")) {
+			if(val.equals("string_")) {
 				castType = "String";
 				name += "\n";
 				CuExpr exp = es.get(0);
